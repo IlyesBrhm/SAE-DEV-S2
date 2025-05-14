@@ -11,94 +11,93 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.geometry.Pos;
 
+/**
+ * Classe principale de l'application : écran d'accueil du jeu.
+ */
 public class HelloApplication extends Application {
+
+    private static final String CINZEL_PATH = "/fonts/Cinzel-Regular.ttf";
+    private static final String TRAJAN_PRO_PATH = "/fonts/TrajanPro-Regular.ttf";
 
     @Override
     public void start(Stage primaryStage) {
-        // Charger l'image de fond
-        Image backgroundImage = new Image(getClass().getResource("/images/fond.png").toExternalForm());
-        ImageView backgroundView = new ImageView(backgroundImage);
-        backgroundView.setPreserveRatio(false); // Permet l'étirement complet
 
-        // Créer la racine
-        StackPane root = new StackPane();
 
-        // Lier les dimensions de l'image à celles de la fenêtre
-        backgroundView.fitWidthProperty().bind(root.widthProperty());
-        backgroundView.fitHeightProperty().bind(root.heightProperty());
+        // Image de fond
+        Image fond = new Image(getClass().getResource("/images/fond.png").toExternalForm());
+        ImageView fondVue = new ImageView(fond);
+        fondVue.setPreserveRatio(false);
 
-        // Créer les boutons
-        Button nouvellePartie = new Button("Nouvelle Partie");
-        Button quitter = new Button("Quitter");
+        // Conteneur principal
+        StackPane racine = new StackPane();
+        fondVue.fitWidthProperty().bind(racine.widthProperty());
+        fondVue.fitHeightProperty().bind(racine.heightProperty());
 
-        nouvellePartie.setPrefWidth(200);
-        quitter.setPrefWidth(200);
+        // Boutons
+        Button btnJouer = new Button("Nouvelle Partie");
+        Button btnQuitter = new Button("Quitter");
 
-        //Design des boutons
-        nouvellePartie.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 18px;");
-        nouvellePartie.setOnMouseEntered(e -> {
-            nouvellePartie.setScaleX(1.1);
-            nouvellePartie.setScaleY(1.1);
-            nouvellePartie.setStyle("-fx-background-color: transparent; -fx-text-fill: #cccccc; -fx-font-size: 18px;");
+        btnJouer.setPrefWidth(200);
+        btnQuitter.setPrefWidth(200);
+
+        // Styles de boutons
+        String styleNormal = "-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 18px;";
+        String styleHover = "-fx-background-color: transparent; -fx-text-fill: #cccccc; -fx-font-size: 18px;";
+
+        btnJouer.setStyle(styleNormal);
+        btnJouer.setOnMouseEntered(e -> {
+            btnJouer.setStyle(styleHover);
+            btnJouer.setScaleX(1.1);
+            btnJouer.setScaleY(1.1);
         });
-        nouvellePartie.setOnMouseExited(e -> {
-            nouvellePartie.setScaleX(1.0);
-            nouvellePartie.setScaleY(1.0);
-            nouvellePartie.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 18px;");
-        });
-
-        quitter.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 18px;");
-        quitter.setOnMouseEntered(e -> {
-            quitter.setScaleX(1.1);
-            quitter.setScaleY(1.1);
-            quitter.setStyle("-fx-background-color: transparent; -fx-text-fill: #cccccc; -fx-font-size: 18px;");
-        });
-        quitter.setOnMouseExited(e -> {
-            quitter.setScaleX(1.0);
-            quitter.setScaleY(1.0);
-            quitter.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 18px;");
+        btnJouer.setOnMouseExited(e -> {
+            btnJouer.setStyle(styleNormal);
+            btnJouer.setScaleX(1.0);
+            btnJouer.setScaleY(1.0);
         });
 
+        btnQuitter.setStyle(styleNormal);
+        btnQuitter.setOnMouseEntered(e -> {
+            btnQuitter.setStyle(styleHover);
+            btnQuitter.setScaleX(1.1);
+            btnQuitter.setScaleY(1.1);
+        });
+        btnQuitter.setOnMouseExited(e -> {
+            btnQuitter.setStyle(styleNormal);
+            btnQuitter.setScaleX(1.0);
+            btnQuitter.setScaleY(1.0);
+        });
 
-
-        // Action bouton "Nouvelle Partie"
-        nouvellePartie.setOnAction(e -> {
+        // Action du bouton jouer
+        btnJouer.setOnAction(e -> {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("hello-view.fxml"));
-                if (fxmlLoader.getLocation() == null) {
-                    System.out.println("Fichier FXML non trouvé");
-                    return;
-                }
-                Scene gameScene = new Scene(fxmlLoader.load(), 1680, 1050);
-                primaryStage.setScene(gameScene);
+                Scene sceneJeu = new Scene(fxmlLoader.load(), 1680, 1050);
+                primaryStage.setScene(sceneJeu);
                 primaryStage.setTitle("Bilad al Sam - Jeu");
             } catch (Exception ex) {
                 ex.printStackTrace();
-                System.out.println("Erreur lors du chargement de vue1.fxml");
+                System.out.println("Erreur de chargement du jeu.");
             }
         });
 
-        // Action bouton "Quitter"
-        quitter.setOnAction(e -> System.exit(0));
+        // Action bouton quitter
+        btnQuitter.setOnAction(e -> System.exit(0));
 
-        // Layout des boutons
-        VBox buttonBox = new VBox(20, nouvellePartie, quitter);
-        buttonBox.setAlignment(Pos.CENTER);
+        // Disposition verticale des boutons
+        VBox boxBoutons = new VBox(20, btnJouer, btnQuitter);
+        boxBoutons.setAlignment(Pos.CENTER);
 
-        // Superposer l'image et les boutons
-        root.getChildren().addAll(backgroundView, buttonBox);
+        racine.getChildren().addAll(fondVue, boxBoutons);
 
-        // Scène d'accueil
-        Scene accueilScene = new Scene(root, 1680, 1050);
+        // Lancement de la scène d’accueil
+        Scene accueil = new Scene(racine, 1680, 1050);
         primaryStage.setTitle("Bilad al Sam - Accueil");
-        primaryStage.setScene(accueilScene);
+        primaryStage.setScene(accueil);
         primaryStage.show();
-
-
     }
 
     public static void main(String[] args) {
         launch(args);
     }
-
 }
