@@ -1,4 +1,4 @@
-package universite_paris8.iut.aclaudio.demo;
+package universite_paris8.iut.youadah.projet.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
