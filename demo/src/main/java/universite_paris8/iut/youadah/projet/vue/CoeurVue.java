@@ -26,8 +26,8 @@ public class CoeurVue {
         this.coeur0 = new Image(getClass().getResource("/images/heart0.png").toExternalForm());
 
         this.coeurView = new ImageView();
-        coeurView.setFitWidth(32);
-        coeurView.setFitHeight(32);
+        coeurView.setFitWidth(64);
+        coeurView.setFitHeight(64);
         barreVie.getChildren().add(coeurView);
 
         mettreAJourPv(pv); // Initialisation

@@ -24,7 +24,7 @@ public class Map {
                 } else if (y == 20) {
                     terrain[y][x] = 1; // herbe
                 } else {
-                    terrain[y][x] = 2; // terre
+                    terrain[y][x] = 3; // terre
                 }
             }
         }
@@ -57,7 +57,30 @@ public class Map {
         poserLigne(38, 49, 3, 4);
         poserLigne(41, 47, 4, 4);
 
-        poserRectangle(10,18,3,2,3);
+
+
+
+        poserRectangle(10,19,10,1,1);
+        poserRectangle(10,20,10,1,7);
+        poserRectangle(0,21,10,1,7);
+        poserRectangle(20,21,10,1,7);
+
+        poserRectangle(30, 19, 2, 1, 1);
+        poserRectangle(32, 18, 2, 1, 1);
+        poserRectangle(34, 17, 2, 1, 1);
+        poserRectangle(36, 16, 20, 1, 1);
+        poserRectangle(56, 15, 2, 1, 1);
+
+        poserRectangle(32, 20, 50, 1, 3);
+        poserRectangle(30, 20, 2, 1, 7);
+        poserRectangle(32, 19, 2, 1, 7);
+        poserRectangle(34, 19, 50, 1, 3);
+        poserRectangle(34, 18, 2, 1, 7);
+        poserRectangle(36, 18, 50, 1, 3);
+        poserRectangle(36, 17, 20, 1, 7);
+        poserRectangle(56, 17, 2, 1, 3);
+        poserRectangle(56, 16, 2, 1, 7);
+
 
         return terrain;
     }

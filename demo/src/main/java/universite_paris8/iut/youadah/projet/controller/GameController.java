@@ -61,7 +61,19 @@ public class GameController implements Initializable {
 
         // Contrôle clavier
         playerLayer.setFocusTraversable(true);
-        playerLayer.setOnKeyPressed(event -> touchesAppuyees.add(event.getCode()));
+        playerLayer.setOnKeyPressed(event -> {
+            touchesAppuyees.add(event.getCode());
+
+            if (event.getCode() == KeyCode.K) {
+                joueur.decrementerPv(1);
+                coeurVue.mettreAJourPv(joueur.getPv());
+            }
+
+            if (event.getCode() == KeyCode.G) {
+                joueur.incrementerPv(1);
+                coeurVue.mettreAJourPv(joueur.getPv());
+            }
+        });
         playerLayer.setOnKeyReleased(event -> touchesAppuyees.remove(event.getCode()));
 
         // Boucle d’animation
@@ -74,7 +86,7 @@ public class GameController implements Initializable {
                 if (touchesAppuyees.contains(KeyCode.D) || touchesAppuyees.contains(KeyCode.RIGHT)) {
                     joueur.deplacerDroite(carte);
                 }
-                if (touchesAppuyees.contains(KeyCode.Z) || touchesAppuyees.contains(KeyCode.SPACE)) {
+                if (touchesAppuyees.contains(KeyCode.Z) || touchesAppuyees.contains(KeyCode.SPACE) || touchesAppuyees.contains(KeyCode.UP)) {
                     joueur.sauter();
                 }
 
