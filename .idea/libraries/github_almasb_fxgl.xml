@@ -1,0 +1,62 @@
+<component name="libraryTable">
+  <library name="github.almasb.fxgl" type="repository">
+    <properties maven-id="com.github.almasb:fxgl:17.2" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/fxgl-17.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-fxml-18.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-fxml-18-linux.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-controls-18.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-controls-18-linux.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/fxgl-core-17.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-graphics-18.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-graphics-18-linux.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-base-18.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-base-18-linux.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-media-18.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-media-18-linux.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/audio-4.0.13.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/fxgl-io-17.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/storage-4.0.13.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/util-4.0.13.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/fxgl-entity-17.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/fxgl-scene-17.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/fxgl-gameplay-17.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jackson-annotations-2.12.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jackson-databind-2.12.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jackson-core-2.12.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/lifecycle-4.0.13.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/kotlin-stdlib-1.6.0-modular.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/annotations-13.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/kotlin-stdlib-common-1.6.0.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/lib/fxgl-17.2-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-fxml-18-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-fxml-18-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-controls-18-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-controls-18-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/fxgl-core-17.2-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-graphics-18-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-graphics-18-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-base-18-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-base-18-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-media-18-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-media-18-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/audio-4.0.13-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/fxgl-io-17.2-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/storage-4.0.13-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/util-4.0.13-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/fxgl-entity-17.2-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/fxgl-scene-17.2-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/fxgl-gameplay-17.2-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jackson-annotations-2.12.1-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jackson-databind-2.12.1-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jackson-core-2.12.1-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/lifecycle-4.0.13-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/kotlin-stdlib-1.6.0-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/annotations-13.0-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/kotlin-stdlib-common-1.6.0-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES />
+  </library>
+</component>

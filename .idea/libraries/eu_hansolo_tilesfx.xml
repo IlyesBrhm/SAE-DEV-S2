@@ -1,0 +1,64 @@
+<component name="libraryTable">
+  <library name="eu.hansolo.tilesfx" type="repository">
+    <properties maven-id="eu.hansolo:tilesfx:11.2" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/tilesfx-11.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/json-simple-1.1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/junit-4.10.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/hamcrest-core-1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-web-11.0.2-mac.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-web-11.0.2-linux.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-controls-11.0.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-media-11.0.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-graphics-11.0.2-mac.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-graphics-11.0.2-linux.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-base-11.0.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-controls-11.0.2-mac.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-controls-11.0.2-linux.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-graphics-11.0.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-base-11.0.2-mac.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-base-11.0.2-linux.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-media-11.0.2-mac.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-media-11.0.2-linux.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/lib/tilesfx-11.2-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/json-simple-1.1.1-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/junit-4.10-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-web-11.0.2-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-web-11.0.2-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-controls-11.0.2-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-media-11.0.2-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-graphics-11.0.2-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-graphics-11.0.2-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-base-11.0.2-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-controls-11.0.2-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-controls-11.0.2-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-graphics-11.0.2-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-base-11.0.2-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-base-11.0.2-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-media-11.0.2-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-media-11.0.2-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/lib/tilesfx-11.2-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/json-simple-1.1.1-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/junit-4.10-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/hamcrest-core-1.1-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-web-11.0.2-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-web-11.0.2-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-controls-11.0.2-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-media-11.0.2-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-graphics-11.0.2-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-graphics-11.0.2-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-base-11.0.2-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-controls-11.0.2-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-controls-11.0.2-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-graphics-11.0.2-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-base-11.0.2-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-base-11.0.2-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-media-11.0.2-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-media-11.0.2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
