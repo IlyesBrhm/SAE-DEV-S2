@@ -1,15 +1,15 @@
 package universite_paris8.iut.youadah.projet.modele;
 
-
+// cette class va contenir un tableau 2D qui va etre notre map ou chque case contient un ID tuile
 public class Map {
 
     private int[][] terrain;
 
     public Map() {
-        // Constructeur vide
+
     }
 
-
+    // Donc ici c la creation du terrain , on initialise le terrain et on creer une boucle pour le remplir avec les différent type de bloc
     public int[][] creerTerrain(int hauteur, int largeur) {
         terrain = new int[hauteur][largeur];
 
@@ -57,7 +57,7 @@ public class Map {
 
         return terrain;
     }
-
+    // juste ici on a creer des methodes pour nous faciliter a creer des objets et des formes sur la map
     public void poserBloc(int x, int y, int type) {
         if (terrain != null && y >= 0 && y < terrain.length && x >= 0 && x < terrain[0].length) {
             terrain[y][x] = type;
@@ -83,20 +83,24 @@ public class Map {
             }
         }
     }
-
+    // retourne une tuiles
     public int getTile(int y, int x) {
+
         return terrain[y][x];
     }
 
     public int getLargeur() {
+
         return terrain[0].length;
     }
 
     public int getHauteur() {
+
         return terrain.length;
     }
 
     public int[][] getTerrain() {
+
         return terrain;
     }
 }
