@@ -2,7 +2,6 @@ package universite_paris8.iut.youadah.projet.modele;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-
 public class Player {
 
     private final DoubleProperty x = new SimpleDoubleProperty();
@@ -11,7 +10,7 @@ public class Player {
     private boolean auSol;
     private boolean versLaDroite;
     private int pv;
-
+    private Coeur coeur;
     private static final double SAUT = -3.5;
     private static final double VITESSE = 0.7;
     private static final int TAILLE_TUILE = 32;
@@ -22,6 +21,7 @@ public class Player {
         this.vitesseY = 0;
         this.versLaDroite = true;
         this.pv = 5;
+        this.coeur = new Coeur(5);
     }
 
     public double getX() {
@@ -104,6 +104,10 @@ public class Player {
     public int getPv() {
         return pv;
     }
+    public boolean estMort() {
+        return coeur.estMort();
+    }
+
 
     private boolean estSolide(int id) {
         return id == 1 || id == 3;

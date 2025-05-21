@@ -39,6 +39,7 @@ public class GameController implements Initializable {
     private Player joueur;
     private PlayerVue joueurVue;
     private CoeurVue coeurVue;
+    private ClavierController clavierController;
 
     private Rectangle boxDegat;
     private final Set<KeyCode> touchesAppuyees = new HashSet<>();
@@ -54,7 +55,7 @@ public class GameController implements Initializable {
         tileMap.setMaxWidth(TAILLE_TUILE * NB_COLONNES);
         carteVue.afficherCarte(structure, tileMap);
 
-        // Initialisation du joueur et de sa vue
+        // Initialisation du joueur
         joueur = new Player(5 * TAILLE_TUILE, 19 * TAILLE_TUILE);
         joueurVue = new PlayerVue(joueur);
         coeurVue = new CoeurVue(joueur.getPv());
@@ -63,57 +64,34 @@ public class GameController implements Initializable {
         playerLayer.getChildren().add(joueurVue.getNode());
         playerLayer.getChildren().add(coeurVue.getBarreVie());
 
-        // Initialisation de la hitbox rouge
+        // Hitbox rouge
         initialiserBoxDegat();
 
-        // Gestion des touches
-        playerLayer.setFocusTraversable(true);
-        playerLayer.setOnKeyPressed(event -> {
-            touchesAppuyees.add(event.getCode());
-
-            if (event.getCode() == KeyCode.K && !estMort) {
-                joueur.decrementerPv(1);
-                coeurVue.mettreAJourPv(joueur.getPv());
-
-                afficherBoxDegat();
-
-                if (joueur.getPv() <= 0) {
-                    mourir();
-                }
-            }
-
-            if (event.getCode() == KeyCode.G && !estMort) {
-                joueur.incrementerPv(1);
-                coeurVue.mettreAJourPv(joueur.getPv());
-            }
-        });
-
-        playerLayer.setOnKeyReleased(event -> touchesAppuyees.remove(event.getCode()));
+        // Clavier
+        clavierController = new ClavierController(
+                touchesAppuyees,
+                joueur,
+                joueurVue,
+                coeurVue,
+                playerLayer,
+                this::mourir,
+                this::afficherBoxDegat,
+                carte // 💡 on passe bien la carte
+        );
+        clavierController.configurerControles();
 
         // Boucle de jeu
         new AnimationTimer() {
             @Override
             public void handle(long now) {
                 if (estMort) return;
-
-                if (touchesAppuyees.contains(KeyCode.Q) || touchesAppuyees.contains(KeyCode.LEFT)) {
-                    joueur.deplacerGauche(carte);
-                }
-                if (touchesAppuyees.contains(KeyCode.D) || touchesAppuyees.contains(KeyCode.RIGHT)) {
-                    joueur.deplacerDroite(carte);
-                }
-                if (touchesAppuyees.contains(KeyCode.Z) || touchesAppuyees.contains(KeyCode.SPACE)) {
-                    joueur.sauter();
-                }
-
-                joueur.mettreAJour(carte);
-                joueurVue.mettreAJourJoeur(joueur);
+                clavierController.gererTouches();
             }
         }.start();
     }
 
     private void initialiserBoxDegat() {
-        boxDegat = new Rectangle(32, 32); // adapte si ton sprite a une autre taille
+        boxDegat = new Rectangle(64, 64);
         boxDegat.setFill(Color.TRANSPARENT);
         boxDegat.setStroke(Color.RED);
         boxDegat.setStrokeWidth(2);
@@ -142,15 +120,6 @@ public class GameController implements Initializable {
             System.out.println("💀 Le joueur est mort !");
             messageMort.setVisible(true);
             joueurVue.getNode().setVisible(false);
-
-            new Thread(() -> {
-                try {
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                javafx.application.Platform.exit();
-            }).start();
         }
     }
 }
