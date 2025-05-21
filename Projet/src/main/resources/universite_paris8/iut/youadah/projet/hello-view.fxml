@@ -1,23 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.TilePane?>
 
+<?import javafx.scene.layout.TilePane?>
 <StackPane fx:id="gameRoot" xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"
            fx:controller="universite_paris8.iut.youadah.projet.controller.GameController">
 
+
     <TilePane fx:id="tileMap" />
+
 
     <Pane fx:id="playerLayer" pickOnBounds="false" />
 
-
-    <Label fx:id="messageMort"
-           text="💀 Vous êtes mort"
-           style="-fx-font-size: 36px; -fx-text-fill: red; -fx-font-weight: bold;"
-           visible="false"
-           StackPane.alignment="TOP_CENTER"
-           translateY="100"/>
 </StackPane>

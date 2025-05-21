@@ -2,6 +2,8 @@ package universite_paris8.iut.youadah.projet.modele;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import universite_paris8.iut.youadah.projet.vue.PlayerVue;
+
 public class Player {
 
     private final DoubleProperty x = new SimpleDoubleProperty();
@@ -10,7 +12,9 @@ public class Player {
     private boolean auSol;
     private boolean versLaDroite;
     private int pv;
-    private Coeur coeur;
+
+    private final CoeurModel coeurModel = new CoeurModel();
+
     private static final double SAUT = -3.5;
     private static final double VITESSE = 0.7;
     private static final int TAILLE_TUILE = 32;
@@ -21,7 +25,6 @@ public class Player {
         this.vitesseY = 0;
         this.versLaDroite = true;
         this.pv = 5;
-        this.coeur = new Coeur(5);
     }
 
     public double getX() {
@@ -93,20 +96,46 @@ public class Player {
         }
     }
 
+
+
+
+
     public void incrementerPv(int pvEnPlus) {
         pv = Math.min(pv + pvEnPlus, 5);
     }
 
-    public void decrementerPv(int pvEnMoins) {
+    public void decrementerPv(int pvEnMoins, PlayerVue vue, CoeurModel coeurModel) {
+        if (coeurModel.estEnDegats() || estMort) {
+            return;
+        }
+
         pv = Math.max(pv - pvEnMoins, 0);
+
+        if (pv == 0) {
+            estMort = true;
+            vue.afficherMort();
+        } else {
+            vue.setEtatBlesse(true);
+            vue.animerClignotementDegats();
+            coeurModel.signalerDegats(() -> vue.setEtatBlesse(false));
+        }
     }
+
+
+    private boolean estMort = false;
+    public boolean estMort() {
+        return estMort;
+    }
+
 
     public int getPv() {
         return pv;
     }
-    public boolean estMort() {
-        return coeur.estMort();
+
+    public CoeurModel getCoeurModel() {
+        return coeurModel;
     }
+
 
 
     private boolean estSolide(int id) {
