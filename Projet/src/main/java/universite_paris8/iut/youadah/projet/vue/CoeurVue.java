@@ -3,6 +3,7 @@ package universite_paris8.iut.youadah.projet.vue;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 
 public class CoeurVue {
     private final HBox barreVie;
@@ -14,8 +15,9 @@ public class CoeurVue {
     private final Image coeur0;
     private final ImageView coeurView;
     private int pv;
+    private Pane pane;
 
-    public CoeurVue(int pv) {
+    public CoeurVue(int pv, boolean estArmure,Pane p) {
         this.pv = pv;
         this.barreVie = new HBox(5);
         this.coeur5 = new Image(getClass().getResource("/images/heart5.png").toExternalForm());
@@ -29,6 +31,8 @@ public class CoeurVue {
         coeurView.setFitWidth(32);
         coeurView.setFitHeight(32);
         barreVie.getChildren().add(coeurView);
+
+        pane = p;
 
         mettreAJourPv(pv); // Initialisation
     }
@@ -51,5 +55,9 @@ public class CoeurVue {
 
     public HBox getBarreVie() {
         return barreVie;
+    }
+
+    public void afficherCoeur() {
+        pane.getChildren().add(coeurView);
     }
 }

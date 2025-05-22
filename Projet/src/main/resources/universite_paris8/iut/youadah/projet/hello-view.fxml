@@ -12,6 +12,7 @@
 
     <TilePane fx:id="tileMap" />
     <Pane fx:id="playerLayer" pickOnBounds="false" />
+    <Pane fx:id="ath" />
 
     <Pane fx:id="overlayRouge"
           style="-fx-background-color: rgba(255, 0, 0, 0.4);"

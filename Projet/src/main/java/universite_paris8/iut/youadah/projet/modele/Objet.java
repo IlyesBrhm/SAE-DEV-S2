@@ -1,16 +1,21 @@
 package universite_paris8.iut.youadah.projet.modele;
 
+import java.awt.*;
+
 public class Objet {
 
     private String nom;
     private int rarete;
     private boolean consomable = false;
+    private Image image;
 
     public Objet(String nom, int rarete) {
         this.nom = nom;
         this.rarete = rarete;
         this.consomable = consomable;
     }
+
+
 
     public String getNom() {
         return nom;

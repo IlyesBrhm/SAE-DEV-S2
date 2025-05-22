@@ -2,6 +2,7 @@ package universite_paris8.iut.youadah.projet.vue;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import universite_paris8.iut.youadah.projet.modele.Player;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -12,6 +13,7 @@ public class PlayerVue {
     private final Image spriteDroite = new Image(getClass().getResource("/images/PersoRight.png").toExternalForm());
     private final Image spriteGauche = new Image(getClass().getResource("/images/PersoLeft.png").toExternalForm());
     private final ImageView imageJoueur;
+    private Pane pane;
 
     private final Player joueur;
     private boolean isBlesse = false;
@@ -46,13 +48,14 @@ public class PlayerVue {
 
 
 
-        public PlayerVue(Player joueur) {
+        public PlayerVue(Player joueur, Pane p) {
             this.joueur = joueur;
             imageJoueur = new ImageView(spriteDroite);
             imageJoueur.setFitWidth(64);
             imageJoueur.setFitHeight(64);
             imageJoueur.translateXProperty().bind(joueur.xProperty().subtract(16).asObject());
             imageJoueur.translateYProperty().bind(joueur.yProperty().subtract(32).asObject());
+            pane = p;
         }
 
 
@@ -75,8 +78,9 @@ public class PlayerVue {
         clignotement.play();
     }
 
-
-
+    public void afficherJoueur() {
+        pane.getChildren().add(imageJoueur);
+    }
 
     public ImageView getNode() {
 
