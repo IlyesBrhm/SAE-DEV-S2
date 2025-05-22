@@ -50,7 +50,7 @@ public class ClavierController {
         }
 
         joueur.mettreAJour(carte);
-        joueurVue.mettreAJourJoeur(joueur);
+        joueurVue.mettreAJourJoueur(joueur);
 
         // 🔥 Dégâts du feu (type de tuile = 5)
         int tuileX = (int)(joueur.getX() / 32);
