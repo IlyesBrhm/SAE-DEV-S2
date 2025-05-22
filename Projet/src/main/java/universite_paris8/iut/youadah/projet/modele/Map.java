@@ -54,7 +54,8 @@ public class Map {
         poserLigne(41, 47, 4, 4);
 
         poserRectangle(10,18,3,2,3);
-
+        poserBloc(18,19,5);
+        poserBloc(19,19,5);
         return terrain;
     }
     // juste ici on a creer des methodes pour nous faciliter a creer des objets et des formes sur la map

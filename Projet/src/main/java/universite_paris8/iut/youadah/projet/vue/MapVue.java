@@ -28,7 +28,9 @@ public class MapVue {
             case 2 -> charger("/images/Terre.png");  // terre
             case 3 -> charger("/images/Pierre.png"); // pierre
             case 4 -> charger("/images/Nuage.png");  // décor
+            case 5 -> charger("/images/Feu.png"); //Feu
             default -> null;
+
         };
     }
 

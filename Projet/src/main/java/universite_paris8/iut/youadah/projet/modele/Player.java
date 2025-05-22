@@ -2,6 +2,7 @@ package universite_paris8.iut.youadah.projet.modele;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+
 public class Player {
 
     private final DoubleProperty x = new SimpleDoubleProperty();
@@ -11,6 +12,8 @@ public class Player {
     private boolean versLaDroite;
     private int pv;
     private Coeur coeur;
+    private long dernierDegatFeu = 1;
+
     private static final double SAUT = -3.5;
     private static final double VITESSE = 0.7;
     private static final int TAILLE_TUILE = 32;
@@ -24,45 +27,20 @@ public class Player {
         this.coeur = new Coeur(5);
     }
 
-    public double getX() {
-        return x.get();
-    }
+    public double getX() { return x.get(); }
+    public void setX(double x) { this.x.set(x); }
+    public DoubleProperty xProperty() { return x; }
 
-    public void setX(double x) {
-        this.x.set(x);
-    }
+    public double getY() { return y.get(); }
+    public void setY(double y) { this.y.set(y); }
+    public DoubleProperty yProperty() { return y; }
 
-    public DoubleProperty xProperty() {
-        return x;
-    }
+    public double getVitesseY() { return vitesseY; }
+    public void setVitesseY(double vitesseY) { this.vitesseY = vitesseY; }
 
-    public double getY() {
-        return y.get();
-    }
+    public boolean estsVersLaDroite() { return versLaDroite; }
 
-    public void setY(double y) {
-        this.y.set(y);
-    }
-
-    public DoubleProperty yProperty() {
-        return y;
-    }
-
-    public double getVitesseY() {
-        return vitesseY;
-    }
-
-    public void setVitesseY(double vitesseY) {
-        this.vitesseY = vitesseY;
-    }
-
-    public boolean estsVersLaDroite() {
-        return versLaDroite;
-    }
-
-    public void setAuSol(boolean auSol) {
-        this.auSol = auSol;
-    }
+    public void setAuSol(boolean auSol) { this.auSol = auSol; }
 
     public void sauter() {
         if (auSol) {
@@ -101,19 +79,19 @@ public class Player {
         pv = Math.max(pv - pvEnMoins, 0);
     }
 
-    public int getPv() {
-        return pv;
-    }
-    public boolean estMort() {
-        return coeur.estMort();
-    }
+    public int getPv() { return pv; }
 
+    public boolean estMort() { return coeur.estMort(); }
+
+    public long getDernierDegatFeu() { return dernierDegatFeu; }
+
+    public void setDernierDegatFeu(long t) { this.dernierDegatFeu = t; }
 
     private boolean estSolide(int id) {
         return id == 1 || id == 3;
     }
 
-    public  void mettreAJour(Map map) {
+    public void mettreAJour(Map map) {
         final double GRAVITE = 0.08;
         double nouvelleY = getY();
         double nouvelleVitesseY = this.vitesseY + GRAVITE;

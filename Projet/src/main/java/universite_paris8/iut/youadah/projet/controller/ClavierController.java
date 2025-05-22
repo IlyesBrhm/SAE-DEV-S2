@@ -51,31 +51,29 @@ public class ClavierController {
 
         joueur.mettreAJour(carte);
         joueurVue.mettreAJourJoeur(joueur);
+
+        // 🔥 Dégâts du feu (type de tuile = 5)
+        int tuileX = (int)(joueur.getX() / 32);
+        int tuileY = (int)(joueur.getY() / 32);
+
+        if (carte.getTile(tuileY, tuileX) == 5 && !joueur.estMort()) {
+            long maintenant = System.currentTimeMillis();
+            if (maintenant - joueur.getDernierDegatFeu() > 1000) {
+                joueur.decrementerPv(1);
+                joueur.setDernierDegatFeu(maintenant);
+                coeurVue.mettreAJourPv(joueur.getPv());
+                afficherDegat.run(); // Déclenche GestionEffetDegats
+                if (joueur.getPv() <= 0) {
+                    callbackMort.run();
+                }
+            }
+        }
     }
 
     public void configurerControles() {
         playerLayer.setFocusTraversable(true);
 
-        playerLayer.setOnKeyPressed(event -> {
-            KeyCode code = event.getCode();
-            touchesAppuyees.add(code);
-
-            if (code == KeyCode.K && !joueur.estMort()) {
-                joueur.decrementerPv(1);
-                coeurVue.mettreAJourPv(joueur.getPv());
-                afficherDegat.run();
-
-                if (joueur.getPv() <= 0) {
-                    callbackMort.run();
-                }
-            }
-
-            if (code == KeyCode.G && !joueur.estMort()) {
-                joueur.incrementerPv(1);
-                coeurVue.mettreAJourPv(joueur.getPv());
-            }
-        });
-
+        playerLayer.setOnKeyPressed(event -> touchesAppuyees.add(event.getCode()));
         playerLayer.setOnKeyReleased(event -> touchesAppuyees.remove(event.getCode()));
     }
 }

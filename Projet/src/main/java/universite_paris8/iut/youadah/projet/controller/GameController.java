@@ -3,12 +3,12 @@ package universite_paris8.iut.youadah.projet.controller;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import universite_paris8.iut.youadah.projet.modele.Map;
 import universite_paris8.iut.youadah.projet.modele.Player;
 import universite_paris8.iut.youadah.projet.vue.CoeurVue;
@@ -31,8 +31,19 @@ public class GameController implements Initializable {
     @FXML
     private Label messageMort;
 
+    @FXML
+    private Button boutonQuitter;
+
+    @FXML
+    private Button boutonReapparaitre;
+
+    @FXML
+    private Pane overlayRouge; // récupéré depuis le FXML
+
     private static final int TAILLE_TUILE = 32;
     private static final int NB_COLONNES = 58;
+
+    private final GaussianBlur effetFlou = new GaussianBlur(10);
 
     private Map carte;
     private MapVue carteVue;
@@ -41,7 +52,6 @@ public class GameController implements Initializable {
     private CoeurVue coeurVue;
     private ClavierController clavierController;
 
-    private Rectangle boxDegat;
     private final Set<KeyCode> touchesAppuyees = new HashSet<>();
     private boolean estMort = false;
 
@@ -64,8 +74,8 @@ public class GameController implements Initializable {
         playerLayer.getChildren().add(joueurVue.getNode());
         playerLayer.getChildren().add(coeurVue.getBarreVie());
 
-        // Hitbox rouge
-        initialiserBoxDegat();
+        // Liaison du pane overlayRouge déjà présent dans le FXML
+        GestionEffetDegats.definirSuperposition(overlayRouge);
 
         // Clavier
         clavierController = new ClavierController(
@@ -75,8 +85,8 @@ public class GameController implements Initializable {
                 coeurVue,
                 playerLayer,
                 this::mourir,
-                this::afficherBoxDegat,
-                carte // 💡 on passe bien la carte
+                GestionEffetDegats::declencherClignotementRouge,
+                carte
         );
         clavierController.configurerControles();
 
@@ -90,36 +100,69 @@ public class GameController implements Initializable {
         }.start();
     }
 
-    private void initialiserBoxDegat() {
-        boxDegat = new Rectangle(64, 64);
-        boxDegat.setFill(Color.TRANSPARENT);
-        boxDegat.setStroke(Color.RED);
-        boxDegat.setStrokeWidth(2);
-        boxDegat.setVisible(false);
-        playerLayer.getChildren().add(boxDegat);
-    }
-
-    private void afficherBoxDegat() {
-        boxDegat.setLayoutX(joueur.getX());
-        boxDegat.setLayoutY(joueur.getY());
-        boxDegat.setVisible(true);
-
-        new Thread(() -> {
-            try {
-                Thread.sleep(200);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            javafx.application.Platform.runLater(() -> boxDegat.setVisible(false));
-        }).start();
-    }
-
     private void mourir() {
         if (!estMort) {
             estMort = true;
-            System.out.println("💀 Le joueur est mort !");
             messageMort.setVisible(true);
+            boutonQuitter.setVisible(true);
+            boutonReapparaitre.setVisible(true);
             joueurVue.getNode().setVisible(false);
+
+            tileMap.setEffect(effetFlou);
+            playerLayer.setEffect(effetFlou);
         }
+    }
+
+
+    @FXML
+    private void reapparaitre() {
+        estMort = false;
+
+        // Créer un nouveau joueur
+        joueur = new Player(5 * TAILLE_TUILE, 19 * TAILLE_TUILE);
+        joueurVue = new PlayerVue(joueur);
+
+        // Retirer ancien joueur s'il existe
+        playerLayer.getChildren().removeIf(node -> node == joueurVue.getNode());
+
+        // Retirer ancien cœur s'il existe
+        if (coeurVue != null && coeurVue.getBarreVie().getParent() == playerLayer) {
+            playerLayer.getChildren().remove(coeurVue.getBarreVie());
+        }
+
+        // Créer et ajouter nouvelle barre de vie
+        coeurVue = new CoeurVue(joueur.getPv());
+        coeurVue.mettreAJourPv(joueur.getPv());
+
+        // Ajouter les éléments au bon ordre (overlayRouge est déjà présent)
+        playerLayer.getChildren().add(0, joueurVue.getNode());
+        playerLayer.getChildren().add(1, coeurVue.getBarreVie());
+
+        // Réinitialiser affichages
+        boutonQuitter.setVisible(false);
+        boutonReapparaitre.setVisible(false);
+        messageMort.setVisible(false);
+
+        // Supprimer les effets visuels de mort
+        tileMap.setEffect(null);
+        playerLayer.setEffect(null);
+
+        // Reconfigurer le contrôleur clavier
+        clavierController = new ClavierController(
+                touchesAppuyees,
+                joueur,
+                joueurVue,
+                coeurVue,
+                playerLayer,
+                this::mourir,
+                GestionEffetDegats::declencherClignotementRouge,
+                carte
+        );
+        clavierController.configurerControles();
+    }
+
+    @FXML
+    private void quitterJeu() {
+        System.exit(0);
     }
 }
