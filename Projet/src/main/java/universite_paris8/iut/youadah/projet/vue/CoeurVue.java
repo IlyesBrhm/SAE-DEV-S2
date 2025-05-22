@@ -42,7 +42,7 @@ public class CoeurVue {
             case 2 -> coeurView.setImage(coeur2);
             case 1 -> coeurView.setImage(coeur1);
             case 0 -> coeurView.setImage(coeur0);
-            default -> barreVie.getChildren().clear(); // Aucun cœur si PV <= 0
+            default -> barreVie.getChildren().clear();
         }
         if (pv > 0 && !barreVie.getChildren().contains(coeurView)) {
             barreVie.getChildren().add(coeurView);

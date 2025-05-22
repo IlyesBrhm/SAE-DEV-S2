@@ -1,31 +1,38 @@
 package universite_paris8.iut.youadah.projet.modele;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+
 public class Coeur {
-    private int pv;
+    private final IntegerProperty pv;
     private final int pvMax;
 
     public Coeur(int pvMax) {
         this.pvMax = pvMax;
-        this.pv = pvMax;
+        this.pv = new SimpleIntegerProperty(pvMax);
     }
 
     public int getPv() {
+        return pv.get();
+    }
+
+    public IntegerProperty pvProperty() {
         return pv;
     }
 
     public void subirDegats(int degats) {
-        this.pv = Math.max(0, pv - degats);
+        pv.set(Math.max(0, pv.get() - degats));
     }
 
     public void soigner(int soin) {
-        this.pv = Math.min(pvMax, pv + soin);
+        pv.set(Math.min(pvMax, pv.get() + soin));
     }
 
     public boolean estMort() {
-        return pv <= 0;
+        return pv.get() <= 0;
     }
 
     public void reinitialiser() {
-        this.pv = pvMax;
+        pv.set(pvMax);
     }
 }

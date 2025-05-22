@@ -24,14 +24,12 @@ public class PlayerVue {
 
 
     public void afficherMort() {
-        // Met l’image du joueur en position "dégâts"
         imageJoueur.setImage(joueur.estsVersLaDroite() ? spriteDegatDroite : spriteDegatGauche);
 
         imageJoueur.setRotate(90);
 
-        // Optionnel : désactive le binding vertical (pour que le corps reste bien posé au sol)
         imageJoueur.translateYProperty().unbind();
-        imageJoueur.setTranslateY(joueur.getY() - 16); // ajuste si besoin selon ton visuel
+        imageJoueur.setTranslateY(joueur.getY() - 16);
     }
 
 
@@ -48,7 +46,6 @@ public class PlayerVue {
 
 
 
-    // ici dans le constructeur on charge l'image actuelle du joueur on redimentionne l'image ,et positionne le sprite a l'écrans
         public PlayerVue(Player joueur) {
             this.joueur = joueur;
             imageJoueur = new ImageView(spriteDroite);
@@ -60,7 +57,6 @@ public class PlayerVue {
 
 
 
-    // mis a jour de la position du joueur dans la map au niveau visuel cette methode est relance a chaque fois dans le Gamecontroller
     public void mettreAJourJoueur(Player joueur) {
         versLaDroite = joueur.estsVersLaDroite();
         if (!isBlesse) { // tu ajoutes un champ isBlesse aussi

@@ -12,6 +12,7 @@ public class Player {
     private boolean versLaDroite;
     private int pv;
     private Coeur coeur;
+    private int pvArmure;
     private long dernierDegatFeu = 1;
 
     private static final double SAUT = -3.5;
@@ -25,6 +26,7 @@ public class Player {
         this.versLaDroite = true;
         this.pv = 5;
         this.coeur = new Coeur(5);
+        this.pvArmure = 5;
     }
 
     public double getX() { return x.get(); }
@@ -79,13 +81,17 @@ public class Player {
         pv = Math.max(pv - pvEnMoins, 0);
     }
 
-    public int getPv() { return pv; }
+    public int getPv() {
+        return pv; }
 
-    public boolean estMort() { return coeur.estMort(); }
+    public boolean estMort() {
+        return coeur.estMort(); }
 
-    public long getDernierDegatFeu() { return dernierDegatFeu; }
+    public long getDernierDegatFeu() {
+        return dernierDegatFeu; }
 
-    public void setDernierDegatFeu(long t) { this.dernierDegatFeu = t; }
+    public void setDernierDegatFeu(long t) {
+        this.dernierDegatFeu = t; }
 
     private boolean estSolide(int id) {
         return id == 1 || id == 3;
@@ -129,4 +135,12 @@ public class Player {
         this.vitesseY = nouvelleVitesseY;
         this.auSol = auSolTemp;
     }
+    public int getPvArmure() {
+        return pvArmure;
+    }
+
+    public void decrementerPvArmure(int valeur) {
+        this.pvArmure = Math.max(0, this.pvArmure - valeur);
+    }
+
 }

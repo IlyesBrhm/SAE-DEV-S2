@@ -19,7 +19,7 @@
           mouseTransparent="true" />
 
     <Label fx:id="messageMort"
-           text="💀 Vous êtes mort"
+           text=" Vous êtes mort"
            style="-fx-font-size: 36px; -fx-text-fill: red; -fx-font-weight: bold;"
            visible="false"
            StackPane.alignment="TOP_CENTER"

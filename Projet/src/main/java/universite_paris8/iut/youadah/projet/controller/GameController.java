@@ -38,7 +38,7 @@ public class GameController implements Initializable {
     private Button boutonReapparaitre;
 
     @FXML
-    private Pane overlayRouge; // récupéré depuis le FXML
+    private Pane overlayRouge;
 
     private static final int TAILLE_TUILE = 32;
     private static final int NB_COLONNES = 58;
@@ -50,6 +50,7 @@ public class GameController implements Initializable {
     private Player joueur;
     private PlayerVue joueurVue;
     private CoeurVue coeurVue;
+    private CoeurVue coeurVueArmure;
     private ClavierController clavierController;
 
     private final Set<KeyCode> touchesAppuyees = new HashSet<>();
@@ -68,13 +69,20 @@ public class GameController implements Initializable {
         // Initialisation du joueur
         joueur = new Player(5 * TAILLE_TUILE, 19 * TAILLE_TUILE);
         joueurVue = new PlayerVue(joueur);
+
+        // Initialisation des barres de vie
         coeurVue = new CoeurVue(joueur.getPv());
         coeurVue.mettreAJourPv(joueur.getPv());
 
+        coeurVueArmure = new CoeurVue(joueur.getPvArmure());
+        coeurVueArmure.mettreAJourPv(joueur.getPvArmure());
+        coeurVueArmure.getBarreVie().setLayoutY(40); // Décalage vers le bas
+
+        // Ajout à la couche graphique
+        playerLayer.getChildren().add(coeurVueArmure.getBarreVie());
         playerLayer.getChildren().add(joueurVue.getNode());
         playerLayer.getChildren().add(coeurVue.getBarreVie());
 
-        // Liaison du pane overlayRouge déjà présent dans le FXML
         GestionEffetDegats.definirSuperposition(overlayRouge);
 
         // Clavier
@@ -83,6 +91,7 @@ public class GameController implements Initializable {
                 joueur,
                 joueurVue,
                 coeurVue,
+                coeurVueArmure,
                 playerLayer,
                 this::mourir,
                 GestionEffetDegats::declencherClignotementRouge,
@@ -113,7 +122,6 @@ public class GameController implements Initializable {
         }
     }
 
-
     @FXML
     private void reapparaitre() {
         estMort = false;
@@ -122,37 +130,38 @@ public class GameController implements Initializable {
         joueur = new Player(5 * TAILLE_TUILE, 19 * TAILLE_TUILE);
         joueurVue = new PlayerVue(joueur);
 
-        // Retirer ancien joueur s'il existe
-        playerLayer.getChildren().removeIf(node -> node == joueurVue.getNode());
+        // Nettoyage
+        playerLayer.getChildren().removeIf(node -> node == joueurVue.getNode()
+                || node == coeurVue.getBarreVie()
+                || node == coeurVueArmure.getBarreVie());
 
-        // Retirer ancien cœur s'il existe
-        if (coeurVue != null && coeurVue.getBarreVie().getParent() == playerLayer) {
-            playerLayer.getChildren().remove(coeurVue.getBarreVie());
-        }
-
-        // Créer et ajouter nouvelle barre de vie
+        // Recréation des barres
         coeurVue = new CoeurVue(joueur.getPv());
         coeurVue.mettreAJourPv(joueur.getPv());
 
-        // Ajouter les éléments au bon ordre (overlayRouge est déjà présent)
-        playerLayer.getChildren().add(0, joueurVue.getNode());
-        playerLayer.getChildren().add(1, coeurVue.getBarreVie());
+        coeurVueArmure = new CoeurVue(joueur.getPvArmure());
+        coeurVueArmure.mettreAJourPv(joueur.getPvArmure());
+        coeurVueArmure.getBarreVie().setLayoutY(40);
 
-        // Réinitialiser affichages
+        // Ajout des éléments
+        playerLayer.getChildren().add(coeurVueArmure.getBarreVie());
+        playerLayer.getChildren().add(joueurVue.getNode());
+        playerLayer.getChildren().add(coeurVue.getBarreVie());
+
+        // Réinitialiser affichage
         boutonQuitter.setVisible(false);
         boutonReapparaitre.setVisible(false);
         messageMort.setVisible(false);
-
-        // Supprimer les effets visuels de mort
         tileMap.setEffect(null);
         playerLayer.setEffect(null);
 
-        // Reconfigurer le contrôleur clavier
+        // Reconfigurer clavier
         clavierController = new ClavierController(
                 touchesAppuyees,
                 joueur,
                 joueurVue,
                 coeurVue,
+                coeurVueArmure,
                 playerLayer,
                 this::mourir,
                 GestionEffetDegats::declencherClignotementRouge,

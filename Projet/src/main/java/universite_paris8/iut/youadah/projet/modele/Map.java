@@ -84,7 +84,7 @@ public class Map {
             }
         }
     }
-    // retourne une tuiles
+
     public int getTile(int y, int x) {
 
         return terrain[y][x];

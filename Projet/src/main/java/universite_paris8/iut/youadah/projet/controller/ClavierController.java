@@ -15,6 +15,7 @@ public class ClavierController {
     private final Player joueur;
     private final PlayerVue joueurVue;
     private final CoeurVue coeurVue;
+    private final CoeurVue coeurVueArmure;
     private final Pane playerLayer;
     private final Runnable callbackMort;
     private final Runnable afficherDegat;
@@ -24,6 +25,7 @@ public class ClavierController {
                              Player joueur,
                              PlayerVue joueurVue,
                              CoeurVue coeurVue,
+                             CoeurVue coeurVueArmure,
                              Pane playerLayer,
                              Runnable callbackMort,
                              Runnable afficherDegat,
@@ -32,6 +34,7 @@ public class ClavierController {
         this.joueur = joueur;
         this.joueurVue = joueurVue;
         this.coeurVue = coeurVue;
+        this.coeurVueArmure = coeurVueArmure;
         this.playerLayer = playerLayer;
         this.callbackMort = callbackMort;
         this.afficherDegat = afficherDegat;
@@ -52,17 +55,24 @@ public class ClavierController {
         joueur.mettreAJour(carte);
         joueurVue.mettreAJourJoueur(joueur);
 
-        // 🔥 Dégâts du feu (type de tuile = 5)
-        int tuileX = (int)(joueur.getX() / 32);
-        int tuileY = (int)(joueur.getY() / 32);
+        int tuileX = (int) (joueur.getX() / 32);
+        int tuileY = (int) (joueur.getY() / 32);
 
         if (carte.getTile(tuileY, tuileX) == 5 && !joueur.estMort()) {
             long maintenant = System.currentTimeMillis();
             if (maintenant - joueur.getDernierDegatFeu() > 1000) {
-                joueur.decrementerPv(1);
                 joueur.setDernierDegatFeu(maintenant);
-                coeurVue.mettreAJourPv(joueur.getPv());
-                afficherDegat.run(); // Déclenche GestionEffetDegats
+
+                if (joueur.getPvArmure() > 0) {
+                    joueur.decrementerPvArmure(1);
+                    coeurVueArmure.mettreAJourPv(joueur.getPvArmure());
+                } else {
+                    joueur.decrementerPv(1);
+                    coeurVue.mettreAJourPv(joueur.getPv());
+                }
+
+                afficherDegat.run();
+
                 if (joueur.getPv() <= 0) {
                     callbackMort.run();
                 }
