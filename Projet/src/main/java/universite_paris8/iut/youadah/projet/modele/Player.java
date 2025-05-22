@@ -11,17 +11,21 @@ public class Player {
     private boolean auSol;
     private boolean versLaDroite;
     private int pv;
+    private Inventaire inventaire;
+    private Objet objetPossede;
 
     private static final double SAUT = -3.5;
     private static final double VITESSE = 0.7;
     private static final int TAILLE_TUILE = 32;
 
-    public Player(double startX, double startY) {
+    public Player(double startX, double startY, Inventaire inventaire) {
         this.x.set(startX);
         this.y.set(startY);
         this.vitesseY = 0;
         this.versLaDroite = true;
         this.pv = 5;
+        this.inventaire = inventaire;
+        objetPossede = null;
     }
 
     public double getX() {
@@ -101,6 +105,13 @@ public class Player {
         pv = Math.max(pv - pvEnMoins, 0);
     }
 
+    public boolean estVivant(){
+        if (pv > 0)
+            return true;
+        else
+            return false;
+    }
+
     public int getPv() {
         return pv;
     }
@@ -146,5 +157,19 @@ public class Player {
         setY(nouvelleY);
         this.vitesseY = nouvelleVitesseY;
         this.auSol = auSolTemp;
+    }
+
+    public void reinitialiser(double x, double y) {
+        incrementerPv(5);
+        this.x.set(x);
+        this.y.set(y);
+    }
+
+    public void setObjetPossede(Objet objetPossede) {
+        this.objetPossede = objetPossede;
+    }
+
+    public Objet getObjetPossede() {
+        return objetPossede;
     }
 }
