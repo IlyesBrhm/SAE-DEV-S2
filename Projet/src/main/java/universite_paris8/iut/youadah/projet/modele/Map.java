@@ -100,6 +100,11 @@ public class Map {
         return terrain.length;
     }
 
+    public void setTuile(int x, int y, int id) {
+        getTerrain()[y][x] = id;  // Assure-toi que la map est bien [ligne][colonne]
+    }
+
+
     public int[][] getTerrain() {
 
         return terrain;

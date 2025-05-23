@@ -11,10 +11,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
-import universite_paris8.iut.youadah.projet.modele.Inventaire;
-import universite_paris8.iut.youadah.projet.modele.Map;
-import universite_paris8.iut.youadah.projet.modele.Objet;
-import universite_paris8.iut.youadah.projet.modele.Player;
+import universite_paris8.iut.youadah.projet.modele.*;
 import universite_paris8.iut.youadah.projet.vue.*;
 
 import java.net.URL;
@@ -187,6 +184,27 @@ public class GameController implements Initializable {
                 }
             }
         });
+
+        ath.setOnMouseClicked(event -> {
+            int x = (int) (event.getX() / 32);
+            int y = (int) (event.getY() / 32);
+
+            System.out.println("Clic détecté sur la tuile : (" + x + ", " + y + ")");
+
+            if (joueur.getObjetPossede().getNom() == "pioche"){
+                Casser casseur = new Casser(carte, joueur);
+
+                boolean casse = casseur.casserBloc(x, y);
+                if (casse) {
+                    carteVue.mettreAJourMap(carte.getTerrain(), tileMap);  // refresh visuel
+                }
+            }
+            else
+                System.out.println("Vous ne pouvez point casser !");
+
+        });
+
+
 
         playerLayer.setOnKeyReleased(event -> touchesAppuyees.remove(event.getCode()));
 

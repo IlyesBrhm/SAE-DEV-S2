@@ -34,6 +34,12 @@ public class MapVue {
         };
     }
 
+    public void mettreAJourMap(int[][] structure, TilePane tileMap) {
+        tileMap.getChildren().clear();  // Supprime les anciennes tuiles
+        afficherCarte(structure, tileMap);  // Réaffiche la carte avec la nouvelle structure
+    }
+
+
     private  Image charger(String chemin) {
         return new Image(MapVue.class.getResource(chemin).toExternalForm());
     }

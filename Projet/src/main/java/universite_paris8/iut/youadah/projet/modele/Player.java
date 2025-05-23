@@ -107,7 +107,7 @@ public class Player {
         this.dernierDegatFeu = t; }
 
     private boolean estSolide(int id) {
-        return id == 1 || id == 3;
+        return id == 1 || id == 3 || id == 2;
     }
 
     public void mettreAJour(Map map) {
@@ -171,6 +171,13 @@ public class Player {
 
     public Objet getObjetPossede() {
         return objetPossede;
+    }
+
+    public boolean possedeObjet(){
+        if(objetPossede != null)
+            return true;
+        else
+            return false;
     }
 
 }
