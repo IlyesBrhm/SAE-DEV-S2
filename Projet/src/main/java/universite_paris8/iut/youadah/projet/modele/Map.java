@@ -9,7 +9,7 @@ public class Map {
 
     }
 
-    // Donc ici c la creation du terrain , on initialise le terrain et on creer une boucle pour le remplir avec les différent type de bloc
+    // donc ici c la creation du terrain , on initialise le terrain et on creer une boucle pour le remplir avec les différent type de bloc
     public int[][] creerTerrain(int hauteur, int largeur) {
         terrain = new int[hauteur][largeur];
 

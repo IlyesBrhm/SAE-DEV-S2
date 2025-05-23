@@ -59,14 +59,14 @@ public class GameController implements Initializable {
         tileMap.setMinWidth(TAILLE_TUILE * NB_COLONNES);
         carteVue.afficherCarte(structure, tileMap);
 
-        // Inventaire
+        // inventaire
         inventaire = new Inventaire();
         inventaire.ajouterObjet(new Objet("pioche", 1)); // Ajoute un objet pour test
         inventaireVue = new InventaireVue(ath, inventaire);
         inventaireVue.afficherInventaire();
         inventaireVue.maj();
 
-        // Joueur
+        // joueur
         joueur = new Player(5 * TAILLE_TUILE, 19 * TAILLE_TUILE, inventaire);
         joueurVue = new PlayerVue(joueur, ath);
         coeurVue = new CoeurVue(joueur.getPv(), false, ath);
@@ -76,17 +76,17 @@ public class GameController implements Initializable {
         coeurVue.mettreAJourPv(joueur.getPv());
         coeurVueArmure.mettreAJourPv(joueur.getPvArmure());
 
-        // Ajout des éléments visuels
+        // ajout des éléments visuels
         playerLayer.getChildren().addAll(
                 coeurVueArmure.getBarreVie(),
                 joueurVue.getNode(),
                 coeurVue.getBarreVie()
         );
 
-        // Effets
+        // effets
         GestionEffetDegats.definirSuperposition(overlayRouge);
 
-        // Contrôles clavier
+        // contrôles clavier
         clavierController = new ClavierController(
                 touchesAppuyees,
                 joueur,
@@ -100,13 +100,13 @@ public class GameController implements Initializable {
         );
         clavierController.configurerControles();
 
-        // Affichage de l'objet équipé
+        // affichage de l'objet équipé
         Image image = new Image(getClass().getResource("/images/invp.png").toExternalForm());
         ImageView imageView = new ImageView(image);
         imageView.setFitHeight(64);
         imageView.setFitWidth(64);
 
-        // Gestion clavier
+        // gestion clavier
         playerLayer.setFocusTraversable(true);
         playerLayer.setOnKeyPressed(event -> {
             touchesAppuyees.add(event.getCode());
@@ -190,7 +190,7 @@ public class GameController implements Initializable {
 
         playerLayer.setOnKeyReleased(event -> touchesAppuyees.remove(event.getCode()));
 
-        // Boucle de jeu
+        // boucle de jeu
         new AnimationTimer() {
             @Override
             public void handle(long now) {

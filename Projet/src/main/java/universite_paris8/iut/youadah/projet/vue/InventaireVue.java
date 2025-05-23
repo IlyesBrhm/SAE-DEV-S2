@@ -37,7 +37,7 @@ public class InventaireVue {
     }
 
     public void maj() {
-        // Supprimer d'abord les anciennes images d'objets si nécessaire
+        // supprimer d'abord les anciennes images d'objets si nécessaire
         // pane.getChildren().removeIf(node -> node instanceof ImageView && node != imageView); // Optionnel
 
         for (int i = 0; i < inventaire.getInventaire().size(); i++) {
@@ -45,10 +45,10 @@ public class InventaireVue {
             ObjetVue objetVue = new ObjetVue(objet);
             ImageView iv = objetVue.getImageView();
 
-            iv.setFitWidth(32); // Optionnel
+            iv.setFitWidth(32); // optionnel
             iv.setFitHeight(32);
             iv.setLayoutX(((i) * 64) + 745);
-            iv.setLayoutY(15); // Si tes cases sont en haut du pane
+            iv.setLayoutY(15); // si tes cases sont en haut du pane
 
             pane.getChildren().add(iv);
         }
