@@ -1,18 +1,19 @@
 package universite_paris8.iut.youadah.projet.modele;
 
-// cette class va contenir un tableau 2D qui va etre notre map ou chque case contient un ID tuile
+import java.io.FileWriter;
+import java.io.IOException;
+
+// cette class va contenir un tableau 2D qui va être notre map où chaque case contient un ID tuile
 public class Map {
 
     private int[][] terrain;
 
-    public Map() {
+    public Map() {}
 
-    }
-
-    // Donc ici c la creation du terrain , on initialise le terrain et on creer une boucle pour le remplir avec les différent type de bloc
     public int[][] creerTerrain(int hauteur, int largeur) {
         terrain = new int[hauteur][largeur];
 
+        // Remplissage de base : ciel, herbe, terre
         for (int y = 0; y < hauteur; y++) {
             for (int x = 0; x < largeur; x++) {
                 if (y < 20) {
@@ -25,40 +26,101 @@ public class Map {
             }
         }
 
-
-//nuages 3
-        poserLigne(70, 107, 3, 4);
-        poserLigne(69, 108, 4, 4);
-        poserLigne(68, 109, 5, 4);
-        poserLigne(68, 108, 6, 4);
-        poserLigne(69, 107, 7, 4);
-        poserLigne(73, 104, 8, 4);
-
-//nuages 4
-        poserLigne(120, 130, 3, 4);
-        poserLigne(119, 131, 4, 4);
-        poserLigne(118, 130, 5, 4);
-        poserLigne(121, 128, 6, 4);
-        poserLigne(122, 127, 7, 4);
-
-//nuages 5
+        // Nuages 5
         poserLigne(10, 13, 1, 4);
         poserLigne(6, 17, 2, 4);
         poserLigne(5, 16, 3, 4);
         poserLigne(6, 14, 4, 4);
 
-//nuages 6
+        // Nuages 6
         poserLigne(40, 49, 1, 4);
         poserLigne(39, 50, 2, 4);
         poserLigne(38, 49, 3, 4);
         poserLigne(41, 47, 4, 4);
 
-        poserRectangle(10,18,3,2,3);
-        poserBloc(18,19,5);
-        poserBloc(19,19,5);
+
+// pente montante (2 blocs au lieu de 4)
+        for (int i = 0; i < 2; i++) {
+            poserBloc(14 - i, 19 - i, 1); // pente
+            for (int y = 20 - i; y < terrain.length; y++) {
+                poserBloc(14 - i, y, 2); // terre
+            }
+        }
+
+// sommet plat (plus petit)
+        poserLigne(13 , 13, 17, 1);
+        for (int x = 12; x <= 13; x++) {
+            for (int y = 18; y < terrain.length; y++) {
+                poserBloc(x, y, 2);
+            }
+        }
+
+// descente douce
+        for (int i = 1; i <= 2; i++) {
+            poserBloc(13 - i, 17 + i, 1);
+            for (int y = 18 + i; y < terrain.length; y++) {
+                poserBloc(13 - i, y, 2);
+            }
+        }
+
+
+        // Montagne stylée avec sommet plat
+        for (int i = 0; i < 4; i++) {
+            poserBloc(20 + i, 19 - i, 1); // pente
+            for (int y = 20 - i; y < terrain.length; y++) {
+                poserBloc(20 + i, y, 2); // terre
+            }
+        }
+
+        // sommet plat
+        poserLigne(24, 26, 15, 1);
+        for (int x = 24; x <= 26; x++) {
+            for (int y = 16; y < terrain.length; y++) {
+                poserBloc(x, y, 2);
+            }
+        }
+
+        // descente douce
+        for (int i = 1; i <= 4; i++) {
+            poserBloc(26 + i, 15 + i, 1);
+            for (int y = 16 + i; y < terrain.length; y++) {
+                poserBloc(26 + i, y, 2);
+            }
+        }
+
+
+
+        // Château en pierre (placé à x = 40 pour être visible)
+        int chateauX = 40;
+        int chateauLargeur = 15;
+        int chateauHauteur = 10;
+
+        // Tours
+        poserRectangle(chateauX, 10, 3, chateauHauteur, 3); // tour gauche
+        poserRectangle(chateauX + chateauLargeur - 3, 10, 3, chateauHauteur, 3); // tour droite
+
+        // Mur supérieur
+        poserRectangle(chateauX + 3, 10, chateauLargeur - 6, 3, 3);
+
+        // Porte
+        poserBloc(chateauX + chateauLargeur / 2, 20, 1); // herbe
+        poserBloc(chateauX + chateauLargeur / 2, 19, 0); // vide
+        poserBloc(chateauX + chateauLargeur / 2, 18, 0); // vide
+
+        // Drapeaux (feu)
+        poserBloc(chateauX + 1, 9, 5); // feu gauche
+        poserBloc(chateauX + chateauLargeur - 2, 9, 5); // feu droit
+
+        // Sol du château
+        for (int x = chateauX; x < chateauX + chateauLargeur; x++) {
+            for (int y = 21; y < terrain.length; y++) {
+                poserBloc(x, y, 2);
+            }
+        }
+
         return terrain;
     }
-    // juste ici on a creer des methodes pour nous faciliter a creer des objets et des formes sur la map
+
     public void poserBloc(int x, int y, int type) {
         if (terrain != null && y >= 0 && y < terrain.length && x >= 0 && x < terrain[0].length) {
             terrain[y][x] = type;
@@ -86,22 +148,18 @@ public class Map {
     }
 
     public int getTile(int y, int x) {
-
         return terrain[y][x];
     }
 
     public int getLargeur() {
-
         return terrain[0].length;
     }
 
     public int getHauteur() {
-
         return terrain.length;
     }
 
     public int[][] getTerrain() {
-
         return terrain;
     }
 }

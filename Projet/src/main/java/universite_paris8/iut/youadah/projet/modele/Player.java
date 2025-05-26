@@ -17,7 +17,7 @@ public class Player {
     private Inventaire inventaire;
     private Objet objetPossede;
 
-    private static final double SAUT = -3.5;
+    private static final double SAUT = -3;
     private static final double VITESSE = 0.7;
     private static final int TAILLE_TUILE = 32;
 
@@ -107,7 +107,7 @@ public class Player {
         this.dernierDegatFeu = t; }
 
     private boolean estSolide(int id) {
-        return id == 1 || id == 3;
+        return id == 1 || id == 3 || id == 2;
     }
 
     public void mettreAJour(Map map) {
