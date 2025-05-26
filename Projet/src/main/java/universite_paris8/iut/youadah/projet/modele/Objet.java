@@ -2,14 +2,14 @@ package universite_paris8.iut.youadah.projet.modele;
 
 import java.awt.*;
 
-public class Objet {
+public abstract class Objet {
 
     private String nom;
     private int rarete;
-    private boolean consomable = false;
+    private boolean consomable;
     private Image image;
 
-    public Objet(String nom, int rarete) {
+    public Objet(String nom, int rarete, boolean consomable) {
         this.nom = nom;
         this.rarete = rarete;
         this.consomable = consomable;
@@ -40,6 +40,8 @@ public class Objet {
     public void setRarete(int rarete) {
         this.rarete = rarete;
     }
+
+    public abstract void utiliser(int x, int y);
 
     @Override
     public String toString() {

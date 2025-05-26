@@ -17,10 +17,21 @@ public class Inventaire {
             inventaire.add(objet);
     }
 
+    public int trouverIndinceObjet(Objet objet){
+        for (int i = 0; i < inventaire.size(); i++) {
+            if (inventaire.get(i).equals(objet)){
+                return i;
+            }
+        }
+        return -1;
+    }
+
     public void retirerObjet(Objet objet){
-        for (int i = 0; i < inventaire.size(); i++){
-            if (inventaire.get(i).equals(objet))
+        for (int i = 0; i < inventaire.size(); i++) {
+            if (inventaire.get(i).equals(objet)){
+                System.out.println("oeoeoe");
                 inventaire.remove(objet);
+            }
         }
     }
 

@@ -10,8 +10,8 @@ import javafx.util.Duration;
 
 
 public class PlayerVue {
-    private final Image spriteDroite = new Image(getClass().getResource("/images/PersoRight.png").toExternalForm());
-    private final Image spriteGauche = new Image(getClass().getResource("/images/PersoLeft.png").toExternalForm());
+    private Image spriteDroite ;
+    private Image spriteGauche;
     private final ImageView imageJoueur;
     private Pane pane;
 
@@ -23,6 +23,12 @@ public class PlayerVue {
 
     private final Image spriteDegatDroite = new Image(getClass().getResource("/images/PersoRight-Degat.png").toExternalForm());
     private final Image spriteDegatGauche = new Image(getClass().getResource("/images/PersoLeft-Degat.png").toExternalForm());
+
+    private final Image spritePiocheDroite = new Image(getClass().getResource("/images/persoRightPioche.png").toExternalForm());
+    private final Image spritePiocheGauche = new Image(getClass().getResource("/images/PersoLeftPioche.png").toExternalForm());
+
+    private final Image spritePotionDroite = new Image(getClass().getResource("/images/PersoRightPotion.png").toExternalForm());
+    private final Image spritePotionGauche = new Image(getClass().getResource("/images/PersoLeftPotion.png").toExternalForm());
 
 
     public void afficherMort() {
@@ -55,6 +61,8 @@ public class PlayerVue {
             imageJoueur.setFitHeight(64);
             imageJoueur.translateXProperty().bind(joueur.xProperty().subtract(16).asObject());
             imageJoueur.translateYProperty().bind(joueur.yProperty().subtract(32).asObject());
+            spriteDroite = new Image(getClass().getResource("/images/PersoRight.png").toExternalForm());
+            spriteGauche = new Image(getClass().getResource("/images/PersoLeft.png").toExternalForm());
             pane = p;
         }
 
@@ -65,6 +73,30 @@ public class PlayerVue {
         if (!isBlesse) { // tu ajoutes un champ isBlesse aussi
             imageJoueur.setImage(versLaDroite ? spriteDroite : spriteGauche);
         }
+        if (joueur.getObjetPossede() != null){
+            if (joueur.getObjetPossede().getNom() == "pioche"){
+                imageJoueur.setImage(versLaDroite ? spritePiocheDroite : spritePiocheGauche);
+            }
+            if (joueur.getObjetPossede().getNom().contains("potion")){
+                imageJoueur.setImage(versLaDroite ? spritePotionDroite : spritePotionGauche);
+            }
+        }
+    }
+
+    public Image getSpriteDroite() {
+        return spriteDroite;
+    }
+
+    public Image getSpriteGauche() {
+        return spriteGauche;
+    }
+
+    public void setSpriteDroite(Image spriteDroite) {
+        this.spriteDroite = spriteDroite;
+    }
+
+    public void setSpriteGauche(Image spriteGauche) {
+        this.spriteGauche = spriteGauche;
     }
 
     public void animerClignotementDegats() {
@@ -77,6 +109,8 @@ public class PlayerVue {
         clignotement.setCycleCount(1);
         clignotement.play();
     }
+
+
 
     public void afficherJoueur() {
         pane.getChildren().add(imageJoueur);

@@ -21,7 +21,7 @@ public class InventaireVue {
     public InventaireVue(Pane p, Inventaire i) {
         pane = p;
         inventaire = i;
-        image = new Image(getClass().getResource("/images/inv.png").toExternalForm());
+        image = new Image(getClass().getResource("/images/inventory.png").toExternalForm());
         imageView = new ImageView(image);
     }
 
@@ -51,6 +51,10 @@ public class InventaireVue {
             iv.setLayoutY(15); // si tes cases sont en haut du pane
 
             pane.getChildren().add(iv);
+
+            if (inventaire.getInventaire().get(i) == null){
+
+            }
         }
     }
 

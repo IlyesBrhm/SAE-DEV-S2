@@ -13,12 +13,22 @@ public class CoeurVue {
     private final Image coeur2;
     private final Image coeur1;
     private final Image coeur0;
+
+    private final Image bouclier5;
+    private final Image bouclier4;
+    private final Image bouclier3;
+    private final Image bouclier2;
+    private final Image bouclier1;
+    private final Image bouclier0;
+
     private final ImageView coeurView;
     private int pv;
     private Pane pane;
+    private boolean estArmure;
 
     public CoeurVue(int pv, boolean estArmure,Pane p) {
         this.pv = pv;
+        this.estArmure = estArmure;
         this.barreVie = new HBox(5);
         this.coeur5 = new Image(getClass().getResource("/images/heart5.png").toExternalForm());
         this.coeur4 = new Image(getClass().getResource("/images/heart4.png").toExternalForm());
@@ -27,6 +37,14 @@ public class CoeurVue {
         this.coeur1 = new Image(getClass().getResource("/images/heart1.png").toExternalForm());
         this.coeur0 = new Image(getClass().getResource("/images/heart0.png").toExternalForm());
 
+        this.bouclier5 = new Image(getClass().getResource("/images/bouclier5.png").toExternalForm());
+        this.bouclier4 = new Image(getClass().getResource("/images/bouclier4.png").toExternalForm());
+        this.bouclier3 = new Image(getClass().getResource("/images/bouclier3.png").toExternalForm());
+        this.bouclier2 = new Image(getClass().getResource("/images/bouclier2.png").toExternalForm());
+        this.bouclier1 = new Image(getClass().getResource("/images/bouclier1.png").toExternalForm());
+        this.bouclier0 = new Image(getClass().getResource("/images/bouclier0.png").toExternalForm());
+
+
         this.coeurView = new ImageView();
         coeurView.setFitWidth(32);
         coeurView.setFitHeight(32);
@@ -34,20 +52,22 @@ public class CoeurVue {
 
         pane = p;
 
+
         mettreAJourPv(pv); // Initialisation
     }
 
     public void mettreAJourPv(int pv) {
         this.pv = pv;
         switch (pv) {
-            case 5 -> coeurView.setImage(coeur5);
-            case 4 -> coeurView.setImage(coeur4);
-            case 3 -> coeurView.setImage(coeur3);
-            case 2 -> coeurView.setImage(coeur2);
-            case 1 -> coeurView.setImage(coeur1);
-            case 0 -> coeurView.setImage(coeur0);
+            case 5 -> coeurView.setImage(estArmure ? bouclier5 : coeur5);
+            case 4 -> coeurView.setImage(estArmure ? bouclier4 : coeur4);
+            case 3 -> coeurView.setImage(estArmure ? bouclier3 : coeur3);
+            case 2 -> coeurView.setImage(estArmure ? bouclier2 : coeur2);
+            case 1 -> coeurView.setImage(estArmure ? bouclier1 : coeur1);
+            case 0 -> coeurView.setImage(estArmure ? bouclier0 : coeur0);
             default -> barreVie.getChildren().clear();
         }
+
         if (pv > 0 && !barreVie.getChildren().contains(coeurView)) {
             barreVie.getChildren().add(coeurView);
         }

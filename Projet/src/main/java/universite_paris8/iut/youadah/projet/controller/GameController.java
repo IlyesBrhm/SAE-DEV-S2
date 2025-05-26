@@ -56,12 +56,7 @@ public class GameController implements Initializable {
         tileMap.setMinWidth(TAILLE_TUILE * NB_COLONNES);
         carteVue.afficherCarte(structure, tileMap);
 
-        // inventaire
-        inventaire = new Inventaire();
-        inventaire.ajouterObjet(new Objet("pioche", 1)); // Ajoute un objet pour test
-        inventaireVue = new InventaireVue(ath, inventaire);
-        inventaireVue.afficherInventaire();
-        inventaireVue.maj();
+
 
         // joueur
         joueur = new Player(5 * TAILLE_TUILE, 19 * TAILLE_TUILE, inventaire);
@@ -72,6 +67,14 @@ public class GameController implements Initializable {
 
         coeurVue.mettreAJourPv(joueur.getPv());
         coeurVueArmure.mettreAJourPv(joueur.getPvArmure());
+
+        // inventaire
+        inventaire = new Inventaire();
+        inventaire.ajouterObjet(new Pioche("pioche", 1,carte, carteVue,joueur,tileMap)); // Ajoute un objet pour test
+        inventaire.ajouterObjet(new Potion("potionVie", 1, joueur, "vie"));
+        inventaireVue = new InventaireVue(ath, inventaire);
+        inventaireVue.afficherInventaire();
+        inventaireVue.maj();
 
         // ajout des éléments visuels
         playerLayer.getChildren().addAll(
@@ -98,7 +101,7 @@ public class GameController implements Initializable {
         clavierController.configurerControles();
 
         // affichage de l'objet équipé
-        Image image = new Image(getClass().getResource("/images/invp.png").toExternalForm());
+        Image image = new Image(getClass().getResource("/images/inventory selected.png").toExternalForm());
         ImageView imageView = new ImageView(image);
         imageView.setFitHeight(64);
         imageView.setFitWidth(64);
@@ -185,22 +188,25 @@ public class GameController implements Initializable {
             }
         });
 
+
         ath.setOnMouseClicked(event -> {
             int x = (int) (event.getX() / 32);
             int y = (int) (event.getY() / 32);
 
             System.out.println("Clic détecté sur la tuile : (" + x + ", " + y + ")");
 
-            if (joueur.getObjetPossede().getNom() == "pioche"){
-                Casser casseur = new Casser(carte, joueur);
-
-                boolean casse = casseur.casserBloc(x, y);
-                if (casse) {
-                    carteVue.mettreAJourMap(carte.getTerrain(), tileMap);  // refresh visuel
+            if (joueur.getObjetPossede().getNom() != null){
+                joueur.getObjetPossede().utiliser(x,y);
+                if (joueur.getObjetPossede().getConsomable()) {
+                    System.out.println("oui");
+                    inventaire.getInventaire().remove(joueur.getObjetPossede());
+                    
+                    inventaireVue.maj();
                 }
+                coeurVue.mettreAJourPv(joueur.getPv());
             }
             else
-                System.out.println("Vous ne pouvez point casser !");
+                System.out.println("non");
 
         });
 
