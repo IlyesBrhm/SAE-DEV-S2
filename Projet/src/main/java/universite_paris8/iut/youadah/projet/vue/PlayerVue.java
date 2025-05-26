@@ -83,6 +83,11 @@ public class PlayerVue {
         }
     }
 
+    public void remettrePersoDeBase(Player joueur){
+        versLaDroite = joueur.estsVersLaDroite();
+        imageJoueur.setImage(versLaDroite ? spriteDroite : spriteGauche);
+    }
+
     public Image getSpriteDroite() {
         return spriteDroite;
     }

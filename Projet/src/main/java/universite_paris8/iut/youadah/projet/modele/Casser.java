@@ -1,15 +1,19 @@
 package universite_paris8.iut.youadah.projet.modele;
 
+import universite_paris8.iut.youadah.projet.vue.MapVue;
+
 public class Casser {
     private Map map;
+    private MapVue mapVue;
     private Player joueur;
 
-    public Casser(Map m, Player p) {
+    public Casser(Map m, MapVue mapVue, Player p) {
         this.map = m;
+        this.mapVue = mapVue;
         joueur = p;
     }
 
-    public boolean casserBloc(int x, int y) {
+    public void casserBloc(int x, int y) {
         double joueurX = joueur.getX() / 32;  // conversion pixels → tuiles
         double joueurY = joueur.getY() / 32;
 
@@ -17,10 +21,11 @@ public class Casser {
         double distanceY = Math.abs(y - joueurY);
 
         if (distanceX <= 2 && distanceY <= 2) {
-            map.setTuile(x, y, 0);  // Remplacer par ID de tuile vide
-            return true;
+            map.getTerrain()[y][x] = 0; // ID 0 = vide
+            mapVue.mettreAJourTuile(x, y, 0);
         }
-
-        return false;  // trop loin
     }
 }
+
+
+

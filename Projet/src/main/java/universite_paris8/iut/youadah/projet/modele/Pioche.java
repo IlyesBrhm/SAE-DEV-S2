@@ -18,11 +18,8 @@ public class Pioche extends Objet{
     }
 
     public void utiliser(int x, int y){
-        Casser casseur = new Casser(carte, joueur);
+        Casser casseur = new Casser(carte, carteVue,joueur);
 
-        boolean casse = casseur.casserBloc(x, y);
-        if (casse) {
-            carteVue.mettreAJourMap(carte.getTerrain(), tileMap);
-        }
+        casseur.casserBloc(x, y);
     }
 }

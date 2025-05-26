@@ -51,10 +51,6 @@ public class InventaireVue {
             iv.setLayoutY(15); // si tes cases sont en haut du pane
 
             pane.getChildren().add(iv);
-
-            if (inventaire.getInventaire().get(i) == null){
-
-            }
         }
     }
 

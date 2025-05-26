@@ -198,10 +198,11 @@ public class GameController implements Initializable {
             if (joueur.getObjetPossede().getNom() != null){
                 joueur.getObjetPossede().utiliser(x,y);
                 if (joueur.getObjetPossede().getConsomable()) {
-                    System.out.println("oui");
                     inventaire.getInventaire().remove(joueur.getObjetPossede());
-                    
+                    ath.getChildren().clear();
+                    inventaireVue.afficherInventaire();
                     inventaireVue.maj();
+                    joueur.setObjetPossede(null);
                 }
                 coeurVue.mettreAJourPv(joueur.getPv());
             }
