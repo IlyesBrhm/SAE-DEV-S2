@@ -72,6 +72,7 @@ public class GameController implements Initializable {
         inventaire = new Inventaire();
         inventaire.ajouterObjet(new Pioche("pioche", 1,carte, carteVue,joueur,tileMap)); // Ajoute un objet pour test
         inventaire.ajouterObjet(new Potion("potionVie", 1, joueur, "vie"));
+        inventaire.ajouterObjet(new Bloc("Terre", 1, false, carte, carteVue, joueur, tileMap, 2));
         inventaireVue = new InventaireVue(ath, inventaire);
         inventaireVue.afficherInventaire();
         inventaireVue.maj();

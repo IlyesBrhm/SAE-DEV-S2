@@ -9,17 +9,16 @@ public class Pioche extends Objet{
     Player joueur;
     TilePane tileMap;
     
-    public Pioche(String nom, int rarete, Map c, MapVue cv, Player j, TilePane t) {
+    public Pioche(String nom, int rarete, Map carte, MapVue carteVue, Player joueur, TilePane tileMap) {
         super(nom, rarete, false);
-        carte = c;
-        carteVue = cv;
-        joueur = j;
-        tileMap = t;
+        this.carte = carte;
+        this.carteVue = carteVue;
+        this.joueur = joueur;
+        this.tileMap = tileMap;
     }
 
     public void utiliser(int x, int y){
         Casser casseur = new Casser(carte, carteVue,joueur);
-
         casseur.casserBloc(x, y);
     }
 }
