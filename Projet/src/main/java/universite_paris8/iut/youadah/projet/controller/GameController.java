@@ -1,5 +1,6 @@
 package universite_paris8.iut.youadah.projet.controller;
 
+
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -14,12 +15,15 @@ import javafx.scene.layout.TilePane;
 import universite_paris8.iut.youadah.projet.modele.*;
 import universite_paris8.iut.youadah.projet.vue.*;
 
+
 import java.net.URL;
 import java.util.HashSet;
 import java.util.ResourceBundle;
 import java.util.Set;
 
+
 public class GameController implements Initializable {
+
 
     @FXML private TilePane tileMap;
     @FXML private Pane playerLayer;
@@ -29,11 +33,14 @@ public class GameController implements Initializable {
     @FXML private Pane overlayRouge;
     @FXML private Pane ath;
 
+
     private static final int TAILLE_TUILE = 32;
     private static final int NB_COLONNES = 58;
 
+
     private final GaussianBlur effetFlou = new GaussianBlur(10);
     private final Set<KeyCode> touchesAppuyees = new HashSet<>();
+
 
     private Map carte;
     private MapVue carteVue;
@@ -44,7 +51,9 @@ public class GameController implements Initializable {
     private ClavierController clavierController;
     private Inventaire inventaire;
     private InventaireVue inventaireVue;
+    private ObjetAuSol objetAuSol;
     private boolean estMort = false;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -58,6 +67,9 @@ public class GameController implements Initializable {
 
 
 
+
+
+
         // joueur
         joueur = new Player(5 * TAILLE_TUILE, 19 * TAILLE_TUILE, inventaire);
         joueurVue = new PlayerVue(joueur, ath);
@@ -65,8 +77,10 @@ public class GameController implements Initializable {
         coeurVueArmure = new CoeurVue(joueur.getPvArmure(), true, ath);
         coeurVueArmure.getBarreVie().setLayoutY(40);
 
+
         coeurVue.mettreAJourPv(joueur.getPv());
         coeurVueArmure.mettreAJourPv(joueur.getPvArmure());
+
 
         // inventaire
         inventaire = new Inventaire();
@@ -77,6 +91,13 @@ public class GameController implements Initializable {
         inventaireVue.afficherInventaire();
         inventaireVue.maj();
 
+
+        //test objet au sol ramaser
+        Objet objet = new Pioche("pioche", 1,carte,carteVue,joueur,tileMap);
+        ObjetVue objetVue = new ObjetVue(objet);
+        objetAuSol = new ObjetAuSol(objetVue,5,19,playerLayer);
+
+
         // ajout des éléments visuels
         playerLayer.getChildren().addAll(
                 coeurVueArmure.getBarreVie(),
@@ -84,8 +105,10 @@ public class GameController implements Initializable {
                 coeurVue.getBarreVie()
         );
 
+
         // effets
         GestionEffetDegats.definirSuperposition(overlayRouge);
+
 
         // contrôles clavier
         clavierController = new ClavierController(
@@ -101,18 +124,43 @@ public class GameController implements Initializable {
         );
         clavierController.configurerControles();
 
+
         // affichage de l'objet équipé
         Image image = new Image(getClass().getResource("/images/inventory selected.png").toExternalForm());
         ImageView imageView = new ImageView(image);
         imageView.setFitHeight(64);
         imageView.setFitWidth(64);
 
+
         // gestion clavier
         playerLayer.setFocusTraversable(true);
         playerLayer.setOnKeyPressed(event -> {
             touchesAppuyees.add(event.getCode());
 
+
             switch (event.getCode()) {
+                case E -> {
+                    objetAuSol.ramasser(joueur, inventaire, playerLayer);
+                    inventaireVue.maj();
+                }
+
+
+                case A -> {
+                    Objet objetADeposer = joueur.getObjetPossede();
+                    if (objetADeposer != null) {
+                        objetAuSol.deposer(objetADeposer, joueur, playerLayer);
+                        inventaire.getInventaire().remove(objetADeposer);
+                        ath.getChildren().clear();
+                        inventaireVue.afficherInventaire();
+                        inventaireVue.maj();
+                        joueur.setObjetPossede(null);
+                        inventaireVue.maj();
+                    }
+                }
+
+
+
+
                 case K -> {
                     joueur.decrementerPv(1);
                     coeurVue.mettreAJourPv(joueur.getPv());
@@ -125,6 +173,7 @@ public class GameController implements Initializable {
                     joueur.setObjetPossede(inventaire.getInventaire().get(0));
                     System.out.println("objet posséder " + inventaire.getInventaire().get(0).getNom());
 
+
                     imageView.setFitHeight(64);
                     imageView.setFitWidth(64);
                     imageView.setX((0 * 64) + 730);
@@ -132,9 +181,11 @@ public class GameController implements Initializable {
                     ath.getChildren().add(imageView);
                 }
 
+
                 case F2 -> {
                     joueur.setObjetPossede(inventaire.getInventaire().get(1));
                     System.out.println("objet posséder " + inventaire.getInventaire().get(1).getNom());
+
 
                     imageView.setFitHeight(64);
                     imageView.setFitWidth(64);
@@ -143,9 +194,11 @@ public class GameController implements Initializable {
                     ath.getChildren().add(imageView);
                 }
 
+
                 case F3 -> {
                     joueur.setObjetPossede(inventaire.getInventaire().get(2));
                     System.out.println("objet posséder " + inventaire.getInventaire().get(2).getNom());
+
 
                     imageView.setFitHeight(64);
                     imageView.setFitWidth(64);
@@ -154,9 +207,11 @@ public class GameController implements Initializable {
                     ath.getChildren().add(imageView);
                 }
 
+
                 case F4 -> {
                     joueur.setObjetPossede(inventaire.getInventaire().get(3));
                     System.out.println("objet posséder " + inventaire.getInventaire().get(3).getNom());
+
 
                     imageView.setFitHeight(64);
                     imageView.setFitWidth(64);
@@ -165,9 +220,11 @@ public class GameController implements Initializable {
                     ath.getChildren().add(imageView);
                 }
 
+
                 case F5 -> {
                     joueur.setObjetPossede(inventaire.getInventaire().get(4));
                     System.out.println("objet posséder " + inventaire.getInventaire().get(4).getNom());
+
 
                     imageView.setFitHeight(64);
                     imageView.setFitWidth(64);
@@ -176,9 +233,11 @@ public class GameController implements Initializable {
                     ath.getChildren().add(imageView);
                 }
 
+
                 case F6 -> {
                     joueur.setObjetPossede(inventaire.getInventaire().get(5));
                     System.out.println("objet posséder " + inventaire.getInventaire().get(5).getNom());
+
 
                     imageView.setFitHeight(64);
                     imageView.setFitWidth(64);
@@ -190,11 +249,15 @@ public class GameController implements Initializable {
         });
 
 
+
+
         ath.setOnMouseClicked(event -> {
             int x = (int) (event.getX() / 32);
             int y = (int) (event.getY() / 32);
 
+
             System.out.println("Clic détecté sur la tuile : (" + x + ", " + y + ")");
+
 
             if (joueur.getObjetPossede().getNom() != null){
                 joueur.getObjetPossede().utiliser(x,y);
@@ -210,11 +273,16 @@ public class GameController implements Initializable {
             else
                 System.out.println("non");
 
+
         });
 
 
 
+
+
+
         playerLayer.setOnKeyReleased(event -> touchesAppuyees.remove(event.getCode()));
+
 
         // boucle de jeu
         new AnimationTimer() {
@@ -225,6 +293,7 @@ public class GameController implements Initializable {
         }.start();
     }
 
+
     private void mourir() {
         if (estMort) return;
         estMort = true;
@@ -233,9 +302,11 @@ public class GameController implements Initializable {
         boutonReapparaitre.setVisible(true);
         joueurVue.getNode().setVisible(false);
 
+
         tileMap.setEffect(effetFlou);
         playerLayer.setEffect(effetFlou);
     }
+
 
     @FXML
     private void reapparaitre() {
@@ -243,9 +314,14 @@ public class GameController implements Initializable {
         joueur = new Player(5 * TAILLE_TUILE, 19 * TAILLE_TUILE, inventaire);
         joueurVue = new PlayerVue(joueur, ath);
 
+
         coeurVue = new CoeurVue(joueur.getPv(), false, ath);
         coeurVueArmure = new CoeurVue(joueur.getPvArmure(), true, ath);
         coeurVueArmure.getBarreVie().setLayoutY(40);
+        ObjetAuSol piocheAuSol = new ObjetAuSol(new ObjetVue(new Pioche("pioche", 1, carte, carteVue, joueur, tileMap)), 5, 19, playerLayer);
+
+
+
 
         playerLayer.getChildren().setAll(
                 coeurVueArmure.getBarreVie(),
@@ -253,11 +329,21 @@ public class GameController implements Initializable {
                 coeurVue.getBarreVie()
         );
 
+
+        inventaire.getInventaire().clear();
+        ath.getChildren().clear();
+        inventaireVue.afficherInventaire();
+        inventaireVue.maj();
+
+
+
+
         boutonQuitter.setVisible(false);
         boutonReapparaitre.setVisible(false);
         messageMort.setVisible(false);
         tileMap.setEffect(null);
         playerLayer.setEffect(null);
+
 
         clavierController = new ClavierController(
                 touchesAppuyees,
@@ -271,7 +357,10 @@ public class GameController implements Initializable {
                 carte
         );
         clavierController.configurerControles();
+
+
     }
+
 
     @FXML
     private void quitterJeu() {
