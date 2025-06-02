@@ -69,4 +69,8 @@ public class TableCraftVue {
 
         pane.getChildren().add(layout);
     }
+    public Pane getPane() {
+        return this.pane; // ou le nom réel du champ si c’est différent
+    }
+
 }

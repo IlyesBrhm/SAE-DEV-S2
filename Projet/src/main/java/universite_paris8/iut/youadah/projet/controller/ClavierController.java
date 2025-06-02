@@ -1,11 +1,11 @@
 package universite_paris8.iut.youadah.projet.controller;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
-import universite_paris8.iut.youadah.projet.modele.GameMap;
-import universite_paris8.iut.youadah.projet.modele.Player;
-import universite_paris8.iut.youadah.projet.vue.CoeurVue;
-import universite_paris8.iut.youadah.projet.vue.PlayerVue;
+import universite_paris8.iut.youadah.projet.modele.*;
+import universite_paris8.iut.youadah.projet.vue.*;
 
 import java.util.Set;
 
@@ -20,6 +20,13 @@ public class ClavierController {
     private final Runnable callbackMort;
     private final Runnable afficherDegat;
     private final GameMap carte;
+    private final Inventaire inventaire;
+    private final InventaireVue inventaireVue;
+    private final Pane ath;
+    private final TableCraftVue tableCraftVue;
+
+    private boolean craftVisible = false;
+    private final ImageView imageSelect;
 
     public ClavierController(Set<KeyCode> touchesAppuyees,
                              Player joueur,
@@ -29,7 +36,11 @@ public class ClavierController {
                              Pane playerLayer,
                              Runnable callbackMort,
                              Runnable afficherDegat,
-                             GameMap carte) {
+                             GameMap carte,
+                             Inventaire inventaire,
+                             InventaireVue inventaireVue,
+                             Pane ath,
+                             TableCraftVue tableCraftVue) {
         this.touchesAppuyees = touchesAppuyees;
         this.joueur = joueur;
         this.joueurVue = joueurVue;
@@ -39,6 +50,15 @@ public class ClavierController {
         this.callbackMort = callbackMort;
         this.afficherDegat = afficherDegat;
         this.carte = carte;
+        this.inventaire = inventaire;
+        this.inventaireVue = inventaireVue;
+        this.ath = ath;
+        this.tableCraftVue = tableCraftVue;
+
+        Image image = new Image(getClass().getResource("/images/inventory selected.png").toExternalForm());
+        imageSelect = new ImageView(image);
+        imageSelect.setFitHeight(64);
+        imageSelect.setFitWidth(64);
     }
 
     public void gererTouches() {
@@ -83,7 +103,52 @@ public class ClavierController {
     public void configurerControles() {
         playerLayer.setFocusTraversable(true);
 
-        playerLayer.setOnKeyPressed(event -> touchesAppuyees.add(event.getCode()));
+        playerLayer.setOnKeyPressed(event -> {
+            touchesAppuyees.add(event.getCode());
+            switch (event.getCode()) {
+                case K -> {
+                    joueur.decrementerPv(1);
+                    coeurVue.mettreAJourPv(joueur.getPv());
+                }
+                case G -> {
+                    joueur.incrementerPv(1);
+                    coeurVue.mettreAJourPv(joueur.getPv());
+                }
+                case C -> {
+                    craftVisible = !craftVisible;
+                    tableCraftVue.getPane().setVisible(craftVisible);
+                    if (craftVisible) tableCraftVue.afficher();
+                }
+                case ESCAPE -> tableCraftVue.getPane().setVisible(false);
+                case F1, F2, F3, F4, F5, F6 -> {
+                    int index = event.getCode().ordinal() - KeyCode.F1.ordinal();
+                    if (index < inventaire.getInventaire().size()) {
+                        joueur.setObjetPossede(inventaire.getInventaire().get(index));
+                        imageSelect.setX((index * 64) + 730);
+                        ath.getChildren().remove(imageSelect);
+                        ath.getChildren().add(imageSelect);
+                    }
+                }
+            }
+        });
+
         playerLayer.setOnKeyReleased(event -> touchesAppuyees.remove(event.getCode()));
+
+        ath.setOnMouseClicked(event -> {
+            int x = (int) (event.getX() / 32);
+            int y = (int) (event.getY() / 32);
+            Objet objet = joueur.getObjetPossede();
+            if (objet != null) {
+                objet.utiliser(x, y);
+                if (objet.getConsomable()) {
+                    inventaire.getInventaire().remove(objet);
+                    joueur.setObjetPossede(null);
+                    ath.getChildren().clear();
+                    inventaireVue.afficherInventaire();
+                    inventaireVue.maj();
+                }
+                coeurVue.mettreAJourPv(joueur.getPv());
+            }
+        });
     }
 }

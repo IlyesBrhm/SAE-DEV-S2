@@ -10,7 +10,7 @@
            xmlns:fx="http://javafx.com/fxml"
            fx:controller="universite_paris8.iut.youadah.projet.controller.GameController">
 
-    <TilePane fx:id="tileMap" />
+    <TilePane fx:id="tileMap" prefHeight="1080" prefWidth="1920" />
     <Pane fx:id="playerLayer" pickOnBounds="false" />
     <Pane fx:id="ath" />
 

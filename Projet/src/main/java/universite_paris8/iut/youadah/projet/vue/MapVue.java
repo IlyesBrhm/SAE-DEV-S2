@@ -23,17 +23,15 @@ public class MapVue {
     public void afficherCarte(int[][] structure, TilePane tileMap) {
         tileMap.getChildren().clear();
         tuiles.clear();
-
         for (int y = 0; y < structure.length; y++) {
             for (int x = 0; x < structure[y].length; x++) {
                 ImageView tuile = new ImageView(chargerImageTuile(structure[y][x]));
-                tuile.setFitWidth(TAILLE_TUILE);
-                tuile.setFitHeight(TAILLE_TUILE);
                 tuiles.add(tuile);
                 tileMap.getChildren().add(tuile);
             }
         }
     }
+
 
     public void mettreAJourTuile(int x, int y, int nouveauID) {
         int index = y * NB_COLONNES + x;
@@ -42,7 +40,6 @@ public class MapVue {
             tuile.setImage(chargerImageTuile(nouveauID));
         }
     }
-
 
     public  Image chargerImageTuile(int id) {
         return switch (id) {
@@ -58,8 +55,8 @@ public class MapVue {
     }
 
     public void mettreAJourMap(int[][] structure, TilePane tileMap) {
-        tileMap.getChildren().clear();  // Supprime les anciennes tuiles
-        afficherCarte(structure, tileMap);  // Réaffiche la carte avec la nouvelle structure
+        tileMap.getChildren().clear();
+        afficherCarte(structure, tileMap);
     }
 
 
