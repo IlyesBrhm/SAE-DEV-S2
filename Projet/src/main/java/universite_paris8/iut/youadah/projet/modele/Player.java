@@ -116,22 +116,37 @@ public class Player {
         double nouvelleVitesseY = this.vitesseY + GRAVITE;
         nouvelleY += nouvelleVitesseY;
 
-        int tuileY = (int)((nouvelleY + TAILLE_TUILE) / TAILLE_TUILE);
         int tuileXG = (int)(getX() / TAILLE_TUILE);
         int tuileXD = (int)((getX() + TAILLE_TUILE - 1) / TAILLE_TUILE);
 
-        boolean solG = estSolide(map.getTile(tuileY, tuileXG));
-        boolean solD = estSolide(map.getTile(tuileY, tuileXD));
+        boolean auSolTemp = false;
 
-        boolean auSolTemp;
-        if ((tuileY < map.getHauteur()) && (solG || solD)) {
-            nouvelleY = (tuileY - 1) * TAILLE_TUILE;
-            nouvelleVitesseY = 0;
-            auSolTemp = true;
-        } else {
-            auSolTemp = false;
+        if (nouvelleVitesseY > 0) {
+            // Collision vers le bas (chute)
+            int tuileYBas = (int)((nouvelleY + TAILLE_TUILE) / TAILLE_TUILE);
+            if (tuileYBas < map.getHauteur()) {
+                boolean solG = estSolide(map.getTile(tuileYBas, tuileXG));
+                boolean solD = estSolide(map.getTile(tuileYBas, tuileXD));
+                if (solG || solD) {
+                    nouvelleY = (tuileYBas - 1) * TAILLE_TUILE;
+                    nouvelleVitesseY = 0;
+                    auSolTemp = true;
+                }
+            }
+        } else if (nouvelleVitesseY < 0) {
+            // Collision vers le haut (saut sous un bloc)
+            int tuileYHaut = (int)(nouvelleY / TAILLE_TUILE);
+            if (tuileYHaut >= 0) {
+                boolean hautG = estSolide(map.getTile(tuileYHaut, tuileXG));
+                boolean hautD = estSolide(map.getTile(tuileYHaut, tuileXD));
+                if (hautG || hautD) {
+                    nouvelleY = (tuileYHaut + 1) * TAILLE_TUILE;
+                    nouvelleVitesseY = 0;
+                }
+            }
         }
 
+        // Limites verticales
         double hauteurMax = map.getHauteur() * TAILLE_TUILE - TAILLE_TUILE;
         if (nouvelleY > hauteurMax) {
             nouvelleY = hauteurMax;
@@ -148,6 +163,7 @@ public class Player {
         this.vitesseY = nouvelleVitesseY;
         this.auSol = auSolTemp;
     }
+
 
     public int getPvArmure() {
         return pvArmure;
