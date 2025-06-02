@@ -57,7 +57,7 @@ public class Player {
         }
     }
 
-    public void deplacerGauche(Map carte) {
+    public void deplacerGauche(GameMap carte) {
         double futurX = getX() - VITESSE;
         int tuileX = (int)(futurX / TAILLE_TUILE);
         int tuileY = (int)((getY() + TAILLE_TUILE - 1) / TAILLE_TUILE);
@@ -68,7 +68,7 @@ public class Player {
         }
     }
 
-    public void deplacerDroite(Map carte) {
+    public void deplacerDroite(GameMap carte) {
         double futurX = getX() + VITESSE;
         int tuileX = (int)((futurX + TAILLE_TUILE - 1) / TAILLE_TUILE);
         int tuileY = (int)((getY() + TAILLE_TUILE - 1) / TAILLE_TUILE);
@@ -110,7 +110,7 @@ public class Player {
         return id == 1 || id == 3 || id == 2;
     }
 
-    public void mettreAJour(Map map) {
+    public void mettreAJour(GameMap map) {
         final double GRAVITE = 0.08;
         double nouvelleY = getY();
         double nouvelleVitesseY = this.vitesseY + GRAVITE;

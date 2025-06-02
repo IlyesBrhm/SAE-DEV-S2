@@ -2,7 +2,7 @@ package universite_paris8.iut.youadah.projet.controller;
 
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
-import universite_paris8.iut.youadah.projet.modele.Map;
+import universite_paris8.iut.youadah.projet.modele.GameMap;
 import universite_paris8.iut.youadah.projet.modele.Player;
 import universite_paris8.iut.youadah.projet.vue.CoeurVue;
 import universite_paris8.iut.youadah.projet.vue.PlayerVue;
@@ -19,7 +19,7 @@ public class ClavierController {
     private final Pane playerLayer;
     private final Runnable callbackMort;
     private final Runnable afficherDegat;
-    private final Map carte;
+    private final GameMap carte;
 
     public ClavierController(Set<KeyCode> touchesAppuyees,
                              Player joueur,
@@ -29,7 +29,7 @@ public class ClavierController {
                              Pane playerLayer,
                              Runnable callbackMort,
                              Runnable afficherDegat,
-                             Map carte) {
+                             GameMap carte) {
         this.touchesAppuyees = touchesAppuyees;
         this.joueur = joueur;
         this.joueurVue = joueurVue;
