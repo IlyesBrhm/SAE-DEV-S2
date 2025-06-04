@@ -3,11 +3,11 @@ package universite_paris8.iut.youadah.projet.modele;
 import universite_paris8.iut.youadah.projet.vue.MapVue;
 
 public class Casser {
-    private Map map;
+    private GameMap map;
     private MapVue mapVue;
     private Player joueur;
 
-    public Casser(Map m, MapVue mapVue, Player p) {
+    public Casser(GameMap m, MapVue mapVue, Player p) {
         this.map = m;
         this.mapVue = mapVue;
         joueur = p;
