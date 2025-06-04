@@ -41,6 +41,7 @@ public class GameController implements Initializable {
     private Player joueur;
     private PlayerVue joueurVue;
     private CoeurVue coeurVue;
+    private BouclierVue bouclierVue;
     private CoeurVue coeurVueArmure;
     private ClavierController clavierController;
     private Inventaire inventaire;
@@ -65,24 +66,25 @@ public class GameController implements Initializable {
 
         joueur = new Player(5 * TAILLE_TUILE, 19 * TAILLE_TUILE, inventaire);
         joueurVue = new PlayerVue(joueur, ath);
-        coeurVue = new CoeurVue(joueur.getPv(), false, ath);
-        coeurVueArmure = new CoeurVue(joueur.getPvArmure(), true, ath);
-        coeurVueArmure.getBarreVie().setLayoutY(40);
+
+        coeurVue = new CoeurVue(joueur.getPv(), ath);
+        bouclierVue = new BouclierVue(joueur.getPvArmure(), ath);
+        bouclierVue.getBarreBouclier().setLayoutY(40);
 
         coeurVue.mettreAJourPv(joueur.getPv());
-        coeurVueArmure.mettreAJourPv(joueur.getPvArmure());
+        bouclierVue.mettreAJourPv(joueur.getPvArmure());
 
         inventaire.ajouterObjet(new Pioche("pioche", 1, carte, carteVue, joueur, tileMap));
         inventaire.ajouterObjet(new Potion("potionVie", 1, joueur, "vie"));
         inventaire.ajouterObjet(new Bloc("Terre", 1, false, carte, carteVue, joueur, tileMap, 2));
-        inventaire.ajouterObjet(new Bloc("Terre", 1, false, carte, carteVue, joueur, tileMap, 2));
+        inventaire.ajouterObjet(new Bloc("Pierre", 1, false, carte, carteVue, joueur, tileMap, 3));
 
         inventaireVue = new InventaireVue(ath, inventaire);
         inventaireVue.afficherInventaire();
         inventaireVue.maj();
 
         playerLayer.getChildren().addAll(
-                coeurVueArmure.getBarreVie(),
+                bouclierVue.getBarreBouclier(),
                 joueurVue.getNode(),
                 coeurVue.getBarreVie()
         );
@@ -94,7 +96,7 @@ public class GameController implements Initializable {
                 joueur,
                 joueurVue,
                 coeurVue,
-                coeurVueArmure,
+                bouclierVue,
                 playerLayer,
                 this::mourir,
                 GestionEffetDegats::declencherClignotementRouge,
@@ -123,7 +125,7 @@ public class GameController implements Initializable {
 
         tableCraft.ajouterRecette(new Recette(
                 List.of(b1, b2),
-                new Potion("potionVie", 1, joueur, "vie")
+                new Potion("potionVie", 5, joueur, "vie")
         ));
         tableCraftVue = new TableCraftVue(paneCraft, tableCraft, inventaire, inventaireVue, ath);
 
