@@ -51,10 +51,7 @@ public class MapVue {
             case 2 -> charger("/images/Terre.png");  // terre
             case 3 -> charger("/images/Pierre.png"); // pierre
             case 4 -> charger("/images/Nuage.png"); // décor
-            case 5 -> charger("/images/Feu.png"); // feu
-            case 6 -> charger("/images/Tuto-Principale.png"); // tuto 1
-            case 7 -> charger("/images/Tuto-Secondaire.png"); // tuto 2
-            case 8 -> charger("/images/Tuto-Terciaire.png"); // tuto 3
+            case 5 -> charger("/images/Feu.png"); //Feu
             default -> null;
 
         };
