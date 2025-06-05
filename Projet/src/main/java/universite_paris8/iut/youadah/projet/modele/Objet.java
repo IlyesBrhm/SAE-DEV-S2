@@ -7,7 +7,6 @@ public abstract class Objet {
     private String nom;
     private int rarete;
     private boolean consomable;
-    private Image image;
 
     public Objet(String nom, int rarete, boolean consomable) {
         this.nom = nom;
