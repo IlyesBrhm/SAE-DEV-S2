@@ -10,7 +10,7 @@ public class Casser {
     public Casser(Map map, MapVue mapVue, Player p) {
         this.map = map;
         this.mapVue = mapVue;
-        joueur = p;
+         joueur = p;
     }
 
     public void casserBloc(int x, int y) {
