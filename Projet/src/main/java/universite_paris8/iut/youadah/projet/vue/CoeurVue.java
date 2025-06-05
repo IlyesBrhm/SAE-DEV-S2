@@ -23,10 +23,9 @@ public class CoeurVue {
 
     private final ImageView coeurView;
     private int pv;
-    private Pane pane;
     private boolean estArmure;
 
-    public CoeurVue(int pv, boolean estArmure,Pane p) {
+    public CoeurVue(int pv, boolean estArmure) {
         this.pv = pv;
         this.estArmure = estArmure;
         this.barreVie = new HBox(5);
@@ -50,9 +49,6 @@ public class CoeurVue {
         coeurView.setFitHeight(32);
         barreVie.getChildren().add(coeurView);
 
-        pane = p;
-
-
         mettreAJourPv(pv); // Initialisation
     }
 
@@ -75,9 +71,5 @@ public class CoeurVue {
 
     public HBox getBarreVie() {
         return barreVie;
-    }
-
-    public void afficherCoeur() {
-        pane.getChildren().add(coeurView);
     }
 }

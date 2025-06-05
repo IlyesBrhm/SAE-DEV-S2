@@ -7,7 +7,6 @@ public abstract class Objet {
     private String nom;
     private int rarete;
     private boolean consomable;
-    private Image image;
 
     public Objet(String nom, int rarete, boolean consomable) {
         this.nom = nom;
@@ -27,18 +26,6 @@ public abstract class Objet {
 
     public boolean getConsomable() {
         return consomable;
-    }
-
-    public void setConsomable(boolean consomable) {
-        this.consomable = consomable;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-
-    public void setRarete(int rarete) {
-        this.rarete = rarete;
     }
 
     public abstract void utiliser(int x, int y);

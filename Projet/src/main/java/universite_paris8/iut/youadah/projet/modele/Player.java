@@ -11,28 +11,22 @@ public class Player {
     private boolean auSol;
     private boolean versLaDroite;
     private int pv;
-    private Coeur coeur;
     private int pvArmure;
     private long dernierDegatFeu = 1;
-    private Inventaire inventaire;
     private Objet objetPossede;
 
     private static final double SAUT = -3.5;
     private static final double VITESSE = 0.7;
     private static final int TAILLE_TUILE = 32;
 
-    public Player(double startX, double startY, Inventaire inventaire) {
+    public Player(double startX, double startY) {
         this.x.set(startX);
         this.y.set(startY);
         this.vitesseY = 0;
         this.versLaDroite = true;
         this.pv = 5;
-        this.coeur = new Coeur(5);
         this.pvArmure = 5;
-
-        this.inventaire = inventaire;
         objetPossede = null;
-
     }
 
     public double getX() { return x.get(); }
@@ -43,12 +37,8 @@ public class Player {
     public void setY(double y) { this.y.set(y); }
     public DoubleProperty yProperty() { return y; }
 
-    public double getVitesseY() { return vitesseY; }
-    public void setVitesseY(double vitesseY) { this.vitesseY = vitesseY; }
 
     public boolean estsVersLaDroite() { return versLaDroite; }
-
-    public void setAuSol(boolean auSol) { this.auSol = auSol; }
 
     public void sauter() {
         if (auSol) {
@@ -87,18 +77,17 @@ public class Player {
         pv = Math.max(pv - pvEnMoins, 0);
     }
 
-    public boolean estVivant(){
-        if (pv > 0)
-            return true;
-        else
-            return false;
-    }
+
 
     public int getPv() {
         return pv; }
 
     public boolean estMort() {
-        return coeur.estMort(); }
+        if (pv > 0)
+            return false;
+        else
+            return true;
+    }
 
     public long getDernierDegatFeu() {
         return dernierDegatFeu; }
@@ -157,14 +146,6 @@ public class Player {
         this.pvArmure = Math.max(0, this.pvArmure - valeur);
     }
 
-
-
-    public void reinitialiser(double x, double y) {
-        incrementerPv(5);
-        this.x.set(x);
-        this.y.set(y);
-    }
-
     public void setObjetPossede(Objet objetPossede) {
         this.objetPossede = objetPossede;
     }
@@ -172,12 +153,4 @@ public class Player {
     public Objet getObjetPossede() {
         return objetPossede;
     }
-
-    public boolean possedeObjet(){
-        if(objetPossede != null)
-            return true;
-        else
-            return false;
-    }
-
 }

@@ -16,13 +16,11 @@ public class InventaireVue {
     private Pane pane;
     private Inventaire inventaire;
     private final Image image;
-    private final ImageView imageView;
 
     public InventaireVue(Pane p, Inventaire i) {
         pane = p;
         inventaire = i;
         image = new Image(getClass().getResource("/images/inventory.png").toExternalForm());
-        imageView = new ImageView(image);
     }
 
     public void afficherInventaire() {
@@ -37,8 +35,6 @@ public class InventaireVue {
     }
 
     public void maj() {
-        // supprimer d'abord les anciennes images d'objets si nécessaire
-        // pane.getChildren().removeIf(node -> node instanceof ImageView && node != imageView); // Optionnel
 
         for (int i = 0; i < inventaire.getInventaire().size(); i++) {
             Objet objet = inventaire.getInventaire().get(i);
@@ -53,7 +49,4 @@ public class InventaireVue {
             pane.getChildren().add(iv);
         }
     }
-
-
-
 }

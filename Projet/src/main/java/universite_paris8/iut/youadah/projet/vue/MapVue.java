@@ -10,17 +10,16 @@ import java.util.List;
 
 public class MapVue {
     private  final int TAILLE_TUILE = 32;
-    @FXML
-    private TilePane tileMap;
     private List<ImageView> tuiles = new ArrayList<>();
     private static final int NB_COLONNES = 58;
+    private int[][] structure;
 
 
-    public MapVue() {
-
+    public MapVue(int[][] structure) {
+        this.structure = structure;
     }
 
-    public void afficherCarte(int[][] structure, TilePane tileMap) {
+    public void afficherCarte( TilePane tileMap) {
         tileMap.getChildren().clear();
         tuiles.clear();
 
@@ -43,7 +42,6 @@ public class MapVue {
         }
     }
 
-
     public  Image chargerImageTuile(int id) {
         return switch (id) {
             case 0 -> charger("/images/Vide.png");   // ciel
@@ -57,11 +55,18 @@ public class MapVue {
         };
     }
 
-    public void mettreAJourMap(int[][] structure, TilePane tileMap) {
-        tileMap.getChildren().clear();  // Supprime les anciennes tuiles
-        afficherCarte(structure, tileMap);  // Réaffiche la carte avec la nouvelle structure
+    public String getBloc(int x, int y) {
+            int id = structure[y][x];
+            return switch (id) {
+                case 0 -> "Vide";
+                case 1 -> "Herbe";
+                case 2 -> "Terre";
+                case 3 -> "Pierre";
+                case 4 -> "Nuage";
+                case 5 -> "Feu";
+                default -> "Inconnu";
+            };
     }
-
 
     private  Image charger(String chemin) {
         return new Image(MapVue.class.getResource(chemin).toExternalForm());

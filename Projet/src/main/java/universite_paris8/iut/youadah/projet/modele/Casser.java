@@ -7,8 +7,8 @@ public class Casser {
     private MapVue mapVue;
     private Player joueur;
 
-    public Casser(Map m, MapVue mapVue, Player p) {
-        this.map = m;
+    public Casser(Map map, MapVue mapVue, Player p) {
+        this.map = map;
         this.mapVue = mapVue;
         joueur = p;
     }
@@ -20,10 +20,12 @@ public class Casser {
         double distanceX = Math.abs(x - joueurX);
         double distanceY = Math.abs(y - joueurY);
 
-        if (distanceX <= 2 && distanceY <= 2) {
-            map.getTerrain()[y][x] = 0; // ID 0 = vide
-            mapVue.mettreAJourTuile(x, y, 0);
-        }
+
+            if (distanceX <= 2 && distanceY <= 2) {
+                map.getTerrain()[y][x] = 0; // ID 0 = vide
+                mapVue.mettreAJourTuile(x, y, 0);
+            }
+
     }
 }
 

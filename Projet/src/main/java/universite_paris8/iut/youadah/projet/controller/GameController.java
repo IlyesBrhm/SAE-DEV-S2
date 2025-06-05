@@ -60,42 +60,37 @@ public class GameController implements Initializable {
         // Carte
         carte = new Map();
         int[][] structure = carte.creerTerrain(32, NB_COLONNES);
-        carteVue = new MapVue();
+        carteVue = new MapVue(structure);
         tileMap.setMaxWidth(TAILLE_TUILE * NB_COLONNES);
         tileMap.setMinWidth(TAILLE_TUILE * NB_COLONNES);
-        carteVue.afficherCarte(structure, tileMap);
-
-
-
-
+        carteVue.afficherCarte( tileMap);
 
 
         // joueur
-        joueur = new Player(5 * TAILLE_TUILE, 19 * TAILLE_TUILE, inventaire);
-        joueurVue = new PlayerVue(joueur, ath);
-        coeurVue = new CoeurVue(joueur.getPv(), false, ath);
-        coeurVueArmure = new CoeurVue(joueur.getPvArmure(), true, ath);
+        joueur = new Player(5 * TAILLE_TUILE, 19 * TAILLE_TUILE);
+        joueurVue = new PlayerVue(joueur);
+        coeurVue = new CoeurVue(joueur.getPv(), false);
+        coeurVueArmure = new CoeurVue(joueur.getPvArmure(), true);
         coeurVueArmure.getBarreVie().setLayoutY(40);
 
 
         coeurVue.mettreAJourPv(joueur.getPv());
         coeurVueArmure.mettreAJourPv(joueur.getPvArmure());
 
+        //test objet au sol ramaser
+        Objet objet = new Pioche("pioche", 1,carte,carteVue,joueur,objetAuSol, playerLayer);
+        ObjetVue objetVue = new ObjetVue(objet);
+        objetAuSol = new ObjetAuSol(5,19,playerLayer, objet);
+
 
         // inventaire
         inventaire = new Inventaire();
-        inventaire.ajouterObjet(new Pioche("pioche", 1,carte, carteVue,joueur,tileMap)); // Ajoute un objet pour test
+        inventaire.ajouterObjet(new Pioche("pioche", 1,carte, carteVue,joueur, objetAuSol, playerLayer)); // Ajoute un objet pour test
         inventaire.ajouterObjet(new Potion("potionVie", 1, joueur, "vie"));
-        inventaire.ajouterObjet(new Bloc("Terre", 1, false, carte, carteVue, joueur, tileMap, 2));
+        inventaire.ajouterObjet(new Bloc("Terre", 1, false, carte, carteVue, joueur, 2));
         inventaireVue = new InventaireVue(ath, inventaire);
         inventaireVue.afficherInventaire();
         inventaireVue.maj();
-
-
-        //test objet au sol ramaser
-        Objet objet = new Pioche("pioche", 1,carte,carteVue,joueur,tileMap);
-        ObjetVue objetVue = new ObjetVue(objet);
-        objetAuSol = new ObjetAuSol(objetVue,5,19,playerLayer);
 
 
         // ajout des éléments visuels
@@ -144,11 +139,10 @@ public class GameController implements Initializable {
                     inventaireVue.maj();
                 }
 
-
                 case A -> {
                     Objet objetADeposer = joueur.getObjetPossede();
                     if (objetADeposer != null) {
-                        objetAuSol.deposer(objetADeposer, joueur, playerLayer);
+                        objetAuSol.deposerJoueur(objetADeposer, joueur, playerLayer);
                         inventaire.getInventaire().remove(objetADeposer);
                         ath.getChildren().clear();
                         inventaireVue.afficherInventaire();
@@ -157,9 +151,6 @@ public class GameController implements Initializable {
                         inventaireVue.maj();
                     }
                 }
-
-
-
 
                 case K -> {
                     joueur.decrementerPv(1);
@@ -255,6 +246,8 @@ public class GameController implements Initializable {
             int x = (int) (event.getX() / 32);
             int y = (int) (event.getY() / 32);
 
+            System.out.println(carteVue.getBloc(x,y));
+
 
             System.out.println("Clic détecté sur la tuile : (" + x + ", " + y + ")");
 
@@ -272,14 +265,7 @@ public class GameController implements Initializable {
             }
             else
                 System.out.println("non");
-
-
         });
-
-
-
-
-
 
         playerLayer.setOnKeyReleased(event -> touchesAppuyees.remove(event.getCode()));
 
@@ -311,17 +297,12 @@ public class GameController implements Initializable {
     @FXML
     private void reapparaitre() {
         estMort = false;
-        joueur = new Player(5 * TAILLE_TUILE, 19 * TAILLE_TUILE, inventaire);
-        joueurVue = new PlayerVue(joueur, ath);
+        joueur = new Player(5 * TAILLE_TUILE, 19 * TAILLE_TUILE);
+        joueurVue = new PlayerVue(joueur);
 
-
-        coeurVue = new CoeurVue(joueur.getPv(), false, ath);
-        coeurVueArmure = new CoeurVue(joueur.getPvArmure(), true, ath);
+        coeurVue = new CoeurVue(joueur.getPv(), false);
+        coeurVueArmure = new CoeurVue(joueur.getPvArmure(), true);
         coeurVueArmure.getBarreVie().setLayoutY(40);
-        ObjetAuSol piocheAuSol = new ObjetAuSol(new ObjetVue(new Pioche("pioche", 1, carte, carteVue, joueur, tileMap)), 5, 19, playerLayer);
-
-
-
 
         playerLayer.getChildren().setAll(
                 coeurVueArmure.getBarreVie(),
@@ -329,21 +310,16 @@ public class GameController implements Initializable {
                 coeurVue.getBarreVie()
         );
 
-
         inventaire.getInventaire().clear();
         ath.getChildren().clear();
         inventaireVue.afficherInventaire();
         inventaireVue.maj();
-
-
-
 
         boutonQuitter.setVisible(false);
         boutonReapparaitre.setVisible(false);
         messageMort.setVisible(false);
         tileMap.setEffect(null);
         playerLayer.setEffect(null);
-
 
         clavierController = new ClavierController(
                 touchesAppuyees,
@@ -357,8 +333,6 @@ public class GameController implements Initializable {
                 carte
         );
         clavierController.configurerControles();
-
-
     }
 
 

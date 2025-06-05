@@ -5,9 +5,6 @@ public class Map {
 
     private int[][] terrain;
 
-    public Map() {
-
-    }
 
     // donc ici c la creation du terrain , on initialise le terrain et on creer une boucle pour le remplir avec les différent type de bloc
     public int[][] creerTerrain(int hauteur, int largeur) {
@@ -86,9 +83,10 @@ public class Map {
     }
 
     public int getTile(int y, int x) {
-
         return terrain[y][x];
     }
+
+
 
     public int getLargeur() {
 
@@ -98,10 +96,6 @@ public class Map {
     public int getHauteur() {
 
         return terrain.length;
-    }
-
-    public void setTuile(int x, int y, int id) {
-        getTerrain()[y][x] = id;  // Assure-toi que la map est bien [ligne][colonne]
     }
 
 

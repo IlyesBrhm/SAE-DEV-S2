@@ -23,8 +23,4 @@ public class ObjetVue {
     public ImageView getImageView() {
         return imageView;
     }
-
-    public Image getImage() {
-        return image;
-    }
 }
