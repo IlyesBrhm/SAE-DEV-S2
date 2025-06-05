@@ -2,8 +2,9 @@ package universite_paris8.iut.youadah.projet.controller;
 
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
-import universite_paris8.iut.youadah.projet.modele.Map;
+import universite_paris8.iut.youadah.projet.modele.GameMap;
 import universite_paris8.iut.youadah.projet.modele.Player;
+import universite_paris8.iut.youadah.projet.vue.BouclierVue;
 import universite_paris8.iut.youadah.projet.vue.CoeurVue;
 import universite_paris8.iut.youadah.projet.vue.PlayerVue;
 
@@ -15,26 +16,26 @@ public class ClavierController {
     private final Player joueur;
     private final PlayerVue joueurVue;
     private final CoeurVue coeurVue;
-    private final CoeurVue coeurVueArmure;
+    private final BouclierVue bouclierVue;
     private final Pane playerLayer;
     private final Runnable callbackMort;
     private final Runnable afficherDegat;
-    private final Map carte;
+    private final GameMap carte;
 
     public ClavierController(Set<KeyCode> touchesAppuyees,
                              Player joueur,
                              PlayerVue joueurVue,
                              CoeurVue coeurVue,
-                             CoeurVue coeurVueArmure,
+                             BouclierVue bouclierVue,
                              Pane playerLayer,
                              Runnable callbackMort,
                              Runnable afficherDegat,
-                             Map carte) {
+                             GameMap carte) {
         this.touchesAppuyees = touchesAppuyees;
         this.joueur = joueur;
         this.joueurVue = joueurVue;
         this.coeurVue = coeurVue;
-        this.coeurVueArmure = coeurVueArmure;
+        this.bouclierVue = bouclierVue;
         this.playerLayer = playerLayer;
         this.callbackMort = callbackMort;
         this.afficherDegat = afficherDegat;
@@ -65,7 +66,7 @@ public class ClavierController {
 
                 if (joueur.getPvArmure() > 0) {
                     joueur.decrementerPvArmure(1);
-                    coeurVueArmure.mettreAJourPv(joueur.getPvArmure());
+                    bouclierVue.mettreAJourPv(joueur.getPvArmure());  // Changé ici
                 } else {
                     joueur.decrementerPv(1);
                     coeurVue.mettreAJourPv(joueur.getPv());

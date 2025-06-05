@@ -1,7 +1,7 @@
 package universite_paris8.iut.youadah.projet.modele;
 
 // cette class va contenir un tableau 2D qui va etre notre map ou chque case contient un ID tuile
-public class Map {
+public class GameMap {
 
     private int[][] terrain;
 

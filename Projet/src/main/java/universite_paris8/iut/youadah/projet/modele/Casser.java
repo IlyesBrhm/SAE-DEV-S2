@@ -3,14 +3,17 @@ package universite_paris8.iut.youadah.projet.modele;
 import universite_paris8.iut.youadah.projet.vue.MapVue;
 
 public class Casser {
-    private Map map;
+    private GameMap map;
     private MapVue mapVue;
     private Player joueur;
+    private boolean casseValide;
 
-    public Casser(Map map, MapVue mapVue, Player p) {
+
+    public Casser(GameMap map, MapVue mapVue, Player joueur) {
         this.map = map;
         this.mapVue = mapVue;
-         joueur = p;
+        this.joueur = joueur;
+        this.casseValide = false;
     }
 
     public void casserBloc(int x, int y) {
@@ -20,12 +23,16 @@ public class Casser {
         double distanceX = Math.abs(x - joueurX);
         double distanceY = Math.abs(y - joueurY);
 
-
             if (distanceX <= 2 && distanceY <= 2) {
                 map.getTerrain()[y][x] = 0; // ID 0 = vide
                 mapVue.mettreAJourTuile(x, y, 0);
+                casseValide = true;
             }
 
+    }
+
+    public boolean isCasseValide() {
+        return casseValide;
     }
 }
 

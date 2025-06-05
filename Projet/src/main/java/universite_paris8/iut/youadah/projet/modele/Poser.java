@@ -2,11 +2,11 @@ package universite_paris8.iut.youadah.projet.modele;
 import universite_paris8.iut.youadah.projet.vue.MapVue;
 
 public class Poser {
-    private Map map;
+    private GameMap map;
     private MapVue mapVue;
     private Player joueur;
 
-    public Poser(Map map, MapVue mapVue, Player joueur) {
+    public Poser(GameMap map, MapVue mapVue, Player joueur) {
         this.map = map;
         this.mapVue = mapVue;
         this.joueur = joueur;

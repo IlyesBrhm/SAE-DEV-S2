@@ -17,6 +17,14 @@ public class Inventaire {
         }
     }
 
+    public void retirerObjet(Objet objet){
+        for (int i = 0; i < inventaire.size(); i++){
+            if(inventaire.get(i).equals(objet)){
+                inventaire.remove(objet);
+            }
+        }
+    }
+
     public List<Objet> getInventaire() {
         return inventaire;
     }
