@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane fx:id="gameRoot" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="universite_paris8.iut.youadah.projet.controller.GameController">
+
+    <TilePane fx:id="tileMap" />
+    <Pane fx:id="playerLayer" pickOnBounds="false" />
+    <Pane fx:id="ath" />
+
+    <Pane fx:id="overlayRouge" mouseTransparent="true" style="-fx-background-color: rgba(255, 0, 0, 0.4);" visible="false" />
+
+    <Label fx:id="messageMort" style="-fx-font-size: 36px; -fx-text-fill: red; -fx-font-weight: bold;" text=" Vous êtes mort" translateY="100" visible="false" StackPane.alignment="TOP_CENTER" />
+
+    <Button fx:id="boutonQuitter" onAction="#quitterJeu" style="-fx-font-size: 20px; -fx-background-color: darkred; -fx-text-fill: white;" text="Quitter" translateY="160" visible="false" StackPane.alignment="TOP_CENTER" />
+
+    <Button fx:id="boutonReapparaitre" onAction="#reapparaitre" style="-fx-font-size: 20px; -fx-background-color: green; -fx-text-fill: white;" text="Réapparaître" translateY="210" visible="false" StackPane.alignment="TOP_CENTER" />
+
+</StackPane>
