@@ -58,6 +58,8 @@ public class GameController implements Initializable {
     private boolean estMort = false;
 
 
+    private TableCraft tableCraft;
+    private TableCraftVue tableCraftVue;
     private Pane paneCraft;
     private boolean craftVisible = false;
 
@@ -134,6 +136,24 @@ public class GameController implements Initializable {
         paneCraft.setPrefSize(400, 200);
         ath.getChildren().add(paneCraft);
 
+        tableCraft = new TableCraft();
+        Bloc b1 = (Bloc) inventaire.getInventaire().get(2);
+        Bloc b2 = (Bloc) inventaire.getInventaire().get(3);
+
+        tableCraft.ajouterRecette(new Recette(
+                List.of(b1, b2),
+                new Potion("potionVie", 5, joueur, "vie")
+        ));
+        // Recette pour créer une pioche à partir de 2 pierres
+        tableCraft.ajouterRecette(new Recette(
+                List.of(
+                        new Bloc("Pierre", 1, false, carte, carteVue, joueur, 3),
+                        new Bloc("Pierre", 1, false, carte, carteVue, joueur, 3)
+                ),
+                new Pioche("pioche", 1, carte, carteVue, joueur, objetAuSol, playerLayer)
+        ));
+
+        tableCraftVue = new TableCraftVue(paneCraft, tableCraft, inventaire, inventaireVue, ath);
 
 
         playerLayer.setFocusTraversable(true);
@@ -151,36 +171,16 @@ public class GameController implements Initializable {
 
                 case A -> {
                     Objet objetADeposer = joueur.getObjetPossede();
-
-                    if (objetADeposer != null && objetADeposer instanceof Bloc) {
-                        // Crée une vraie copie du bloc à poser
-                        Bloc blocOriginal = (Bloc) objetADeposer;
-                        Bloc blocACopier = new Bloc(
-                                blocOriginal.getNom(),
-                                blocOriginal.getRarete(),
-                                blocOriginal.getConsomable(),
-                                carte,
-                                carteVue,
-                                joueur,
-                                blocOriginal.getIdBloc()
-                        );
-                        blocACopier.setQuantite(1); // facultatif ici
-
-                        ObjetAuSol.deposerJoueur(blocACopier, joueur, playerLayer);
-
-                        blocOriginal.decrementerQuantite(1);
-                        if (blocOriginal.getQuantite() <= 0) {
-                            inventaire.retirerObjet(blocOriginal);
-                            joueur.setObjetPossede(null);
-                        }
-
+                    if (objetADeposer != null) {
+                        objetAuSol.deposerJoueur(objetADeposer, joueur, playerLayer);
+                        inventaire.getInventaire().remove(objetADeposer);
                         ath.getChildren().clear();
                         inventaireVue.afficherInventaire();
                         inventaireVue.maj();
+                        joueur.setObjetPossede(null);
+                        inventaireVue.maj();
                     }
                 }
-
-
 
                 case K -> {
                     joueur.decrementerPv(1);
@@ -189,6 +189,19 @@ public class GameController implements Initializable {
                 case G -> {
                     joueur.incrementerPv(1);
                     coeurVue.mettreAJourPv(joueur.getPv());
+                }
+                case C -> {
+                    craftVisible = !craftVisible;
+
+                    if (!ath.getChildren().contains(paneCraft)) {
+                        ath.getChildren().add(paneCraft);
+                    }
+
+                    paneCraft.setVisible(craftVisible);
+                    if (craftVisible) {
+                        System.out.println("→ Affichage table de craft");
+                        tableCraftVue.afficher();
+                    }
                 }
 
                 case F1, F2, F3, F4, F5, F6 -> {
@@ -203,35 +216,25 @@ public class GameController implements Initializable {
             }
         });
 
+
         ath.setOnMouseClicked(event -> {
             int x = (int) (event.getX() / 32);
             int y = (int) (event.getY() / 32);
-
-            Objet objetClique = joueur.getObjetPossede();
-
-            if (objetClique != null) {
-                objetClique.utiliser(x, y); // toujours utiliser l’objet
-
-                // uniquement si c’est un bloc ou un objet consommable → décrémenter
-                if (objetClique instanceof Bloc || objetClique.getConsomable()) {
-                    objetClique.decrementerQuantite(1);
-
-                    if (objetClique.getQuantite() <= 0) {
-                        inventaire.retirerObjet(objetClique);
-                        joueur.setObjetPossede(null);
-                    }
-
+            if (joueur.getObjetPossede() != null) {
+                joueur.getObjetPossede().utiliser(x, y);
+                if (joueur.getObjetPossede().getConsomable()) {
+                    inventaire.getInventaire().remove(joueur.getObjetPossede());
+                    joueur.setObjetPossede(null);
                     ath.getChildren().clear();
                     inventaireVue.afficherInventaire();
                     inventaireVue.maj();
                 }
-
                 coeurVue.mettreAJourPv(joueur.getPv());
-            } else {
-                System.out.println("non");
             }
-        });
+            else
+                System.out.println("non");
 
+        });
 
         playerLayer.setOnKeyReleased(event -> touchesAppuyees.remove(event.getCode()));
 
