@@ -1,6 +1,4 @@
-
 package universite_paris8.iut.youadah.projet.modele;
-
 
 import universite_paris8.iut.youadah.projet.vue.MapVue;
 
@@ -11,15 +9,20 @@ public class Bloc extends Objet {
     private int id;
 
     public Bloc(String nom, int rarete, boolean consomable, GameMap carte, MapVue carteVue, Player joueur, int id){
-        super( nom, rarete, consomable );
+        super(nom, rarete, consomable);
         this.carte = carte;
         this.carteVue = carteVue;
         this.joueur = joueur;
         this.id = id;
     }
 
+    @Override
     public void utiliser(int x, int y) {
-        Poser poser = new Poser(carte,carteVue,joueur);
+        Poser poser = new Poser(carte, carteVue, joueur);
         poser.poserBloc(x, y, id);
+    }
+
+    public int getIdBloc() {
+        return id;
     }
 }

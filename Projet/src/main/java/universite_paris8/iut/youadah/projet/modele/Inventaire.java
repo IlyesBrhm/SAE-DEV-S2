@@ -5,22 +5,36 @@ import java.util.List;
 
 public class Inventaire {
     private List<Objet> inventaire;
-    public Inventaire(){
+
+    public Inventaire() {
         inventaire = new ArrayList<>(6);
     }
 
-    public void ajouterObjet(Objet objet){
-        if (inventaire.size() == 6)
+    public void ajouterObjet(Objet nouvelObjet) {
+        for (Objet objet : inventaire) {
+            if (objet.equals(nouvelObjet)) {
+                objet.incrementerQuantite(nouvelObjet.getQuantite());
+                return;
+            }
+        }
+
+        if (inventaire.size() < 6) {
+            inventaire.add(nouvelObjet);
+        } else {
             System.out.println("Inventaire plein");
-        else {
-            inventaire.add(objet);
         }
     }
 
-    public void retirerObjet(Objet objet){
-        for (int i = 0; i < inventaire.size(); i++){
-            if(inventaire.get(i).equals(objet)){
-                inventaire.remove(objet);
+    public void retirerObjet(Objet objetARetirer) {
+        for (int i = 0; i < inventaire.size(); i++) {
+            Objet objet = inventaire.get(i);
+            if (objet.equals(objetARetirer)) {
+                if (objet.getQuantite() > 1) {
+                    objet.decrementerQuantite(1);
+                } else {
+                    inventaire.remove(i);
+                }
+                return;
             }
         }
     }
