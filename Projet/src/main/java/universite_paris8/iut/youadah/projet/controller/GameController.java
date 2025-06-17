@@ -172,15 +172,41 @@ public class GameController implements Initializable {
                 case A -> {
                     Objet objetADeposer = joueur.getObjetPossede();
                     if (objetADeposer != null) {
+                        int quantiteOriginale = objetADeposer.getQuantite();
+
+                        objetADeposer.setQuantite(1); // pour déposer 1 visuellement
                         objetAuSol.deposerJoueur(objetADeposer, joueur, playerLayer);
-                        inventaire.getInventaire().remove(objetADeposer);
+
+                        if (quantiteOriginale > 1) {
+                            objetADeposer.setQuantite(quantiteOriginale - 1);
+                        } else {
+                            inventaire.getInventaire().remove(objetADeposer);
+
+                            // ✅ Tenter de retrouver un autre objet identique pour le reselectionner
+                            for (Objet o : inventaire.getInventaire()) {
+                                if (o.getNom().equals(objetADeposer.getNom())) {
+                                    joueur.setObjetPossede(o);
+                                    break;
+                                }
+                            }
+
+                            // ❌ Si aucun n’a été trouvé, on le désélectionne
+                            if (!inventaire.getInventaire().contains(objetADeposer)) {
+                                joueur.setObjetPossede(null);
+                            }
+                        }
+
+                        joueurVue.mettreAJourJoueur(joueur);
+
+
                         ath.getChildren().clear();
                         inventaireVue.afficherInventaire();
                         inventaireVue.maj();
-                        joueur.setObjetPossede(null);
-                        inventaireVue.maj();
                     }
                 }
+
+
+
 
                 case K -> {
                     joueur.decrementerPv(1);

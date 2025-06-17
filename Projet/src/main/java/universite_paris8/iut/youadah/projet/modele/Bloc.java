@@ -25,4 +25,5 @@ public class Bloc extends Objet {
     public int getIdBloc() {
         return id;
     }
+
 }

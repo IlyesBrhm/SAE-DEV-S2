@@ -1,7 +1,6 @@
 package universite_paris8.iut.youadah.projet.modele;
 
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.TilePane;
 import universite_paris8.iut.youadah.projet.vue.MapVue;
 
 public class Pioche extends Objet{

@@ -34,6 +34,7 @@ public class PlayerVue {
             imageJoueur.translateYProperty().bind(joueur.yProperty().subtract(32).asObject());
             spriteDroite = new Image(getClass().getResource("/images/PersoRight.png").toExternalForm());
             spriteGauche = new Image(getClass().getResource("/images/PersoLeft.png").toExternalForm());
+
         }
 
     public void mettreAJourJoueur(Player joueur) {
