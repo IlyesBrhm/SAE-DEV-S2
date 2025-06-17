@@ -220,30 +220,30 @@ public class GameController implements Initializable {
         ath.setOnMouseClicked(event -> {
             int x = (int) (event.getX() / 32);
             int y = (int) (event.getY() / 32);
-            if (joueur.getObjetPossede() != null) {
-                joueur.getObjetPossede().utiliser(x, y);
-                if (joueur.getObjetPossede().getConsomable()) {
-                    Objet objetUtilise = joueur.getObjetPossede();
-                    objetUtilise.utiliser(x, y); // Toujours appliquer l'effet
 
+            if (joueur.getObjetPossede() != null) {
+                Objet objetUtilise = joueur.getObjetPossede();
+                objetUtilise.utiliser(x, y); // Appliquer l'effet (poser bloc, boire potion...)
+
+                // 🔽 Décrémentation spécifique :
+                if (objetUtilise instanceof Bloc || objetUtilise.getConsomable()) {
                     if (objetUtilise.getQuantite() > 1) {
                         objetUtilise.decrementerQuantite(1);
                     } else {
                         inventaire.getInventaire().remove(objetUtilise);
                         joueur.setObjetPossede(null);
                     }
-
-                    ath.getChildren().clear();
-                    inventaireVue.afficherInventaire();
-                    inventaireVue.maj();
                 }
 
                 coeurVue.mettreAJourPv(joueur.getPv());
-            }
-            else
+                ath.getChildren().clear();
+                inventaireVue.afficherInventaire();
+                inventaireVue.maj();
+            } else {
                 System.out.println("non");
-
+            }
         });
+
 
         playerLayer.setOnKeyReleased(event -> touchesAppuyees.remove(event.getCode()));
 
