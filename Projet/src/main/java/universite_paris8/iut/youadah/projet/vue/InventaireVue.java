@@ -1,5 +1,6 @@
 package universite_paris8.iut.youadah.projet.vue;
 
+import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -37,31 +38,38 @@ public class InventaireVue {
 
     public void maj() {
         // Supprimer les anciennes icônes/quantités
-        pane.getChildren().removeIf(node -> node instanceof ImageView || node instanceof Label);
+        pane.getChildren().removeIf(node -> node instanceof ImageView || node instanceof Label || node instanceof Group);
 
         afficherInventaire(); // Réaffiche les cases
 
-        for (int i = 0; i < inventaire.getInventaire().size(); i++) {
-            Objet objet = inventaire.getInventaire().get(i);
+        int slot = 0; // index visuel pour éviter les trous
+
+        for (Objet objet : inventaire.getInventaire()) {
+            if (objet.getQuantite() <= 0) continue; // Ne pas afficher les objets épuisés
+
             ObjetVue objetVue = new ObjetVue(objet);
             ImageView iv = objetVue.getImageView();
 
             iv.setFitWidth(32);
             iv.setFitHeight(32);
-            iv.setLayoutX((i * 64) + 745);
-            iv.setLayoutY(15);
+            iv.setLayoutX(0);
+            iv.setLayoutY(0);
 
             Label quantiteLabel = new Label("x" + objet.getQuantite());
             quantiteLabel.setTextFill(Color.WHITE);
             quantiteLabel.setFont(Font.font("Arial", javafx.scene.text.FontWeight.BOLD, 13));
+            quantiteLabel.setStyle("-fx-background-color: rgba(0, 0, 0, 0.6); -fx-padding: 1px;");
+            quantiteLabel.setLayoutX(20);
+            quantiteLabel.setLayoutY(22);
 
-            quantiteLabel.setStyle("-fx-background-color: rgba(0, 0, 0, 0.6); -fx-padding: 2px;");
-            quantiteLabel.setLayoutX((i * 64) + 775);  // Plus bas à droite
-            quantiteLabel.setLayoutY(45);
+            Group group = new Group();
+            group.getChildren().addAll(iv, quantiteLabel);
+            group.setLayoutX((slot * 64) + 745);
+            group.setLayoutY(15);
 
-            pane.getChildren().addAll(iv, quantiteLabel);
-
-
+            pane.getChildren().add(group);
+            slot++; // on n'incrémente que si un objet est visible
         }
     }
+
 }
