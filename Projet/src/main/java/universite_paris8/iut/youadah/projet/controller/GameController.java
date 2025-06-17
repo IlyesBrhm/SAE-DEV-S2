@@ -223,12 +223,21 @@ public class GameController implements Initializable {
             if (joueur.getObjetPossede() != null) {
                 joueur.getObjetPossede().utiliser(x, y);
                 if (joueur.getObjetPossede().getConsomable()) {
-                    inventaire.getInventaire().remove(joueur.getObjetPossede());
-                    joueur.setObjetPossede(null);
+                    Objet objetUtilise = joueur.getObjetPossede();
+                    objetUtilise.utiliser(x, y); // Toujours appliquer l'effet
+
+                    if (objetUtilise.getQuantite() > 1) {
+                        objetUtilise.decrementerQuantite(1);
+                    } else {
+                        inventaire.getInventaire().remove(objetUtilise);
+                        joueur.setObjetPossede(null);
+                    }
+
                     ath.getChildren().clear();
                     inventaireVue.afficherInventaire();
                     inventaireVue.maj();
                 }
+
                 coeurVue.mettreAJourPv(joueur.getPv());
             }
             else

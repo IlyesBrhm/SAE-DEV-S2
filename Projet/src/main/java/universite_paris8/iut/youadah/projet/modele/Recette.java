@@ -1,7 +1,6 @@
 package universite_paris8.iut.youadah.projet.modele;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Recette {
     private List<Objet> composants;
@@ -19,35 +18,28 @@ public class Recette {
     public Objet getResultat() {
         return resultat;
     }
+
     public boolean estCraftable(Inventaire inventaire) {
         System.out.println("=== Vérification de la recette ===");
 
-        System.out.println("→ Composants requis :");
+        // Compter les quantités nécessaires pour chaque type d'objet
+        Map<String, Integer> quantitesNecessaires = new HashMap<>();
         for (Objet o : composants) {
-            System.out.println("- " + o.getNom());
+            quantitesNecessaires.put(o.getNom(), quantitesNecessaires.getOrDefault(o.getNom(), 0) + 1);
         }
 
-        System.out.println("→ Contenu de l'inventaire :");
+        // Compter les quantités disponibles dans l'inventaire
+        Map<String, Integer> quantitesDisponibles = new HashMap<>();
         for (Objet o : inventaire.getInventaire()) {
-            System.out.println("- " + o.getNom());
+            quantitesDisponibles.put(o.getNom(), quantitesDisponibles.getOrDefault(o.getNom(), 0) + o.getQuantite());
         }
 
-        // Vérification réelle
-        List<Objet> contenu = new ArrayList<>(inventaire.getInventaire());
-        List<Objet> requis = new ArrayList<>(composants);
-
-        for (Objet oRequis : new ArrayList<>(requis)) {
-            boolean trouve = false;
-            for (Objet obj : contenu) {
-                if (obj.getNom().equals(oRequis.getNom())) {
-                    contenu.remove(obj);
-                    requis.remove(oRequis);
-                    trouve = true;
-                    break;
-                }
-            }
-            if (!trouve) {
-                System.out.println("❌ Ingrédient manquant : " + oRequis.getNom());
+        // Comparer les deux
+        for (String nom : quantitesNecessaires.keySet()) {
+            int requis = quantitesNecessaires.get(nom);
+            int dispo = quantitesDisponibles.getOrDefault(nom, 0);
+            if (dispo < requis) {
+                System.out.println("❌ Pas assez de : " + nom);
                 return false;
             }
         }
@@ -55,8 +47,4 @@ public class Recette {
         System.out.println("✔ Tous les ingrédients sont présents !");
         return true;
     }
-
-
-
-
 }
