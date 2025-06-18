@@ -311,25 +311,49 @@ public class GameController implements Initializable {
         couche.getChildren().add(fleche.getNode());
         fleche.startAnimation();
     }
-
     @FXML
     private void reapparaitre() {
         estMort = false;
+
+        // Nouveau joueur
         joueur = new Player(5 * TAILLE_TUILE, 19 * TAILLE_TUILE);
         joueurVue = new PlayerVue(joueur);
         coeurVue = new CoeurVue(joueur.getPv());
-        bouclierVue = new BouclierVue(joueur.getPv(), ath);
+        bouclierVue = new BouclierVue(joueur.getPvArmure(), ath);
+        bouclierVue.getBarreBouclier().setLayoutY(40);
 
-        playerLayer.getChildren().setAll(
-                coeurVue.getBarreVie(),
-                joueurVue.getNode(),
-                bouclierVue.getBarreBouclier()
-        );
 
+
+        // Réinitialiser l'inventaire
         inventaire.getInventaire().clear();
+        inventaire.ajouterObjet(new Pioche("pioche", 1, carte, carteVue, joueur, objetAuSol, playerLayer));
+        inventaire.ajouterObjet(new Potion("potionVie", 1, joueur, "vie"));
+        inventaire.ajouterObjet(new Bloc("Terre", 1, false, carte, carteVue, joueur, 2));
+        inventaire.ajouterObjet(new Bloc("Pierre", 1, false, carte, carteVue, joueur, 3));
+        inventaire.ajouterObjet(new Epee("Epee", 1, carte, carteVue, joueur, tileMap));
+        inventaire.ajouterObjet(new Arc("Arc", 1, carte, carteVue, joueur, tileMap));
+
+        // Rafraîchit l'inventaire visuel
         ath.getChildren().clear();
         inventaireVue.afficherInventaire();
         inventaireVue.maj();
+
+        // Mise à jour des vues du joueur et du mob
+        playerLayer.getChildren().setAll(
+                bouclierVue.getBarreBouclier(),
+                joueurVue.getNode(),
+                coeurVue.getBarreVie(),
+                ennemieVue.getNode(),
+                barreVieEnnemi.getNode()
+        );
+
+        // Mise à jour du clavier
+        clavierController.setJoueur(joueur);
+        clavierController.setJoueurVue(joueurVue);
+        clavierController.setCoeurVue(coeurVue);
+        clavierController.setBouclierVue(bouclierVue);
+
+        // Réinitialiser la vue
         boutonQuitter.setVisible(false);
         boutonReapparaitre.setVisible(false);
         messageMort.setVisible(false);
