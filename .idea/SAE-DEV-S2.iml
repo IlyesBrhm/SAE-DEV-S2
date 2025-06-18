@@ -8,16 +8,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="openjfx.javafx.controls" level="project" />
-    <orderEntry type="library" name="openjfx.javafx.web" level="project" />
+    <orderEntry type="library" name="annotations-13.0-javadoc" level="project" />
     <orderEntry type="library" name="controlsfx" level="project" />
     <orderEntry type="library" name="dlsc.formsfx.core" level="project" />
-    <orderEntry type="library" name="net.synedra.validatorfx" level="project" />
-    <orderEntry type="library" name="kordamp.ikonli.javafx" level="project" />
-    <orderEntry type="library" name="kordamp.bootstrapfx.core" level="project" />
-    <orderEntry type="library" name="github.almasb.fxgl" level="project" />
-    <orderEntry type="library" name="eu.hansolo.tilesfx" level="project" />
-    <orderEntry type="library" name="openjfx.javafx.fxml" level="project" />
-    <orderEntry type="library" name="lib" level="project" />
   </component>
 </module>

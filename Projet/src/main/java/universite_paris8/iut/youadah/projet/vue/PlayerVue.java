@@ -9,15 +9,7 @@ import javafx.animation.Timeline;
 import javafx.util.Duration;
 
 
-public class PlayerVue {
-    private Image spriteDroite ;
-    private Image spriteGauche;
-    private final ImageView imageJoueur;
-
-    private final Player joueur;
-    private boolean isBlesse = false;
-
-    private boolean versLaDroite = true;
+public class PlayerVue extends PersonnageVue {
 
     private final Image spritePiocheDroite = new Image(getClass().getResource("/images/persoRightPioche.png").toExternalForm());
     private final Image spritePiocheGauche = new Image(getClass().getResource("/images/PersoLeftPioche.png").toExternalForm());
@@ -25,22 +17,14 @@ public class PlayerVue {
     private final Image spritePotionDroite = new Image(getClass().getResource("/images/PersoRightPotion.png").toExternalForm());
     private final Image spritePotionGauche = new Image(getClass().getResource("/images/PersoLeftPotion.png").toExternalForm());
 
-        public PlayerVue(Player joueur) {
-            this.joueur = joueur;
-            imageJoueur = new ImageView(spriteDroite);
-            imageJoueur.setFitWidth(64);
-            imageJoueur.setFitHeight(64);
-            imageJoueur.translateXProperty().bind(joueur.xProperty().subtract(16).asObject());
-            imageJoueur.translateYProperty().bind(joueur.yProperty().subtract(32).asObject());
-            spriteDroite = new Image(getClass().getResource("/images/PersoRight.png").toExternalForm());
-            spriteGauche = new Image(getClass().getResource("/images/PersoLeft.png").toExternalForm());
-        }
+    public PlayerVue(Player joueur) {
+        super(joueur);
+        spriteDroite = new Image(getClass().getResource("/images/PersoRight.png").toExternalForm());
+        spriteGauche = new Image(getClass().getResource("/images/PersoLeft.png").toExternalForm());
+    }
 
     public void mettreAJourJoueur(Player joueur) {
-        versLaDroite = joueur.estsVersLaDroite();
-        if (!isBlesse) { // tu ajoutes un champ isBlesse aussi
-            imageJoueur.setImage(versLaDroite ? spriteDroite : spriteGauche);
-        }
+        mettreAJour(joueur);
         if (joueur.getObjetPossede() != null){
             if (joueur.getObjetPossede().getNom() == "pioche"){
                 imageJoueur.setImage(versLaDroite ? spritePiocheDroite : spritePiocheGauche);
@@ -49,9 +33,5 @@ public class PlayerVue {
                 imageJoueur.setImage(versLaDroite ? spritePotionDroite : spritePotionGauche);
             }
         }
-    }
-
-    public ImageView getNode() {
-        return imageJoueur;
     }
 }
