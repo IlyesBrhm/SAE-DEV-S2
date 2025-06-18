@@ -1,4 +1,6 @@
-package universite_paris8.iut.youadah.projet.modele;
+package universite_paris8.iut.youadah.projet.modele.actions;
+import universite_paris8.iut.youadah.projet.modele.GameMap;
+import universite_paris8.iut.youadah.projet.modele.Player;
 import universite_paris8.iut.youadah.projet.vue.MapVue;
 
 public class Poser {

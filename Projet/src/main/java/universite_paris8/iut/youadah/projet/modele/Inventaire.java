@@ -10,18 +10,20 @@ public class Inventaire {
         inventaire = new ArrayList<>(6);
     }
 
-    public void ajouterObjet(Objet nouvelObjet) {
+    public boolean ajouterObjet(Objet nouvelObjet) {
         for (Objet objet : inventaire) {
             if (objet.equals(nouvelObjet)) {
                 objet.incrementerQuantite(nouvelObjet.getQuantite());
-                return;
+                return true;
             }
         }
 
         if (inventaire.size() < 6) {
             inventaire.add(nouvelObjet);
+            return true;
         } else {
             System.out.println("Inventaire plein");
+            return false;
         }
     }
 

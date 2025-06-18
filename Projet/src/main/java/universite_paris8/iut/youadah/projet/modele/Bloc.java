@@ -1,5 +1,6 @@
 package universite_paris8.iut.youadah.projet.modele;
 
+import universite_paris8.iut.youadah.projet.modele.actions.Poser;
 import universite_paris8.iut.youadah.projet.vue.MapVue;
 
 public class Bloc extends Objet {

@@ -96,7 +96,7 @@ public class Player {
         this.dernierDegatFeu = t; }
 
     private boolean estSolide(int id) {
-        return id == 1 || id == 3 || id == 2;
+        return id == 1 || id == 3 || id == 2 || id==6;
     }
 
     public void mettreAJour(GameMap map) {

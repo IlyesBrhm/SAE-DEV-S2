@@ -53,6 +53,9 @@ public class GameMap {
         poserRectangle(10,18,3,2,3);
         poserBloc(18,19,5);
         poserBloc(19,19,5);
+
+        poserLigne(30,35,19,6);
+
         return terrain;
     }
     // juste ici on a creer des methodes pour nous faciliter a creer des objets et des formes sur la map
@@ -68,11 +71,7 @@ public class GameMap {
         }
     }
 
-    public void poserColonne(int x, int yDebut, int yFin, int type) {
-        for (int y = yDebut; y <= yFin; y++) {
-            poserBloc(x, y, type);
-        }
-    }
+
 
     public void poserRectangle(int xDebut, int yDebut, int largeur, int hauteur, int type) {
         for (int y = yDebut; y < yDebut + hauteur; y++) {

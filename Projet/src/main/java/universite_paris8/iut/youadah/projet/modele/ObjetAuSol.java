@@ -26,27 +26,33 @@ public class ObjetAuSol {
         pane.getChildren().add(objetVue.getImageView());
     }
 
-    public static void ramasser(Player joueur, Inventaire inventaire, Pane pane) {
+    public static boolean ramasser(Player joueur, Inventaire inventaire, Pane pane) {
         int joueurX = (int) (joueur.getX() / 32);
         int joueurY = (int) (joueur.getY() / 32);
 
         ArrayList<ObjetAuSol> aRamasser = new ArrayList<>();
+        boolean auMoinsUnRamasse = false;
 
-        for (ObjetAuSol o : objetsAuSol) {
+        for (ObjetAuSol o : new ArrayList<>(objetsAuSol)) {
             if (o.x == joueurX && o.y == joueurY) {
-                inventaire.ajouterObjet(o.objetVue.getObjet());
-                pane.getChildren().remove(o.objetVue.getImageView());
-                aRamasser.add(o);
+                boolean ajoute = inventaire.ajouterObjet(o.objetVue.getObjet());
+                if (ajoute) {
+                    pane.getChildren().remove(o.objetVue.getImageView());
+                    aRamasser.add(o);
+                    auMoinsUnRamasse = true;
+                } else {
+                    System.out.println("Inventaire plein : impossible de ramasser " + o.objetVue.getObjet().getNom());
+                }
             }
         }
 
         objetsAuSol.removeAll(aRamasser);
+        return auMoinsUnRamasse;
     }
 
     public static void deposerJoueur(Objet objet, Player joueur, Pane pane) {
         int x = (int) (joueur.getX() / 32);
         int y = (int) (joueur.getY() / 32);
-
         new ObjetAuSol(x, y, pane, objet);
     }
 

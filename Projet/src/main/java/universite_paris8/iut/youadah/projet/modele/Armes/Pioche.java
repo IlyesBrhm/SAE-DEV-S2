@@ -1,9 +1,11 @@
-package universite_paris8.iut.youadah.projet.modele;
+package universite_paris8.iut.youadah.projet.modele.Armes;
 
 import javafx.scene.layout.Pane;
+import universite_paris8.iut.youadah.projet.modele.*;
+import universite_paris8.iut.youadah.projet.modele.actions.Casser;
 import universite_paris8.iut.youadah.projet.vue.MapVue;
 
-public class Pioche extends Objet{
+public class Pioche extends Objet {
     GameMap carte;
     MapVue carteVue;
     Player joueur;

@@ -2,11 +2,9 @@ package universite_paris8.iut.youadah.projet.vue;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
+import universite_paris8.iut.youadah.projet.modele.Armes.Arc;
+import universite_paris8.iut.youadah.projet.modele.Armes.Epee;
 import universite_paris8.iut.youadah.projet.modele.Player;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.util.Duration;
 
 
 public class PlayerVue {
@@ -25,6 +23,12 @@ public class PlayerVue {
     private final Image spritePotionDroite = new Image(getClass().getResource("/images/PersoRightPotion.png").toExternalForm());
     private final Image spritePotionGauche = new Image(getClass().getResource("/images/PersoLeftPotion.png").toExternalForm());
 
+    private final Image spriteEpeeDroite = new Image(getClass().getResource("/images/PersoRightEpee.png").toExternalForm());
+    private final Image spriteEpeeGauche = new Image(getClass().getResource("/images/PersoLeftEpee.png").toExternalForm());
+
+    private final Image spriteArcDroite = new Image(getClass().getResource("/images/PersoRightArc.png").toExternalForm());
+    private final Image spriteArcGauche = new Image(getClass().getResource("/images/PersoLeftArc.png").toExternalForm());
+
         public PlayerVue(Player joueur) {
             this.joueur = joueur;
             imageJoueur = new ImageView(spriteDroite);
@@ -37,17 +41,25 @@ public class PlayerVue {
 
         }
 
+
     public void mettreAJourJoueur(Player joueur) {
         versLaDroite = joueur.estsVersLaDroite();
-        if (!isBlesse) { // tu ajoutes un champ isBlesse aussi
+
+        if (!isBlesse) {
             imageJoueur.setImage(versLaDroite ? spriteDroite : spriteGauche);
         }
-        if (joueur.getObjetPossede() != null){
-            if (joueur.getObjetPossede().getNom() == "pioche"){
+
+        if (joueur.getObjetPossede() != null) {
+            String nomObjet = joueur.getObjetPossede().getNom().toLowerCase();
+
+            if (nomObjet.equals("pioche")) {
                 imageJoueur.setImage(versLaDroite ? spritePiocheDroite : spritePiocheGauche);
-            }
-            if (joueur.getObjetPossede().getNom().contains("potion")){
+            } else if (nomObjet.contains("potion")) {
                 imageJoueur.setImage(versLaDroite ? spritePotionDroite : spritePotionGauche);
+            } else if (joueur.getObjetPossede() instanceof Epee) {
+                imageJoueur.setImage(versLaDroite ? spriteEpeeDroite : spriteEpeeGauche);
+            } else if (joueur.getObjetPossede() instanceof Arc) {
+                imageJoueur.setImage(versLaDroite ? spriteArcDroite : spriteArcGauche);
             }
         }
     }

@@ -1,7 +1,7 @@
-package universite_paris8.iut.youadah.projet.modele;
+package universite_paris8.iut.youadah.projet.modele.Armes;
 
-import javafx.scene.layout.TilePane;
-import universite_paris8.iut.youadah.projet.vue.MapVue;
+import universite_paris8.iut.youadah.projet.modele.Objet;
+import universite_paris8.iut.youadah.projet.modele.Player;
 
 public class Potion extends Objet {
     Player joueur;
