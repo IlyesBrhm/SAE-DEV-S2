@@ -4,97 +4,116 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import universite_paris8.iut.youadah.projet.modele.GameMap;
+import universite_paris8.iut.youadah.projet.modele.Personnage;
+import universite_paris8.iut.youadah.projet.modele.actions.Tirer;
+
+import java.util.List;
 
 /**
- * Elle avance automatiquement dans une direction donnée jusqu'à sortir de la carte.
+ * Une flèche qui avance dans une direction donnée et inflige des dégâts à l’impact.
  */
 public class Fleche {
 
-    private final ImageView node;     // ImageView représentant visuellement la flèche
-    private double posX, posY;        // Position actuelle de la flèche (en pixels)
-    private final double vitesse = 10; // Vitesse de déplacement (pixels par frame)
-    private double dirX, dirY;        // Direction normalisée (vecteur unitaire)
+    private final ImageView node;
+    private double posX, posY;
+    private final double vitesse = 10;
+    private final double dirX, dirY;
 
-    private AnimationTimer animation; // Timer JavaFX pour animer la flèche à chaque frame
+    private AnimationTimer animation;
+
+    // Nouveaux paramètres nécessaires pour collision/dégâts
+    private final List<Personnage> cibles;
+    private final Pane overlay;
+    private final int degats;
+    private GameMap carte;
 
     /**
-     * Constructeur : initialise une flèche entre un point de départ et un point cible.
-     * @param departX Coordonnée X de départ
-     * @param departY Coordonnée Y de départ
-     * @param cibleX Coordonnée X de la cible
-     * @param cibleY Coordonnée Y de la cible
+     * Crée une flèche avec collisions.
+     *
+     * @param departX position X de départ
+     * @param departY position Y de départ
+     * @param cibleX position X visée
+     * @param cibleY position Y visée
+     * @param cibles liste des ennemis (Personnage)
+     * @param overlay pane pour effet rouge
+     * @param degats dégâts infligés à l’impact
      */
-    public Fleche(double departX, double departY, double cibleX, double cibleY) {
-        // Position de départ
+    public Fleche(double departX, double departY, double cibleX, double cibleY,
+                  List<Personnage> cibles, Pane overlay, int degats, GameMap carte) {
+
         this.posX = departX;
         this.posY = departY;
+        this.cibles = cibles;
+        this.overlay = overlay;
+        this.degats = degats;
+        this.carte=carte;
 
-        // Calcul du vecteur direction (différence entre cible et départ)
         double dx = cibleX - departX;
         double dy = cibleY - departY;
-
-        // Normalisation pour obtenir un vecteur unitaire
         double longueur = Math.sqrt(dx * dx + dy * dy);
-        dirX = dx / longueur;
-        dirY = dy / longueur;
+        this.dirX = dx / longueur;
+        this.dirY = dy / longueur;
 
-        // Chargement de l’image de la flèche
         Image imageFleche = new Image(getClass().getResource("/images/fleche.png").toExternalForm());
         node = new ImageView(imageFleche);
-        node.setFitWidth(100);   // Largeur de la flèche à l’écran
-        node.setFitHeight(30);   // Hauteur de la flèche
-
-        // Position initiale de l’image
+        node.setFitWidth(100);
+        node.setFitHeight(30);
         node.setLayoutX(posX);
         node.setLayoutY(posY);
+        node.setRotate(Math.toDegrees(Math.atan2(dy, dx)));
 
-        // Rotation de l’image pour l’orienter vers la cible
-        double angle = Math.toDegrees(Math.atan2(dy, dx)); // atan2 donne l'angle en radians
-        node.setRotate(angle);
-
-        // Création du timer d’animation
         animation = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                avancer(); // Appelé à chaque frame (~60 fois par seconde)
+                avancer();
             }
         };
     }
 
-    /**
-     * Accès au nœud graphique de la flèche.
-     * @return ImageView représentant la flèche
-     */
     public ImageView getNode() {
         return node;
     }
 
-    //Lance l’animation de la flèche.
     public void startAnimation() {
         animation.start();
     }
 
-    /**
-     * Fait avancer la flèche dans sa direction à chaque frame.
-     * Si elle sort de l’écran, elle est supprimée.
-     */
     private void avancer() {
-        // Mise à jour de la position
         posX += dirX * vitesse;
         posY += dirY * vitesse;
-
-        // Application à l'image affichée
         node.setLayoutX(posX);
         node.setLayoutY(posY);
 
-        // Condition d’arrêt : si la flèche sort de la carte, on arrête l'animation
-        if (posX < 0 || posX > 32 * 58 || posY < 0 || posY > 32 * 32) {
-            animation.stop(); // Stoppe le déplacement
+        // --- Détection de collision avec un bloc solide ---
+        int tuileX = (int) (posX / 32);
+        int tuileY = (int) (posY / 32);
 
-            // Supprime le nœud graphique de la scène s’il est encore affiché
-            if (node.getParent() != null) {
-                ((Pane) node.getParent()).getChildren().remove(node);
+        if (carte != null && tuileX >= 0 && tuileX < carte.getLargeur()
+                && tuileY >= 0 && tuileY < carte.getHauteur()) {
+
+            int bloc = carte.getTile(tuileY, tuileX);
+            if (bloc != 0) { // 0 = vide ; tout autre bloc = obstacle
+                detruire(); // détruit la flèche
+                return; // on arrête tout ici
             }
+        }
+
+        // --- Collision avec un ennemi ---
+        Tirer tirer = new Tirer();
+        tirer.infligerDegatsSiCollision(posX, posY, cibles, overlay, degats);
+
+        // --- Si la flèche sort de l’écran ---
+        if (posX < 0 || posX > 32 * 58 || posY < 0 || posY > 32 * 32) {
+            detruire();
+        }
+    }
+
+
+    private void detruire() {
+        animation.stop();
+        if (node.getParent() != null) {
+            ((Pane) node.getParent()).getChildren().remove(node);
         }
     }
 }

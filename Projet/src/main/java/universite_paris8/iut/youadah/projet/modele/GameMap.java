@@ -85,6 +85,11 @@ public class GameMap {
         return terrain[y][x];
     }
 
+    public boolean estTuileLibre(double x, double y) {
+        int col = (int)(x / 32);
+        int lig = (int)(y / 32);
+        return getTile(lig, col) == 0;
+    }
 
 
     public int getLargeur() {
