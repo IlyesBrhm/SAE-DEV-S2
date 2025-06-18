@@ -81,7 +81,7 @@ public class GameController implements Initializable {
         bouclierVue.getBarreBouclier().setLayoutY(40);
 
         //test ennemi
-        ennemie = new Ennemie(19*TAILLE_TUILE, 19*TAILLE_TUILE);
+        ennemie = new Ennemie(19*TAILLE_TUILE, 19*TAILLE_TUILE, 1, joueur);
         ennemieVue = new EnnemieVue(ennemie);
         playerLayer.getChildren().add(ennemieVue.getNode());
 
@@ -117,6 +117,8 @@ public class GameController implements Initializable {
                 touchesAppuyees,
                 joueur,
                 joueurVue,
+                ennemie,
+                ennemieVue,
                 coeurVue,
                 bouclierVue,
                 playerLayer,
@@ -236,8 +238,7 @@ public class GameController implements Initializable {
         new AnimationTimer() {
             @Override
             public void handle(long now) {
-                ennemieVue.mettreAJour(ennemie);
-                ennemie.deplacementMob(carte,joueur);
+
                 if (!estMort) clavierController.gererTouches();
             }
         }.start();
@@ -261,6 +262,9 @@ public class GameController implements Initializable {
         estMort = false;
         joueur = new Player(5 * TAILLE_TUILE, 19 * TAILLE_TUILE);
         joueurVue = new PlayerVue(joueur);
+
+        ennemie = new Ennemie(19 * TAILLE_TUILE, 19 * TAILLE_TUILE, 1, joueur);
+        ennemieVue = new EnnemieVue(ennemie);
 
         coeurVue = new CoeurVue(joueur.getPv());
         bouclierVue = new BouclierVue(joueur.getPv(), ath);

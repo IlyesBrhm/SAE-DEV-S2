@@ -14,6 +14,7 @@ public class Personnage {
     private int pvArmure;
     private long dernierDegatFeu = 1;
     private Objet objetPossede;
+    private long dernierCoupRecu;
 
     public static final double SAUT = -3.5;
     public static final double VITESSE = 2;
@@ -27,6 +28,7 @@ public class Personnage {
         this.pv = 5;
         this.pvArmure = 5;
         objetPossede = null;
+        this.dernierCoupRecu = 0;
     }
 
     public double getX() { return x.get(); }
@@ -39,6 +41,14 @@ public class Personnage {
 
 
     public boolean estsVersLaDroite() { return versLaDroite; }
+
+    public long getDernierCoupRecu() {
+        return dernierCoupRecu;
+    }
+
+    public void setDernierCoupRecu(long temps) {
+        this.dernierCoupRecu = temps;
+    }
 
     public void sauter() {
         if (auSol) {
@@ -90,7 +100,8 @@ public class Personnage {
     }
 
     public long getDernierDegatFeu() {
-        return dernierDegatFeu; }
+        return dernierDegatFeu;
+    }
 
     public void setDernierDegatFeu(long t) {
         this.dernierDegatFeu = t; }
