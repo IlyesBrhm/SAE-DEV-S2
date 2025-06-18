@@ -11,5 +11,6 @@
     <orderEntry type="library" name="annotations-13.0-javadoc" level="project" />
     <orderEntry type="library" name="controlsfx" level="project" />
     <orderEntry type="library" name="dlsc.formsfx.core" level="project" />
+    <orderEntry type="library" name="actionfx-controlsfx-1.7.0" level="project" />
   </component>
 </module>
