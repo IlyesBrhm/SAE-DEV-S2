@@ -1,16 +1,18 @@
 package universite_paris8.iut.youadah.projet.tests;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import universite_paris8.iut.youadah.projet.modele.Armes.Pioche;
-import universite_paris8.iut.youadah.projet.modele.Armes.Potion;
+
+import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
 import universite_paris8.iut.youadah.projet.modele.GameMap;
-import universite_paris8.iut.youadah.projet.modele.Objet;
 import universite_paris8.iut.youadah.projet.modele.Personnage;
 
-import static org.junit.jupiter.api.Assertions.*;
 
-class PersonnageTest {
+/**
+ * Classe de test pour la classe Personnage.
+ * Utilise JUnit pour les tests unitaires.
+ */
+public class PersonnageTest {
 
     private Personnage perso;
     private GameMap carte;
@@ -45,14 +47,14 @@ class PersonnageTest {
         }
     }
 
-    @BeforeEach
-    void setUp() {
+    @Before
+    public void setUp() {
         perso = new Personnage(64, 64); // 2 tuiles x 2 tuiles
         carte = new DummyMap(10, 10);
     }
 
     @Test
-    void testSautEtGravite() {
+    public void testSautEtGravite() {
         ((DummyMap) carte).setTile(3, 2, 1); // Sol à y=3
         perso.sauter(); // Devrait changer vitesseY
         assertFalse(perso.estMort());
@@ -62,7 +64,7 @@ class PersonnageTest {
     }
 
     @Test
-    void testDeplacementGaucheSansObstacle() {
+    public void testDeplacementGaucheSansObstacle() {
         double positionInitiale = perso.getX();
         perso.deplacerGauche(carte);
         assertTrue(perso.getX() < positionInitiale);
@@ -70,7 +72,7 @@ class PersonnageTest {
     }
 
     @Test
-    void testDeplacementDroiteSansObstacle() {
+    public void testDeplacementDroiteSansObstacle() {
         double positionInitiale = perso.getX();
         perso.deplacerDroite(carte);
         assertTrue(perso.getX() > positionInitiale);
@@ -78,7 +80,7 @@ class PersonnageTest {
     }
 
     @Test
-    void testPvEtArmure() {
+    public void testPvEtArmure() {
         perso.decrementerPv(3);
         assertEquals(2, perso.getPv());
         perso.incrementerPv(4);
@@ -91,14 +93,14 @@ class PersonnageTest {
     }
 
     @Test
-    void testEstMort() {
+    public void testEstMort() {
         perso.decrementerPv(5);
         assertTrue(perso.estMort());
     }
 
 
     @Test
-    void testCollisionSol() {
+    public void testCollisionSol() {
         DummyMap map = (DummyMap) carte;
         // Mettre du sol à y=3 (96px), x=2
         map.setTile(3, 2, 1);
@@ -108,7 +110,7 @@ class PersonnageTest {
     }
 
     @Test
-    void testCollisionPlafond() {
+    public void testCollisionPlafond() {
         DummyMap map = (DummyMap) carte;
         map.setTile(1, 2, 1); // Bloc au-dessus
         perso.setY(64);
@@ -118,7 +120,7 @@ class PersonnageTest {
     }
 
     @Test
-    void testDernierDegatEtCoup() {
+    public void testDernierDegatEtCoup() {
         perso.setDernierCoupRecu(5000);
         assertEquals(5000, perso.getDernierCoupRecu());
 
