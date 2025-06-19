@@ -30,7 +30,6 @@ public class Jeu {
     private Player joueur;
     private Inventaire inventaire;
     private ObjetAuSol objetAuSol;
-    private boolean estMort = false;
     private Ennemie ennemie;
 
     private TableCraft tableCraft;
@@ -40,9 +39,6 @@ public class Jeu {
 
     private TilePane tileMap;
     private Pane playerLayer;
-    private Label messageMort;
-    private Button boutonQuitter;
-    private Button boutonReapparaitre;
     private Pane overlayRouge;
     private Pane ath;
 
@@ -51,10 +47,6 @@ public class Jeu {
         this.playerLayer = playerLayer;
         this.overlayRouge = overlayRouge;
         this.ath = ath;
-        this.messageMort = messageMort;
-        this.boutonQuitter = boutonQuitter;
-        this.boutonReapparaitre = boutonReapparaitre;
-
     }
 
     public void initialiserJeu(){
