@@ -57,7 +57,8 @@ public class GameController implements Initializable {
 
         jeu = new Jeu(tileMap,playerLayer,overlayRouge,ath,messageMort,boutonQuitter,boutonReapparaitre);
         jeu.initialiserJeu();
-
+        this.paneCraft = jeu.getPaneCraft();
+        this.tableCraft = jeu.getTableCraft();
 
         tileMap.setMaxWidth(TAILLE_TUILE * NB_COLONNES);
         tileMap.setMinWidth(TAILLE_TUILE * NB_COLONNES);
@@ -146,7 +147,9 @@ public class GameController implements Initializable {
 
         });
 
-        tableCraftVue = new TableCraftVue(paneCraft, tableCraft, jeu.getInventaire(), inventaireVue, ath);
+        tableCraftVue = new TableCraftVue(jeu.getPaneCraft(), jeu.getTableCraft(), jeu.getInventaire(), inventaireVue, ath);
+
+
 
         Image image = new Image(getClass().getResource("/images/inventory selected.png").toExternalForm());
         ImageView imageView = new ImageView(image);
@@ -247,29 +250,42 @@ public class GameController implements Initializable {
     private void reapparaitre() {
         estMort = false;
 
-        // Nouveau joueur
-        joueurVue = new PlayerVue(jeu.getJoueur());
-        coeurVue = new CoeurVue(jeu.getJoueur().getPv());
-        bouclierVue = new BouclierVue(jeu.getJoueur().getPvArmure(), ath);
+        // Réinitialiser le joueur (PV, armure, position)
+        Player joueur = jeu.getJoueur();
+        joueur.setPv(10);
+        joueur.setPvArmure(5);
+        joueur.setX(5 * 32);
+        joueur.setY(19 * 32);
+
+        // Réinitialiser les vues liées au joueur
+        joueurVue = new PlayerVue(joueur);
+        coeurVue = new CoeurVue(joueur.getPv());
+        bouclierVue = new BouclierVue(joueur.getPvArmure(), ath);
         bouclierVue.getBarreBouclier().setLayoutY(40);
 
+        coeurVue.mettreAJourPv(joueur.getPv());
+        bouclierVue.mettreAJourPv(joueur.getPvArmure());
 
-
-        // Réinitialiser l'inventaire
+        // Réinitialiser l’inventaire
         jeu.getInventaire().getInventaire().clear();
-        jeu.getInventaire().ajouterObjet(new Pioche("pioche", 1, jeu.getCarte(), jeu.getJoueur(), jeu.getObjetAuSol(), playerLayer));
-        jeu.getInventaire().ajouterObjet(new Potion("potionVie", 1, jeu.getJoueur(), "vie"));
-        jeu.getInventaire().ajouterObjet(new Bloc("Terre", 1, false, jeu.getCarte(), jeu.getJoueur(), 2));
-        jeu.getInventaire().ajouterObjet(new Bloc("Pierre", 1, false, jeu.getCarte(), jeu.getJoueur(), 3));
-        jeu.getInventaire().ajouterObjet(new Epee("Epee", 1, jeu.getCarte(), jeu.getJoueur(), tileMap));
-        jeu.getInventaire().ajouterObjet(new Arc("Arc", 1, jeu.getCarte(), jeu.getJoueur()));
+        jeu.getInventaire().ajouterObjet(new Pioche("pioche", 1, jeu.getCarte(), joueur, jeu.getObjetAuSol(), playerLayer));
+        jeu.getInventaire().ajouterObjet(new Potion("potionVie", 1, joueur, "vie"));
+        jeu.getInventaire().ajouterObjet(new Bloc("Terre", 1, false, jeu.getCarte(), joueur, 2));
+        jeu.getInventaire().ajouterObjet(new Bloc("Pierre", 1, false, jeu.getCarte(), joueur, 3));
+        jeu.getInventaire().ajouterObjet(new Epee("Epee", 1, jeu.getCarte(), joueur, tileMap));
+        jeu.getInventaire().ajouterObjet(new Arc("Arc", 1, jeu.getCarte(), joueur));
 
-        // Rafraîchit l'inventaire visuel
+        // Rafraîchir l'inventaire visuel
         ath.getChildren().clear();
         inventaireVue.afficherInventaire();
         inventaireVue.maj();
 
-        // Mise à jour des vues du joueur et du mob
+        // Réinitialiser l'ennemi
+        jeu.getEnnemie().setPv(5); // si la méthode existe
+        ennemieVue = new EnnemieVue(jeu.getEnnemie());
+        barreVieEnnemi = new BarreDeVieVue(jeu.getEnnemie());
+
+        // Mettre à jour les éléments dans la couche joueur
         playerLayer.getChildren().setAll(
                 bouclierVue.getBarreBouclier(),
                 joueurVue.getNode(),
@@ -278,19 +294,21 @@ public class GameController implements Initializable {
                 barreVieEnnemi.getNode()
         );
 
-        // Mise à jour du clavier
-        clavierController.setJoueur(jeu.getJoueur());
+        // Réassocier au contrôleur clavier
+        clavierController.setJoueur(joueur);
         clavierController.setJoueurVue(joueurVue);
         clavierController.setCoeurVue(coeurVue);
         clavierController.setBouclierVue(bouclierVue);
 
-        // Réinitialiser la vue
+        // Masquer les éléments de mort
         boutonQuitter.setVisible(false);
         boutonReapparaitre.setVisible(false);
         messageMort.setVisible(false);
         tileMap.setEffect(null);
         playerLayer.setEffect(null);
     }
+
+
 
     private void tirerFleche(double cibleX, double cibleY, Pane couche) {
         Fleche fleche = new Fleche(

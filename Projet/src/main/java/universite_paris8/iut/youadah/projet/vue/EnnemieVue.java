@@ -8,8 +8,11 @@ public class EnnemieVue extends PersonnageVue {
 
     public EnnemieVue(Ennemie ennemie) {
         super(ennemie);
-        spriteDroite = new Image(getClass().getResource("/images/PersoRight.png").toExternalForm());
-        spriteGauche = new Image(getClass().getResource("/images/PersoLeft.png").toExternalForm());
+        spriteDroite = new Image(getClass().getResource("/images/MonstreD.png").toExternalForm());
+        spriteGauche = new Image(getClass().getResource("/images/MonstreG.png").toExternalForm());
+        imageJoueur.setImage(spriteDroite); // ← indispensable
     }
+
+
 
 }

@@ -54,6 +54,7 @@ public class Jeu {
         this.messageMort = messageMort;
         this.boutonQuitter = boutonQuitter;
         this.boutonReapparaitre = boutonReapparaitre;
+
     }
 
     public void initialiserJeu(){
@@ -122,6 +123,13 @@ public class Jeu {
         playerLayer.setOnKeyReleased(event -> touchesAppuyees.remove(event.getCode()));
     }
 
+    public Pane getPaneCraft() {
+        return paneCraft;
+    }
+
+    public TableCraft getTableCraft() {
+        return tableCraft;
+    }
 
 
     public Player getJoueur() {

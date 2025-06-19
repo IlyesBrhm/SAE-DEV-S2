@@ -22,12 +22,13 @@ public class PersonnageVue {
 
     public PersonnageVue(Personnage personnage) {
         this.personnage = personnage;
-        imageJoueur = new ImageView(spriteDroite);
+        imageJoueur = new ImageView();
         imageJoueur.setFitWidth(64);
         imageJoueur.setFitHeight(64);
         imageJoueur.translateXProperty().bind(personnage.xProperty().subtract(16).asObject());
         imageJoueur.translateYProperty().bind(personnage.yProperty().subtract(32).asObject());
     }
+
 
     public void mettreAJour(Personnage personnage) {
         versLaDroite = personnage.estsVersLaDroite();

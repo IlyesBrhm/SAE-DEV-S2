@@ -83,4 +83,5 @@ public class Ennemie extends Personnage {
             joueur.setX(newX);
         }
     }
+
 }

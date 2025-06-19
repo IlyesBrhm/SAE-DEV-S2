@@ -168,9 +168,15 @@ public class Personnage {
     public int getPvArmure() {
         return pvArmure;
     }
+    public void setPv(int pv) {
+        this.pv = pv;
+    }
 
     public void decrementerPvArmure(int valeur) {
         this.pvArmure = Math.max(0, this.pvArmure - valeur);
+    }
+    public void setPvArmure(int pvArmure) {
+        this.pvArmure = pvArmure;
     }
 
     public void setObjetPossede(Objet objetPossede) {
