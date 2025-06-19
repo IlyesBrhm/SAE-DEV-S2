@@ -4,6 +4,10 @@ import javafx.scene.image.Image;
 import universite_paris8.iut.youadah.projet.modele.Ennemie;
 import universite_paris8.iut.youadah.projet.modele.Personnage;
 
+/**
+ * Classe représentant la vue d'un ennemi dans le jeu.
+ * Hérite de la classe PersonnageVue.
+ */
 public class EnnemieVue extends PersonnageVue {
 
     public EnnemieVue(Ennemie ennemie) {

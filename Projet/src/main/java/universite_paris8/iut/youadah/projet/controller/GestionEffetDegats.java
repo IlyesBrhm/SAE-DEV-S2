@@ -3,15 +3,25 @@ package universite_paris8.iut.youadah.projet.controller;
 import javafx.animation.FadeTransition;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
+// GestionEffetDegats.java
 
 public class GestionEffetDegats {
 
+
     private static Pane superpositionRouge;
 
+    /**
+     * Définit la superposition rouge utilisée pour les effets de dégâts.
+     * @param overlay La superposition rouge à utiliser.
+     */
     public static void definirSuperposition(Pane overlay) {
         superpositionRouge = overlay;
     }
 
+    /**
+     * Déclenche un clignotement rouge sur la superposition définie.
+     * La superposition devient visible avec une opacité de 0.6, puis disparaît après une animation.
+     */
     public static void declencherClignotementRouge() {
         if (superpositionRouge == null) return;
 

@@ -5,6 +5,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 
+/** * Classe représentant la vue du bouclier du joueur.
+ * Affiche une barre de bouclier avec des images représentant les points de vie restants.
+ */
 public class BouclierVue {
     private final HBox barreBouclier;
     private final Image bouclier5;
@@ -18,6 +21,11 @@ public class BouclierVue {
     private int pv;
     private Pane pane;
 
+    /**
+     * Constructeur de la vue du bouclier.
+     * @param pv Points de vie initiaux du bouclier.
+     * @param p Pane dans lequel le bouclier sera affiché.
+     */
     public BouclierVue(int pv, Pane p) {
         this.pv = pv;
         this.barreBouclier = new HBox(5);
@@ -38,6 +46,10 @@ public class BouclierVue {
         mettreAJourPv(pv); // Initialisation
     }
 
+    /**
+     * Met à jour les points de vie du bouclier et change l'image affichée en conséquence.
+     * @param pv Points de vie restants du bouclier.
+     */
     public void mettreAJourPv(int pv) {
         this.pv = pv;
         switch (pv) {
@@ -59,7 +71,4 @@ public class BouclierVue {
         return barreBouclier;
     }
 
-    public void afficherBouclier() {
-        pane.getChildren().add(bouclierView);
-    }
 }

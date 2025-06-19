@@ -1,15 +1,27 @@
 package universite_paris8.iut.youadah.projet.modele;
 
+/**
+ * Classe représentant un ennemi dans le jeu.
+ * Un ennemi est un personnage qui peut attaquer le joueur.
+ */
 public class Ennemie extends Personnage {
     private Player joueur;
     private int pointAttaque;
 
+    /**
+     * Indique si l'ennemi se déplace vers la droite.
+     */
     public Ennemie(double startX, double startY, int pointAttaque, Player joueur) {
         super(startX, startY);
         this.pointAttaque = pointAttaque;
         this.joueur = joueur;
     }
 
+    /**
+     * Vérifie si la tuile est solide.
+     * @param tile La tuile à vérifier.
+     * @return true si la tuile est solide, false sinon.
+     */
     public void deplacementMob(GameMap carte) {
         double x = getX();
         double y = getY();

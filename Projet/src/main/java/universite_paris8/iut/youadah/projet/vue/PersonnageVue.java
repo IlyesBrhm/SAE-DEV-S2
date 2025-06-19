@@ -9,7 +9,10 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
 
-
+/**
+ * Classe représentant la vue d'un personnage dans le jeu.
+ * Elle gère l'affichage du sprite du personnage et sa position.
+ */
 public class PersonnageVue {
     protected Image spriteDroite ;
     protected Image spriteGauche;
@@ -20,6 +23,10 @@ public class PersonnageVue {
 
     protected boolean versLaDroite = true;
 
+    /**
+     * Constructeur de la classe PersonnageVue.
+     * @param personnage Le personnage à représenter dans la vue.
+     */
     public PersonnageVue(Personnage personnage) {
         this.personnage = personnage;
         imageJoueur = new ImageView();
@@ -30,6 +37,11 @@ public class PersonnageVue {
     }
 
 
+    /**
+     * Met à jour l'affichage du personnage en fonction de son état.
+     * Change l'image affichée en fonction de la direction du personnage.
+     * @param personnage Le personnage dont on met à jour la vue.
+     */
     public void mettreAJour(Personnage personnage) {
         versLaDroite = personnage.estsVersLaDroite();
         if (!isBlesse) { // tu ajoutes un champ isBlesse aussi
@@ -37,6 +49,10 @@ public class PersonnageVue {
         }
     }
 
+    /**
+     * Retourne le nœud ImageView du personnage pour l'ajouter à la scène.
+     * @return L'ImageView représentant le personnage.
+     */
     public ImageView getNode() {
         return imageJoueur;
     }

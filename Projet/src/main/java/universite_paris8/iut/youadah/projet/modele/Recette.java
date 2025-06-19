@@ -2,10 +2,19 @@ package universite_paris8.iut.youadah.projet.modele;
 
 import java.util.*;
 
+/**
+ * Classe représentant une recette de craft dans le jeu.
+ * Elle contient une liste d'objets nécessaires pour créer un objet final.
+ */
 public class Recette {
     private List<Objet> composants;
     private Objet resultat;
 
+    /**
+     * Constructeur de la classe Recette.
+     * @param composants La liste des objets nécessaires pour réaliser la recette.
+     * @param resultat L'objet qui sera créé en réalisant cette recette.
+     */
     public Recette(List<Objet> composants, Objet resultat) {
         this.composants = composants;
         this.resultat = resultat;
@@ -19,6 +28,11 @@ public class Recette {
         return resultat;
     }
 
+    /**
+     * Vérifie si la recette peut être réalisée avec les objets disponibles dans l'inventaire.
+     * @param inventaire L'inventaire du joueur contenant les objets disponibles.
+     * @return true si la recette peut être réalisée, false sinon.
+     */
     public boolean estCraftable(Inventaire inventaire) {
         System.out.println("=== Vérification de la recette ===");
 

@@ -1,12 +1,22 @@
 package universite_paris8.iut.youadah.projet.modele;
 
-// cette class va contenir un tableau 2D qui va etre notre map ou chque case contient un ID tuile
+/**
+ * Classe représentant la carte du jeu.
+ * Elle gère la création du terrain et les interactions avec les tuiles.
+ */
 public class GameMap {
 
     private int[][] terrain;
 
-
-    // donc ici c la creation du terrain , on initialise le terrain et on creer une boucle pour le remplir avec les différent type de bloc
+    /**
+     * Crée un terrain de jeu avec une hauteur et une largeur spécifiées.
+     * Le terrain est initialisé avec des valeurs représentant le ciel, l'herbe et la terre.
+     * Des nuages et d'autres éléments sont également ajoutés au terrain.
+     *
+     * @param hauteur Hauteur du terrain en tuiles.
+     * @param largeur Largeur du terrain en tuiles.
+     * @return Un tableau 2D représentant le terrain créé.
+     */
     public int[][] creerTerrain(int hauteur, int largeur) {
         terrain = new int[hauteur][largeur];
 
@@ -58,13 +68,30 @@ public class GameMap {
 
         return terrain;
     }
-    // juste ici on a creer des methodes pour nous faciliter a creer des objets et des formes sur la map
+
+    /**
+     * Pose un bloc à une position spécifique sur le terrain.
+     * Vérifie que les coordonnées sont valides avant de poser le bloc.
+     *
+     * @param x Coordonnée x du bloc.
+     * @param y Coordonnée y du bloc.
+     * @param type Type de bloc à poser (par exemple, 1 pour herbe, 2 pour terre, etc.).
+     */
     public void poserBloc(int x, int y, int type) {
         if (terrain != null && y >= 0 && y < terrain.length && x >= 0 && x < terrain[0].length) {
             terrain[y][x] = type;
         }
     }
 
+    /**
+     * Pose une ligne de blocs horizontale sur le terrain.
+     * Les blocs sont posés entre les coordonnées xDebut et xFin à la hauteur y.
+     *
+     * @param xDebut Coordonnée x de début de la ligne.
+     * @param xFin Coordonnée x de fin de la ligne.
+     * @param y Hauteur à laquelle poser la ligne.
+     * @param type Type de bloc à poser (par exemple, 1 pour herbe, 2 pour terre, etc.).
+     */
     public void poserLigne(int xDebut, int xFin, int y, int type) {
         for (int x = xDebut; x <= xFin; x++) {
             poserBloc(x, y, type);
@@ -72,7 +99,14 @@ public class GameMap {
     }
 
 
-
+    /**
+     * Pose un rectangle de blocs sur le terrain.
+     * @param xDebut
+     * @param yDebut
+     * @param largeur
+     * @param hauteur
+     * @param type
+     */
     public void poserRectangle(int xDebut, int yDebut, int largeur, int hauteur, int type) {
         for (int y = yDebut; y < yDebut + hauteur; y++) {
             for (int x = xDebut; x < xDebut + largeur; x++) {
@@ -81,15 +115,31 @@ public class GameMap {
         }
     }
 
+    /**
+     * Récupère la tuile à une position spécifique sur le terrain.
+     * @param y
+     * @param x
+     * @return
+     */
     public int getTile(int y, int x) {
         return terrain[y][x];
     }
 
+
+    /**
+     * Vérifie si une tuile est libre à la position (x, y).
+     * Une tuile est considérée libre si elle a la valeur 0.
+     *
+     * @param x Coordonnée x de la tuile.
+     * @param y Coordonnée y de la tuile.
+     * @return true si la tuile est libre, false sinon.
+     */
     public boolean estTuileLibre(double x, double y) {
         int col = (int)(x / 32);
         int lig = (int)(y / 32);
         return getTile(lig, col) == 0;
     }
+
 
 
     public int getLargeur() {

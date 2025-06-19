@@ -10,6 +10,10 @@ import universite_paris8.iut.youadah.projet.modele.*;
 
 import java.util.List;
 
+/**
+ * Classe représentant la vue de la table de craft.
+ * Elle affiche les recettes disponibles et permet de crafter des objets.
+ */
 public class TableCraftVue {
 
     private final Pane paneCraft;
@@ -17,6 +21,14 @@ public class TableCraftVue {
     private final Inventaire inventaire;
     private final InventaireVue inventaireVue;
 
+    /**
+     * Constructeur de la classe TableCraftVue.
+     *
+     * @param paneCraft Le conteneur où les éléments de craft seront affichés.
+     * @param tableCraft La table de craft contenant les recettes.
+     * @param inventaire L'inventaire du joueur pour vérifier les composants nécessaires.
+     * @param inventaireVue La vue de l'inventaire pour mettre à jour l'affichage après un craft.
+     */
     public TableCraftVue(Pane paneCraft, TableCraft tableCraft, Inventaire inventaire, InventaireVue inventaireVue) {
         this.paneCraft = paneCraft;
         this.tableCraft = tableCraft;
@@ -24,6 +36,10 @@ public class TableCraftVue {
         this.inventaireVue = inventaireVue;
     }
 
+    /**
+     * Affiche les recettes de craft dans le paneCraft.
+     * Pour chaque recette, affiche les composants, le résultat et un bouton pour crafter.
+     */
     public void afficher() {
         paneCraft.getChildren().clear();
 

@@ -4,7 +4,12 @@ import javafx.application.Application;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 
+/**
+ * Classe représentant un joueur dans le jeu.
+ * Hérite de la classe Personnage.
+ */
 public class Player extends Personnage {
+    // Propriété pour stocker l'objet possédé par le joueur
     private Objet objetPossede;
 
     public Player(double x, double y) {

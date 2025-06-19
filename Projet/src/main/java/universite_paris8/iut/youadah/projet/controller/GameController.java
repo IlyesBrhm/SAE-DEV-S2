@@ -45,20 +45,25 @@ public class GameController implements Initializable {
     private EnnemieVue ennemieVue;
     private BarreDeVieVue barreVieEnnemi;
 
-    private TableCraft tableCraft;
     private TableCraftVue tableCraftVue;
     private Pane paneCraft;
-    private boolean craftVisible = false;
 
     private Jeu jeu;
 
+    /**
+     * Méthode appelée lors de l'initialisation du contrôleur.
+     * Elle configure le jeu, les vues et les contrôleurs.
+     *
+     * @param url L'URL de la ressource (non utilisé ici).
+     * @param resourceBundle Le ResourceBundle pour les ressources localisées (non utilisé ici).
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        // Initialisation des éléments de l'interface
         jeu = new Jeu(tileMap,playerLayer,overlayRouge,ath);
         jeu.initialiserJeu();
         this.paneCraft = jeu.getPaneCraft();
-        this.tableCraft = jeu.getTableCraft();
 
         tileMap.setMaxWidth(TAILLE_TUILE * NB_COLONNES);
         tileMap.setMinWidth(TAILLE_TUILE * NB_COLONNES);
@@ -90,12 +95,14 @@ public class GameController implements Initializable {
         inventaireVue.afficherInventaire();
         inventaireVue.maj();
 
+        // Ajout des éléments de l'interface dans la couche joueur
         playerLayer.getChildren().addAll(
                 bouclierVue.getBarreBouclier(),
                 joueurVue.getNode(),
                 coeurVue.getBarreVie()
         );
 
+        // Configuration du contrôleurs clavier et souris
         clavierController = new ClavierController(
                 touchesAppuyees,
                 jeu.getJoueur(),
@@ -119,7 +126,6 @@ public class GameController implements Initializable {
 
 
         SourisController sourisController = new SourisController(
-                touchesAppuyees,
                 jeu.getJoueur(),
                 jeu.getEnnemie(),
                 ennemieVue,
@@ -135,7 +141,6 @@ public class GameController implements Initializable {
         sourisController.gestionSouris(barreVieEnnemi,carteVue);
 
         tableCraftVue = new TableCraftVue(jeu.getPaneCraft(), jeu.getTableCraft(), jeu.getInventaire(), inventaireVue);
-
 
 
         Image image = new Image(getClass().getResource("/images/inventory selected.png").toExternalForm());

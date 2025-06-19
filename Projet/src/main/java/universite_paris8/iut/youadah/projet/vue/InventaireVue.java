@@ -13,17 +13,31 @@ import universite_paris8.iut.youadah.projet.modele.Objet;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Classe représentant la vue de l'inventaire du joueur.
+ * Elle gère l'affichage des objets dans l'inventaire.
+ */
 public class InventaireVue {
     private Pane pane;
     private Inventaire inventaire;
     private final Image image;
 
+    /**
+     * Constructeur de la vue de l'inventaire.
+     *
+     * @param p Pane dans lequel l'inventaire sera affiché.
+     * @param i Inventaire du joueur.
+     */
     public InventaireVue(Pane p, Inventaire i) {
         pane = p;
         inventaire = i;
         image = new Image(getClass().getResource("/images/inventory.png").toExternalForm());
     }
 
+    /**
+     * Affiche les cases de l'inventaire.
+     * Chaque case est représentée par une ImageView.
+     */
     public void afficherInventaire() {
         List<ImageView> cases = new ArrayList<>();
         for (int i = 0; i <= 5; i++) {
@@ -36,6 +50,10 @@ public class InventaireVue {
         }
     }
 
+    /**
+     * Met à jour l'affichage de l'inventaire.
+     * Supprime les anciennes icônes et quantités, puis réaffiche les objets actuels.
+     */
     public void maj() {
         // Supprimer les anciennes icônes/quantités
         pane.getChildren().removeIf(node -> node instanceof ImageView || node instanceof Label || node instanceof Group);

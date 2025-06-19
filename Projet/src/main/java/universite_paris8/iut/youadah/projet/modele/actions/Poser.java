@@ -3,6 +3,10 @@ import universite_paris8.iut.youadah.projet.modele.GameMap;
 import universite_paris8.iut.youadah.projet.modele.Player;
 import universite_paris8.iut.youadah.projet.vue.MapVue;
 
+
+/** * Classe pour gérer la pose de blocs sur la carte.
+ * Permet au joueur de poser un bloc à une position donnée s'il est à proximité.
+ */
 public class Poser {
     private GameMap map;
     private MapVue mapVue;
@@ -14,6 +18,12 @@ public class Poser {
         this.joueur = joueur;
     }
 
+    /**
+     * Méthode pour poser un bloc à la position (x, y) si le joueur est à proximité.
+     * @param x Coordonnée x de l'emplacement où poser le bloc.
+     * @param y Coordonnée y de l'emplacement où poser le bloc.
+     * @param idBloc ID du bloc à poser (par exemple, 2 pour terre, 1 pour herbe, etc.).
+     */
     public void poserBloc(int x, int y, int idBloc) {
         double joueurX = joueur.getX() / 32.0;  // position en tuiles
         double joueurY = joueur.getY() / 32.0;

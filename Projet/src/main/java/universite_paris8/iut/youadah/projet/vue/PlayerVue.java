@@ -6,6 +6,10 @@ import universite_paris8.iut.youadah.projet.modele.Armes.Arc;
 import universite_paris8.iut.youadah.projet.modele.Armes.Epee;
 import universite_paris8.iut.youadah.projet.modele.Player;
 
+/**
+ * Classe représentant la vue d'un joueur dans le jeu.
+ * Elle gère l'affichage du joueur et de son équipement.
+ */
 
 public class  PlayerVue {
     private Image spriteDroite ;
@@ -29,6 +33,10 @@ public class  PlayerVue {
     private final Image spriteArcDroite = new Image(getClass().getResource("/images/PersoRightArc.png").toExternalForm());
     private final Image spriteArcGauche = new Image(getClass().getResource("/images/PersoLeftArc.png").toExternalForm());
 
+    /**
+     * Constructeur de la classe PlayerVue.
+     * @param joueur
+     */
         public PlayerVue(Player joueur) {
             this.joueur = joueur;
             imageJoueur = new ImageView(spriteDroite);
@@ -41,28 +49,31 @@ public class  PlayerVue {
 
         }
 
-
+    /**
+     * Met à jour l'affichage du joueur en fonction de son état.
+     * Change l'image affichée en fonction de la direction du joueur et de l'objet qu'il possède.
+     */
     public void mettreAJourJoueur() {
-        versLaDroite = joueur.estsVersLaDroite();
+            versLaDroite = joueur.estsVersLaDroite();
 
-        if (!isBlesse) {
-            imageJoueur.setImage(versLaDroite ? spriteDroite : spriteGauche);
-        }
+            if (!isBlesse) {
+                imageJoueur.setImage(versLaDroite ? spriteDroite : spriteGauche);
+            }
 
-        if (joueur.getObjetPossede() != null) {
-            String nomObjet = joueur.getObjetPossede().getNom().toLowerCase();
+            if (joueur.getObjetPossede() != null) {
+                String nomObjet = joueur.getObjetPossede().getNom().toLowerCase();
 
-            if (nomObjet.equals("pioche")) {
-                imageJoueur.setImage(versLaDroite ? spritePiocheDroite : spritePiocheGauche);
-            } else if (nomObjet.contains("potion")) {
-                imageJoueur.setImage(versLaDroite ? spritePotionDroite : spritePotionGauche);
-            } else if (joueur.getObjetPossede() instanceof Epee) {
-                imageJoueur.setImage(versLaDroite ? spriteEpeeDroite : spriteEpeeGauche);
-            } else if (joueur.getObjetPossede() instanceof Arc) {
-                imageJoueur.setImage(versLaDroite ? spriteArcDroite : spriteArcGauche);
+                if (nomObjet.equals("pioche")) {
+                    imageJoueur.setImage(versLaDroite ? spritePiocheDroite : spritePiocheGauche);
+                } else if (nomObjet.contains("potion")) {
+                    imageJoueur.setImage(versLaDroite ? spritePotionDroite : spritePotionGauche);
+                } else if (joueur.getObjetPossede() instanceof Epee) {
+                    imageJoueur.setImage(versLaDroite ? spriteEpeeDroite : spriteEpeeGauche);
+                } else if (joueur.getObjetPossede() instanceof Arc) {
+                    imageJoueur.setImage(versLaDroite ? spriteArcDroite : spriteArcGauche);
+                }
             }
         }
-    }
 
     public ImageView getNode() {
         return imageJoueur;

@@ -6,6 +6,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import universite_paris8.iut.youadah.projet.modele.Personnage;
 
+/**
+ * Classe représentant la vue de la barre de vie d'un personnage.
+ * Affiche une barre de vie qui se met à jour en fonction des points de vie du personnage.
+ */
 public class BarreDeVieVue {
 
     private final Rectangle fond;
@@ -15,6 +19,11 @@ public class BarreDeVieVue {
     private final int pvMax;
     private final double largeurTotale = 40;
 
+
+    /**
+     * Constructeur de la barre de vie.
+     * @param personnage Le personnage dont on veut afficher la barre de vie.
+     */
     public BarreDeVieVue(Personnage personnage) {
         this.pvMax = personnage.getPv();
 
@@ -46,10 +55,19 @@ public class BarreDeVieVue {
 
     }
 
+    /**
+     * Retourne le nœud de la barre de vie, pour l'ajouter à la scène.
+     * @return Le pane contenant la barre de vie.
+     *
+     */
     public Pane getNode() {
         return barreContainer;
     }
 
+    /**
+     * Met à jour la largeur de la barre de vie en fonction des points de vie actuels.
+     * @param pv Le nombre de points de vie actuel du personnage.
+     */
     public void mettreAJourPv(int pv) {
         barre.setWidth(largeurTotale * ((double) pv / pvMax));
     }

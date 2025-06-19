@@ -12,6 +12,7 @@ module universite_paris8.iut.youadah.projet {
     requires com.almasb.fxgl.all;
     requires java.desktop;
     requires javafx.graphics;
+    requires org.junit.jupiter.api;
 
     opens universite_paris8.iut.youadah.projet to javafx.fxml;
     exports universite_paris8.iut.youadah.projet;

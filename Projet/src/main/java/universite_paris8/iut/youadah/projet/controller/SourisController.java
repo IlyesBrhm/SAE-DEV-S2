@@ -17,7 +17,6 @@ import static universite_paris8.iut.youadah.projet.modele.Personnage.TAILLE_TUIL
 
 public class SourisController {
 
-    private final Set<KeyCode> touchesAppuyees;
     private  Player joueur;
     private final Ennemie ennemie;
     private final EnnemieVue ennemieVue;
@@ -33,8 +32,21 @@ public class SourisController {
 
 
 
-    public SourisController(Set<KeyCode> touchesAppuyees,
-                             Player joueur,
+    /**
+     * Constructeur du contrôleur de la souris.
+     *
+     * @param joueur Le joueur principal.
+     * @param ennemie L'ennemi ciblé.
+     * @param ennemieVue La vue de l'ennemi.
+     * @param coeurVue La vue des cœurs du joueur.
+     * @param playerLayer La couche où le joueur et les ennemis sont affichés.
+     * @param inventaire L'inventaire du joueur.
+     * @param inventaireVue La vue de l'inventaire.
+     * @param ath La zone d'action du joueur (barre d'outils).
+     * @param carte La carte du jeu.
+     * @param overlayRouge L'overlay rouge pour les effets visuels.
+     */
+    public SourisController( Player joueur,
                              Ennemie ennemie,
                              EnnemieVue ennemieVue,
                              CoeurVue coeurVue,
@@ -44,7 +56,6 @@ public class SourisController {
                              Pane ath,
                              GameMap carte,
                              Pane overlayRouge) {
-        this.touchesAppuyees = touchesAppuyees;
         this.joueur = joueur;
         this.ennemie = ennemie;
         this.ennemieVue = ennemieVue;
@@ -57,6 +68,12 @@ public class SourisController {
         this.overlayRouge = overlayRouge;
     }
 
+    /**
+     * Gère les interactions de la souris pour attaquer un ennemi ou utiliser un objet.
+     *
+     * @param barreVieEnnemi La vue de la barre de vie de l'ennemi.
+     * @param carteVue La vue de la carte du jeu.
+     */
     public void gestionSouris(BarreDeVieVue barreVieEnnemi, MapVue carteVue) {
         ath.setOnMouseClicked(event -> {
             double cibleX = event.getX();
@@ -94,6 +111,13 @@ public class SourisController {
         });
     }
 
+    /**
+     * Tire une flèche vers une cible spécifiée.
+     *
+     * @param cibleX La position X de la cible.
+     * @param cibleY La position Y de la cible.
+     * @param couche La couche où la flèche sera affichée.
+     */
     public void tirerFleche(double cibleX, double cibleY, Pane couche) {
         Fleche fleche = new Fleche(
                 joueur.getX(), joueur.getY(),

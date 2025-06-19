@@ -47,6 +47,9 @@ public class Jeu {
         this.ath = ath;
     }
 
+    /**
+     * Initialise le jeu en créant la carte, le joueur, l'ennemi, les objets au sol et l'inventaire.
+     */
     public void initialiserJeu(){
         carte = new GameMap();
         carte.creerTerrain(TAILLE_TUILE, NB_COLONNES);
