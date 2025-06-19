@@ -7,7 +7,7 @@ import universite_paris8.iut.youadah.projet.modele.Armes.Epee;
 import universite_paris8.iut.youadah.projet.modele.Player;
 
 
-public class PlayerVue {
+public class  PlayerVue {
     private Image spriteDroite ;
     private Image spriteGauche;
     private final ImageView imageJoueur;

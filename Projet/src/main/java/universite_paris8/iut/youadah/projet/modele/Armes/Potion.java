@@ -2,6 +2,7 @@ package universite_paris8.iut.youadah.projet.modele.Armes;
 
 import universite_paris8.iut.youadah.projet.modele.Objet;
 import universite_paris8.iut.youadah.projet.modele.Player;
+import universite_paris8.iut.youadah.projet.vue.MapVue;
 
 public class Potion extends Objet {
     Player joueur;
@@ -13,8 +14,9 @@ public class Potion extends Objet {
         this.joueur = joueur;
     }
 
-    public void utiliser(int x, int y) {
-            joueur.incrementerPv(getRarete());
+    @Override
+    public void utiliser(int x, int y, MapVue carteVue) {
+        joueur.incrementerPv(getRarete());
         System.out.println("utilisé");
     }
 }

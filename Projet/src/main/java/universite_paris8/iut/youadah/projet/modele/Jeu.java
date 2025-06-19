@@ -27,23 +27,13 @@ public class Jeu {
     private final Set<KeyCode> touchesAppuyees = new HashSet<>();
 
     private GameMap carte;
-    private MapVue carteVue;
     private Player joueur;
-    private PlayerVue joueurVue;
-    private CoeurVue coeurVue;
-    private BouclierVue bouclierVue;
-    private CoeurVue coeurVueArmure;
-    private ClavierController clavierController;
     private Inventaire inventaire;
-    private InventaireVue inventaireVue;
     private ObjetAuSol objetAuSol;
     private boolean estMort = false;
     private Ennemie ennemie;
-    private EnnemieVue ennemieVue;
-    private BarreDeVieVue barreVieEnnemi;
 
     private TableCraft tableCraft;
-    private TableCraftVue tableCraftVue;
     private Pane paneCraft;
     private boolean craftVisible = false;
 
@@ -68,69 +58,24 @@ public class Jeu {
 
     public void initialiserJeu(){
         carte = new GameMap();
-        int[][] structure = carte.creerTerrain(32, NB_COLONNES);
-        carteVue = new MapVue(structure);
-        tileMap.setMaxWidth(TAILLE_TUILE * NB_COLONNES);
-        tileMap.setMinWidth(TAILLE_TUILE * NB_COLONNES);
-        carteVue.afficherCarte(tileMap);
+        carte.creerTerrain(TAILLE_TUILE, NB_COLONNES);
 
         joueur = new Player(5 * TAILLE_TUILE, 19 * TAILLE_TUILE);
-        joueurVue = new PlayerVue(joueur);
-        coeurVue = new CoeurVue(joueur.getPv());
-        bouclierVue = new BouclierVue(joueur.getPvArmure(), ath);
-        bouclierVue.getBarreBouclier().setLayoutY(40);
 
         ennemie = new Ennemie(19 * TAILLE_TUILE, 19 * TAILLE_TUILE, 1, joueur);
-        ennemieVue = new EnnemieVue(ennemie);
-        playerLayer.getChildren().addAll(ennemieVue.getNode());
 
-        barreVieEnnemi = new BarreDeVieVue(ennemie);
-        playerLayer.getChildren().add(barreVieEnnemi.getNode());
-
-        coeurVue.mettreAJourPv(joueur.getPv());
-        bouclierVue.mettreAJourPv(joueur.getPvArmure());
-
-        objetAuSol = new ObjetAuSol(5, 19, playerLayer, new Pioche("pioche", 1, carte, carteVue, joueur, null, playerLayer));
+        objetAuSol = new ObjetAuSol(5, 19, playerLayer, new Pioche("pioche", 1, carte, joueur, null, playerLayer));
 
         inventaire = new Inventaire();
-        inventaire.ajouterObjet(new Pioche("pioche", 1, carte, carteVue, joueur, objetAuSol, playerLayer));
+
+        inventaire.ajouterObjet(new Pioche("pioche", 1, carte, joueur, objetAuSol, playerLayer));
         inventaire.ajouterObjet(new Potion("potionVie", 1, joueur, "vie"));
-        inventaire.ajouterObjet(new Bloc("Terre", 1, false, carte, carteVue, joueur, 2));
-        inventaire.ajouterObjet(new Bloc("Pierre", 1, false, carte, carteVue, joueur, 3));
-        inventaire.ajouterObjet(new Epee("Epee", 1, carte, carteVue, joueur, tileMap));
-        inventaire.ajouterObjet(new Arc("Arc", 1, carte, carteVue, joueur, tileMap));
-
-        inventaireVue = new InventaireVue(ath, inventaire);
-        inventaireVue.afficherInventaire();
-        inventaireVue.maj();
-
-        playerLayer.getChildren().addAll(
-                bouclierVue.getBarreBouclier(),
-                joueurVue.getNode(),
-                coeurVue.getBarreVie()
-        );
+        inventaire.ajouterObjet(new Bloc("Terre", 1, false, carte, joueur, 2));
+        inventaire.ajouterObjet(new Bloc("Pierre", 1, false, carte, joueur, 3));
+        inventaire.ajouterObjet(new Epee("Epee", 1, carte, joueur, tileMap));
+        inventaire.ajouterObjet(new Arc("Arc", 1, carte, joueur));
 
         GestionEffetDegats.definirSuperposition(overlayRouge);
-
-        clavierController = new ClavierController(
-                touchesAppuyees,
-                joueur,
-                joueurVue,
-                ennemie,
-                ennemieVue,
-                coeurVue,
-                bouclierVue,
-                playerLayer,
-                this::mourir,
-                GestionEffetDegats::declencherClignotementRouge,
-                carte
-        );
-        clavierController.configurerControles();
-
-        Image image = new Image(getClass().getResource("/images/inventory selected.png").toExternalForm());
-        ImageView imageView = new ImageView(image);
-        imageView.setFitHeight(64);
-        imageView.setFitWidth(64);
 
         paneCraft = new Pane();
         paneCraft.setVisible(false);
@@ -141,188 +86,61 @@ public class Jeu {
         ath.getChildren().add(paneCraft);
 
         tableCraft = new TableCraft();
-        tableCraft.ajouterRecette(new Recette(List.of(
-                (Bloc) inventaire.getInventaire().get(2),
-                (Bloc) inventaire.getInventaire().get(3)),
-                new Potion("potionVie", 5, joueur, "vie")));
-
         tableCraft.ajouterRecette(new Recette(
                 List.of(
-                        new Bloc("Pierre", 1, false, carte, carteVue, joueur, 3),
-                        new Bloc("Pierre", 1, false, carte, carteVue, joueur, 3)
+                    new Bloc("Terre", 1, false, carte, joueur, 3),
+                    new Bloc("Pierre", 1, false, carte, joueur, 3)
                 ),
-                new Pioche("pioche", 1, carte, carteVue, joueur, objetAuSol, playerLayer)
+                new Potion("potionVie", 5, joueur, "vie")
         ));
 
         tableCraft.ajouterRecette(new Recette(
                 List.of(
-                        new Bloc("Bois", 1, false, carte, carteVue, joueur, 2),
-                        new Bloc("Bois", 1, false, carte, carteVue, joueur, 2),
-                        new Bloc("Pierre", 1, false, carte, carteVue, joueur, 3)
+                        new Bloc("Pierre", 1, false, carte, joueur, 3),
+                        new Bloc("Pierre", 1, false, carte, joueur, 3)
                 ),
-                new Arc("Arc", 1, carte, carteVue, joueur, playerLayer)
+                new Pioche("pioche", 1, carte, joueur, objetAuSol, playerLayer)
         ));
 
-        tableCraftVue = new TableCraftVue(paneCraft, tableCraft, inventaire, inventaireVue, ath);
+        tableCraft.ajouterRecette(new Recette(
+                List.of(
+                        new Bloc("Bois", 1, false, carte, joueur, 2),
+                        new Bloc("Bois", 1, false, carte, joueur, 2),
+                        new Bloc("Pierre", 1, false, carte, joueur, 3)
+                ),
+                new Arc("Arc", 1, carte, joueur)
+        ));
+
 
         playerLayer.setFocusTraversable(true);
         playerLayer.requestFocus();
 
-        playerLayer.setOnKeyPressed(event -> {
-            touchesAppuyees.add(event.getCode());
-
-            switch (event.getCode()) {
-                case E -> {
-                    if (objetAuSol.ramasser(joueur, inventaire, playerLayer)) {
-                        inventaireVue.maj();
-                    }
-                }
-                case A -> {
-                    Objet obj = joueur.getObjetPossede();
-                    if (obj != null) {
-                        int q = obj.getQuantite();
-                        obj.setQuantite(1);
-                        objetAuSol.deposerJoueur(obj, joueur, playerLayer);
-                        obj.setQuantite(q - 1);
-
-                        if (q <= 1) {
-                            inventaire.getInventaire().remove(obj);
-                            joueur.setObjetPossede(null); // Si c'était le dernier, on désélectionne
-                        } else {
-                            joueur.setObjetPossede(obj); // Sinon, on garde l’objet sélectionné
-                        }
-
-                        joueurVue.mettreAJourJoueur(joueur);
-                        ath.getChildren().clear();
-                        inventaireVue.afficherInventaire();
-                        inventaireVue.maj();
-                    }
-                }
 
 
-                case C ->  {
-                    craftVisible = !craftVisible;
 
-                    if (!ath.getChildren().contains(paneCraft)) {
-                        ath.getChildren().add(paneCraft);
-                    }
-
-                    paneCraft.setVisible(craftVisible);
-                    if (craftVisible) {
-                        System.out.println("→ Affichage table de craft");
-                        tableCraftVue.afficher();
-                    }
-                }
-                case F1, F2, F3, F4, F5, F6 -> {
-                    int index = event.getCode().ordinal() - KeyCode.F1.ordinal();
-                    if (index < inventaire.getInventaire().size()) {
-                        joueur.setObjetPossede(inventaire.getInventaire().get(index));
-                        imageView.setX((index * 64) + 730);
-                        ath.getChildren().remove(imageView);
-                        ath.getChildren().add(imageView);
-                    }
-                }
-
-            }
-        });
-
-        ath.setOnMouseClicked(event -> {
-            double cibleX = event.getX();
-            double cibleY = event.getY();
-            Objet objetUtilise = joueur.getObjetPossede();
-
-            Taper taper = new Taper();
-            taper.attaquerAvecEpee(joueur, List.of(ennemie), overlayRouge);
-            barreVieEnnemi.mettreAJourPv(ennemie.getPv());
-
-            if (ennemie.estMort()) {
-                playerLayer.getChildren().removeAll(ennemieVue.getNode(), barreVieEnnemi.getNode());
-            }
-
-            if (objetUtilise != null) {
-                if (objetUtilise instanceof Arc) {
-                    tirerFleche(cibleX, cibleY, playerLayer); // ✅ appel ici
-                } else {
-                    objetUtilise.utiliser((int)(cibleX / TAILLE_TUILE), (int)(cibleY / TAILLE_TUILE));
-                    if (objetUtilise instanceof Bloc || objetUtilise.getConsomable()) {
-                        objetUtilise.decrementerQuantite(1);
-                        if (objetUtilise.getQuantite() <= 0) {
-                            inventaire.getInventaire().remove(objetUtilise);
-                            joueur.setObjetPossede(null);
-                        }
-                    }
-                    coeurVue.mettreAJourPv(joueur.getPv());
-                }
-
-                ath.getChildren().clear();
-                inventaireVue.afficherInventaire();
-                inventaireVue.maj();
-            }
-
-        });
 
         playerLayer.setOnKeyReleased(event -> touchesAppuyees.remove(event.getCode()));
     }
 
-    private void tirerFleche(double cibleX, double cibleY, Pane couche) {
-        Fleche fleche = new Fleche(
-                joueur.getX(), joueur.getY(),
-                cibleX, cibleY,
-                List.of(ennemie),
-                overlayRouge,
-                2,
-                carte // <--- passe ta GameMap ici
-        );
 
-
-        couche.getChildren().add(fleche.getNode());
-        fleche.startAnimation();
-    }
-
-    private void mourir() {
-        if (estMort) return;
-        estMort = true;
-        messageMort.setVisible(true);
-        boutonQuitter.setVisible(true);
-        boutonReapparaitre.setVisible(true);
-        joueurVue.getNode().setVisible(false);
-        tileMap.setEffect(effetFlou);
-        playerLayer.setEffect(effetFlou);
-    }
-
-    public ClavierController getClavierController() {
-        return clavierController;
-    }
 
     public Player getJoueur() {
         return joueur;
-    }
-
-    public PlayerVue getJoueurVue() {
-        return joueurVue;
-    }
-
-    public CoeurVue getCoeurVue() {
-        return coeurVue;
-    }
-
-    public BouclierVue getBouclierVue() {
-        return bouclierVue;
-    }
-
-    public EnnemieVue getEnnemieVue() {
-        return ennemieVue;
     }
 
     public Ennemie getEnnemie() {
         return ennemie;
     }
 
-    public BarreDeVieVue getBarreVieEnnemi() {
-        return barreVieEnnemi;
-    }
-
     public GameMap getCarte() {
         return carte;
+    }
+
+    public Inventaire getInventaire() {
+        return inventaire;
+    }
+
+    public ObjetAuSol getObjetAuSol() {
+        return objetAuSol;
     }
 }

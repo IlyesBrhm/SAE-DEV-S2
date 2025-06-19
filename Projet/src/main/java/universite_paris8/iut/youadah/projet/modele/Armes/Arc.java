@@ -15,18 +15,14 @@ public class Arc extends Objet {
     private final int portee;
 
     private final GameMap carte;
-    private final MapVue carteVue;
     private final Player joueur;
-    private final Pane tileMap;
 
-    public Arc(String nom, int rarete, GameMap carte, MapVue carteVue, Player joueur, Pane tileMap) {
+    public Arc(String nom, int rarete, GameMap carte, Player joueur) {
         super(nom, 1, false);
         this.degats = Math.max(1, rarete);             // Dégâts selon rareté
         this.portee = 150 + rarete * 20;               // Portée selon rareté
         this.carte = carte;
-        this.carteVue = carteVue;
         this.joueur = joueur;
-        this.tileMap = tileMap;
     }
 
     public int getDegats() {
@@ -64,10 +60,10 @@ public class Arc extends Objet {
         fleche.startAnimation();
     }
 
-
     @Override
-    public void utiliser(int x, int y) {
-        // Ici, on pourrait éventuellement déclencher un tir automatique selon direction
-        // Mais le tir réel est géré dans GameController via un clic souris.
+    public void utiliser(int x, int y, MapVue carteVue) {
+        // L'arc n'est pas utilisé directement sur la carte, mais pour tirer des flèches
+
     }
+
 }

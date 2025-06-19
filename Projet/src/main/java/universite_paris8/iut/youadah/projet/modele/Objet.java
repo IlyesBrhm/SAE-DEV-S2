@@ -1,5 +1,7 @@
 package universite_paris8.iut.youadah.projet.modele;
 
+import universite_paris8.iut.youadah.projet.vue.MapVue;
+
 public abstract class Objet {
 
     private String nom;
@@ -42,7 +44,7 @@ public abstract class Objet {
         this.quantite -= n;
     }
 
-    public abstract void utiliser(int x, int y);
+    public abstract void utiliser(int x, int y, MapVue carteVue);
 
     @Override
     public String toString() {

@@ -61,6 +61,10 @@ public class Ennemie extends Personnage {
         }
     }
 
+    /**
+     * Méthode pour attaquer le joueur.
+     * @param carte
+     */
     public void attaque(GameMap carte) {
         System.out.println("Attaque du joueur !");
         if (joueur.getPvArmure() > 0) {

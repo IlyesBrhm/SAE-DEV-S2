@@ -12,16 +12,14 @@ public class Epee extends Objet {
     private int degats;
 
     GameMap carte;
-    MapVue carteVue;
     Player joueur;
     TilePane tileMap;
 
-    public Epee(String nom, int rarete, GameMap carte, MapVue carteVue, Player joueur, TilePane tileMap) {
+    public Epee(String nom, int rarete, GameMap carte, Player joueur, TilePane tileMap) {
         super(nom, 1, false);
         this.degats = calculerDegatsSelonRarete(rarete);
 
         this.carte = carte;
-        this.carteVue = carteVue;
         this.joueur = joueur;
         this.tileMap = tileMap;
     }
@@ -40,19 +38,13 @@ public class Epee extends Objet {
         return carte;
     }
 
-    public MapVue getCarteVue() {
-        return carteVue;
-    }
 
     public Player getJoueur() {
         return joueur;
     }
 
-    public TilePane getTileMap() {
-        return tileMap;
-    }
-
-    public void utiliser(int x, int y){
+    @Override
+    public void utiliser(int x, int y, MapVue carteVue) {
         Taper taper = new Taper();
         //taper.infligerDegats();
     }

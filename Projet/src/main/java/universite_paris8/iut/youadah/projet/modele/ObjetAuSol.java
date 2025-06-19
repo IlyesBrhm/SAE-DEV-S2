@@ -12,6 +12,8 @@ public class ObjetAuSol {
     private int x, y;
     private ObjetVue objetVue;
 
+
+
     public ObjetAuSol(int x, int y, Pane pane, Objet objet) {
         this.x = x;
         this.y = y;
