@@ -237,23 +237,6 @@ public class GameController implements Initializable {
         playerLayer.setEffect(null);
     }
 
-
-
-    public void tirerFleche(double cibleX, double cibleY, Pane couche) {
-        Fleche fleche = new Fleche(
-                jeu.getJoueur().getX(), jeu.getJoueur().getY(),
-                cibleX, cibleY,
-                List.of(jeu.getEnnemie()),
-                overlayRouge,
-                2,
-                jeu.getCarte() // <--- passe ta GameMap ici
-        );
-
-
-        couche.getChildren().add(fleche.getNode());
-        fleche.startAnimation();
-    }
-
     private void mourir() {
         if (estMort) return;
         estMort = true;
