@@ -27,20 +27,6 @@ public class Inventaire {
         }
     }
 
-    public void retirerObjet(Objet objetARetirer) {
-        for (int i = 0; i < inventaire.size(); i++) {
-            Objet objet = inventaire.get(i);
-            if (objet.equals(objetARetirer)) {
-                if (objet.getQuantite() > 1) {
-                    objet.decrementerQuantite(1);
-                } else {
-                    inventaire.remove(i);
-                }
-                return;
-            }
-        }
-    }
-
     public List<Objet> getInventaire() {
         return inventaire;
     }

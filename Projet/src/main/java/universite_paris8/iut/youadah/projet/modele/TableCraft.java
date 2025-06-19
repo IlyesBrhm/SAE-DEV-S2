@@ -6,7 +6,6 @@ import java.util.*;
 
 public class TableCraft {
     private List<Recette> recettes = new ArrayList<>();
-    private InventaireVue inventaireVue;
 
     public void ajouterRecette(Recette recette) {
         recettes.add(recette);

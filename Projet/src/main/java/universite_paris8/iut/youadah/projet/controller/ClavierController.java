@@ -1,6 +1,7 @@
 // ClavierController.java
 package universite_paris8.iut.youadah.projet.controller;
 
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import universite_paris8.iut.youadah.projet.modele.*;
@@ -18,8 +19,16 @@ public class ClavierController {
     private  CoeurVue coeurVue;
     private  BouclierVue bouclierVue;
     private final Pane playerLayer;
+    private ObjetAuSol objetAuSol;
     private final Runnable callbackMort;
     private final Runnable afficherDegat;
+    private boolean craftVisible = false;
+    private Inventaire inventaire;
+    private InventaireVue inventaireVue;
+    private Pane paneCraft;
+    private Pane ath;
+    private TableCraftVue tableCraftVue;
+
     private final GameMap carte;
 
 
@@ -33,7 +42,14 @@ public class ClavierController {
                              EnnemieVue ennemieVue,
                              CoeurVue coeurVue,
                              BouclierVue bouclierVue,
+                             ObjetAuSol objetAuSol,
                              Pane playerLayer,
+                             Inventaire inventaire,
+                             InventaireVue inventaireVue,
+                             Pane paneCraft,
+                             Pane ath,
+                             TableCraftVue tableCraftVue,
+
                              Runnable callbackMort,
                              Runnable afficherDegat,
                              GameMap carte) {
@@ -45,52 +61,108 @@ public class ClavierController {
         this.coeurVue = coeurVue;
         this.bouclierVue = bouclierVue;
         this.playerLayer = playerLayer;
+        this.inventaire = inventaire;
+        this.inventaireVue = inventaireVue;
+        this.paneCraft = paneCraft;
+        this.ath = ath;
+        this.tableCraftVue = tableCraftVue;
+
+        this.objetAuSol = objetAuSol;
         this.callbackMort = callbackMort;
         this.afficherDegat = afficherDegat;
         this.carte = carte;
     }
 
-    public void gererTouches() {
-        if (touchesAppuyees.contains(KeyCode.Q) || touchesAppuyees.contains(KeyCode.LEFT)) {
-            joueur.deplacerGauche(carte);
-        }
-        if (touchesAppuyees.contains(KeyCode.D) || touchesAppuyees.contains(KeyCode.RIGHT)) {
-            joueur.deplacerDroite(carte);
-        }
-        if (touchesAppuyees.contains(KeyCode.Z) || touchesAppuyees.contains(KeyCode.SPACE)) {
-            joueur.sauter();
+    public void gererTouches(ImageView imageView) {
+        for (KeyCode key : touchesAppuyees) {
+            switch (key) {
+                case Q, LEFT -> joueur.deplacerGauche(carte);
+                case D, RIGHT -> joueur.deplacerDroite(carte);
+                case Z, SPACE -> joueur.sauter();
+
+                case E -> {
+                    if (objetAuSol.ramasser(joueur, inventaire, playerLayer)) {
+                        inventaireVue.maj();
+                    }
+                }
+
+                case A -> {
+                    Objet obj = joueur.getObjetPossede();
+                    if (obj != null) {
+                        int q = obj.getQuantite();
+                        obj.setQuantite(1);
+                        objetAuSol.deposerJoueur(obj, joueur, playerLayer);
+                        obj.setQuantite(q - 1);
+
+                        if (q <= 1) {
+                            inventaire.getInventaire().remove(obj);
+                            joueur.setObjetPossede(null);
+                        } else {
+                            joueur.setObjetPossede(obj);
+                        }
+
+                        joueurVue.mettreAJourJoueur();
+                        ath.getChildren().clear();
+                        inventaireVue.afficherInventaire();
+                        inventaireVue.maj();
+                    }
+                }
+
+                case C -> {
+                    craftVisible = !craftVisible;
+
+                    if (!ath.getChildren().contains(paneCraft)) {
+                        ath.getChildren().add(paneCraft);
+                    }
+
+                    paneCraft.setVisible(craftVisible);
+                    if (craftVisible) {
+                        System.out.println("→ Affichage table de craft");
+                        tableCraftVue.afficher();
+                    }
+                }
+
+                case F1, F2, F3, F4, F5, F6 -> {
+                    int index = key.ordinal() - KeyCode.F1.ordinal();
+                    if (index < inventaire.getInventaire().size()) {
+                        joueur.setObjetPossede(inventaire.getInventaire().get(index));
+                        imageView.setX((index * 64) + 730);
+                        ath.getChildren().remove(imageView);
+                        ath.getChildren().add(imageView);
+                    }
+                }
+
+                default -> {
+                    // Rien à faire
+                }
+            }
         }
 
         joueur.mettreAJour(carte);
-        joueurVue.mettreAJourJoueur(joueur);
+        joueurVue.mettreAJourJoueur();
 
         ennemieVue.mettreAJour(ennemie);
         ennemie.deplacementMob(carte);
         ennemie.mettreAJour(carte);
 
-        // Gestion collision entre joueur et ennemie
         if ((int) ennemie.getX() == (int) joueur.getX() && (int) ennemie.getY() == (int) joueur.getY()) {
             long maintenant = System.currentTimeMillis();
             if (maintenant - joueur.getDernierCoupRecu() > 1000) {
-                ennemie.attaque(carte);  // au lieu de juste ennemie.attaque()
-
+                ennemie.attaque(carte);
                 joueur.setDernierCoupRecu(maintenant);
             }
         }
 
-        // Mise à jour des barres de vie
         coeurVue.mettreAJourPv(joueur.getPv());
         bouclierVue.mettreAJourPv(joueur.getPvArmure());
 
-        // Dégâts de feu si le joueur est sur un bloc feu (5)
         int tuileX = (int) (joueur.getX() / 32);
         int tuileY = (int) (joueur.getY() / 32);
 
         if (carte.getTile(tuileY, tuileX) == 5 && !joueur.estMort()) {
-            maintenant = System.currentTimeMillis();
+            long maintenant = System.currentTimeMillis();
             if (maintenant - joueur.getDernierDegatFeu() > 1000) {
                 joueur.setDernierDegatFeu(maintenant);
-
                 if (joueur.getPvArmure() > 0) {
                     joueur.decrementerPvArmure(1);
                     bouclierVue.mettreAJourPv(joueur.getPvArmure());

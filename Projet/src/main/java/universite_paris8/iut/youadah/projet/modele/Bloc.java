@@ -21,8 +21,5 @@ public class Bloc extends Objet {
         poser.poserBloc(x, y, id);
     }
 
-    public int getIdBloc() {
-        return id;
-    }
 
 }

@@ -42,7 +42,7 @@ public class  PlayerVue {
         }
 
 
-    public void mettreAJourJoueur(Player joueur) {
+    public void mettreAJourJoueur() {
         versLaDroite = joueur.estsVersLaDroite();
 
         if (!isBlesse) {

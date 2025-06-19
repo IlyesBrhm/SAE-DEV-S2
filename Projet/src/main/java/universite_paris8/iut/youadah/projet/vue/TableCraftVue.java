@@ -16,14 +16,12 @@ public class TableCraftVue {
     private final TableCraft tableCraft;
     private final Inventaire inventaire;
     private final InventaireVue inventaireVue;
-    private final Pane ath;
 
-    public TableCraftVue(Pane paneCraft, TableCraft tableCraft, Inventaire inventaire, InventaireVue inventaireVue, Pane ath) {
+    public TableCraftVue(Pane paneCraft, TableCraft tableCraft, Inventaire inventaire, InventaireVue inventaireVue) {
         this.paneCraft = paneCraft;
         this.tableCraft = tableCraft;
         this.inventaire = inventaire;
         this.inventaireVue = inventaireVue;
-        this.ath = ath;
     }
 
     public void afficher() {

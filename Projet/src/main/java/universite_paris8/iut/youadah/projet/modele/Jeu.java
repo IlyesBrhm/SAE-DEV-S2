@@ -23,7 +23,6 @@ public class Jeu {
     private static final int TAILLE_TUILE = 32;
     private static final int NB_COLONNES = 58;
 
-    private final GaussianBlur effetFlou = new GaussianBlur(10);
     private final Set<KeyCode> touchesAppuyees = new HashSet<>();
 
     private GameMap carte;
@@ -34,7 +33,6 @@ public class Jeu {
 
     private TableCraft tableCraft;
     private Pane paneCraft;
-    private boolean craftVisible = false;
 
 
     private TilePane tileMap;
@@ -42,7 +40,7 @@ public class Jeu {
     private Pane overlayRouge;
     private Pane ath;
 
-    public Jeu(TilePane tileMap, Pane playerLayer, Pane overlayRouge, Pane ath, Label messageMort, Button boutonQuitter, Button boutonReapparaitre) {
+    public Jeu(TilePane tileMap, Pane playerLayer, Pane overlayRouge, Pane ath) {
         this.tileMap = tileMap;
         this.playerLayer = playerLayer;
         this.overlayRouge = overlayRouge;

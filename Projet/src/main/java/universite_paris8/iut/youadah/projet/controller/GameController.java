@@ -55,7 +55,7 @@ public class GameController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        jeu = new Jeu(tileMap,playerLayer,overlayRouge,ath,messageMort,boutonQuitter,boutonReapparaitre);
+        jeu = new Jeu(tileMap,playerLayer,overlayRouge,ath);
         jeu.initialiserJeu();
         this.paneCraft = jeu.getPaneCraft();
         this.tableCraft = jeu.getTableCraft();
@@ -104,50 +104,37 @@ public class GameController implements Initializable {
                 ennemieVue,
                 coeurVue,
                 bouclierVue,
+                jeu.getObjetAuSol(),
                 playerLayer,
+                jeu.getInventaire(),
+                inventaireVue,
+                paneCraft,
+                ath,
+                tableCraftVue,
                 this::mourir,
                 GestionEffetDegats::declencherClignotementRouge,
                 jeu.getCarte()
-        );
+                );
         clavierController.configurerControles();
 
 
-        ath.setOnMouseClicked(event -> {
-            double cibleX = event.getX();
-            double cibleY = event.getY();
-            Objet objetUtilise = jeu.getJoueur().getObjetPossede();
+        SourisController sourisController = new SourisController(
+                touchesAppuyees,
+                jeu.getJoueur(),
+                jeu.getEnnemie(),
+                ennemieVue,
+                coeurVue,
+                playerLayer,
+                jeu.getInventaire(),
+                inventaireVue,
+                ath,
+                jeu.getCarte(),
+                overlayRouge
+        );
 
-            Taper taper = new Taper();
-            taper.attaquerAvecEpee(jeu.getJoueur(), List.of(jeu.getEnnemie()), overlayRouge);
-            barreVieEnnemi.mettreAJourPv(jeu.getEnnemie().getPv());
+        sourisController.gestionSouris(barreVieEnnemi,carteVue);
 
-            if (jeu.getEnnemie().estMort()) {
-                playerLayer.getChildren().removeAll(ennemieVue.getNode(), barreVieEnnemi.getNode());
-            }
-
-            if (objetUtilise != null) {
-                if (objetUtilise instanceof Arc) {
-                    tirerFleche(cibleX, cibleY, playerLayer);
-                } else {
-                    objetUtilise.utiliser((int)(cibleX / TAILLE_TUILE), (int)(cibleY / TAILLE_TUILE), carteVue);
-                    if (objetUtilise instanceof Bloc || objetUtilise.getConsomable()) {
-                        objetUtilise.decrementerQuantite(1);
-                        if (objetUtilise.getQuantite() <= 0) {
-                            jeu.getInventaire().getInventaire().remove(objetUtilise);
-                            jeu.getJoueur().setObjetPossede(null);
-                        }
-                    }
-                    coeurVue.mettreAJourPv(jeu.getJoueur().getPv());
-                }
-
-                ath.getChildren().clear();
-                inventaireVue.afficherInventaire();
-                inventaireVue.maj();
-            }
-
-        });
-
-        tableCraftVue = new TableCraftVue(jeu.getPaneCraft(), jeu.getTableCraft(), jeu.getInventaire(), inventaireVue, ath);
+        tableCraftVue = new TableCraftVue(jeu.getPaneCraft(), jeu.getTableCraft(), jeu.getInventaire(), inventaireVue);
 
 
 
@@ -156,64 +143,6 @@ public class GameController implements Initializable {
         imageView.setFitHeight(64);
         imageView.setFitWidth(64);
 
-        playerLayer.setOnKeyPressed(event -> {
-            touchesAppuyees.add(event.getCode());
-
-            switch (event.getCode()) {
-                case E -> {
-                    if (jeu.getObjetAuSol().ramasser(jeu.getJoueur(), jeu.getInventaire(), playerLayer)) {
-                        inventaireVue.maj();
-                    }
-                }
-                case A -> {
-                    Objet obj = jeu.getJoueur().getObjetPossede();
-                    if (obj != null) {
-                        int q = obj.getQuantite();
-                        obj.setQuantite(1);
-                        jeu.getObjetAuSol().deposerJoueur(obj, jeu.getJoueur(), playerLayer);
-                        obj.setQuantite(q - 1);
-
-                        if (q <= 1) {
-                            jeu.getInventaire().getInventaire().remove(obj);
-                            jeu.getJoueur().setObjetPossede(null); // Si c'était le dernier, on désélectionne
-                        } else {
-                            jeu.getJoueur().setObjetPossede(obj); // Sinon, on garde l’objet sélectionné
-                        }
-
-                        joueurVue.mettreAJourJoueur(jeu.getJoueur());
-                        ath.getChildren().clear();
-                        inventaireVue.afficherInventaire();
-                        inventaireVue.maj();
-                    }
-                }
-
-
-                case C ->  {
-                    craftVisible = !craftVisible;
-
-                    if (!ath.getChildren().contains(paneCraft)) {
-                        ath.getChildren().add(paneCraft);
-                    }
-
-                    paneCraft.setVisible(craftVisible);
-                    if (craftVisible) {
-                        System.out.println("→ Affichage table de craft");
-                        tableCraftVue.afficher();
-                    }
-                }
-                case F1, F2, F3, F4, F5, F6 -> {
-                    int index = event.getCode().ordinal() - KeyCode.F1.ordinal();
-                    if (index < jeu.getInventaire().getInventaire().size()) {
-                        jeu.getJoueur().setObjetPossede(jeu.getInventaire().getInventaire().get(index));
-                        imageView.setX((index * 64) + 730);
-                        ath.getChildren().remove(imageView);
-                        ath.getChildren().add(imageView);
-                    }
-                }
-
-            }
-        });
-
         new AnimationTimer() {
             private long dernierCoup = 0;
             private final long delaiEntreCoups = 1_000_000_000; // 1 seconde en nanosecondes
@@ -221,7 +150,7 @@ public class GameController implements Initializable {
             @Override
             public void handle(long now) {
                 if (!estMort) {
-                    clavierController.gererTouches();
+                    clavierController.gererTouches(imageView);
 
                     // Collision avec l’ennemi
                     double distance = Math.hypot(jeu.getJoueur().getX() - jeu.getEnnemie().getX(), jeu.getJoueur().getY() - jeu.getEnnemie().getY());
@@ -310,7 +239,7 @@ public class GameController implements Initializable {
 
 
 
-    private void tirerFleche(double cibleX, double cibleY, Pane couche) {
+    public void tirerFleche(double cibleX, double cibleY, Pane couche) {
         Fleche fleche = new Fleche(
                 jeu.getJoueur().getX(), jeu.getJoueur().getY(),
                 cibleX, cibleY,
