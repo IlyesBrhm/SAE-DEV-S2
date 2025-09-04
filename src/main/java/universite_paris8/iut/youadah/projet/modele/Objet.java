@@ -1,10 +1,13 @@
 package universite_paris8.iut.youadah.projet.modele;
 
+import java.awt.*;
+
 public abstract class Objet {
 
     private String nom;
     private int rarete;
     private boolean consomable;
+
 
     public Objet(String nom, int rarete, boolean consomable) {
         this.nom = nom;
@@ -19,7 +22,6 @@ public abstract class Objet {
     public int getRarete() {
         return rarete;
     }
-
     public boolean getConsomable() {
         return consomable;
     }

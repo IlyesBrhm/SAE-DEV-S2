@@ -52,7 +52,7 @@ public class Player {
         }
     }
 
-    public void deplacerGauche(Map carte) {
+    public void deplacerGauche(GameMap carte) {
         double futurX = getX() - VITESSE;
         int tuileX = (int)(futurX / TAILLE_TUILE);
         int tuileY = (int)((getY() + TAILLE_TUILE - 1) / TAILLE_TUILE);
@@ -62,7 +62,7 @@ public class Player {
             versLaDroite = false;
         }
     }
-    public void deplacerDroite(Map carte) {
+    public void deplacerDroite(GameMap carte) {
         double futurX = getX() + VITESSE;
         int tuileX = (int)((futurX + TAILLE_TUILE - 1) / TAILLE_TUILE);
         int tuileY = (int)((getY() + TAILLE_TUILE - 1) / TAILLE_TUILE);
@@ -81,13 +81,17 @@ public class Player {
     }
 
     public int getPv() {
-        return pv; }
+        return pv;
+    }
 
     public boolean estMort() {
-        return coeur.estMort(); }
+        return coeur.estMort();
+    }
 
     public long getDernierDegatFeu() {
-        return dernierDegatFeu; }
+        return dernierDegatFeu;
+    }
+
     public void setDernierDegatFeu(long t) {
         this.dernierDegatFeu = t; }
 
@@ -95,28 +99,43 @@ public class Player {
         return id == 1 || id == 3 || id == 2;
     }
 
-    public void mettreAJour(Map map) {
+    public void mettreAJour(GameMap map) {
         final double GRAVITE = 0.08;
         double nouvelleY = getY();
         double nouvelleVitesseY = this.vitesseY + GRAVITE;
         nouvelleY += nouvelleVitesseY;
 
-        int tuileY = (int)((nouvelleY + TAILLE_TUILE) / TAILLE_TUILE);
         int tuileXG = (int)(getX() / TAILLE_TUILE);
         int tuileXD = (int)((getX() + TAILLE_TUILE - 1) / TAILLE_TUILE);
 
-        boolean solG = estSolide(map.getTile(tuileY, tuileXG));
-        boolean solD = estSolide(map.getTile(tuileY, tuileXD));
+        boolean auSolTemp = false;
 
-        boolean auSolTemp;
-        if ((tuileY < map.getHauteur()) && (solG || solD)) {
-            nouvelleY = (tuileY - 1) * TAILLE_TUILE;
-            nouvelleVitesseY = 0;
-            auSolTemp = true;
-        } else {
-            auSolTemp = false;
+        if (nouvelleVitesseY > 0) {
+            // Collision vers le bas (chute)
+            int tuileYBas = (int)((nouvelleY + TAILLE_TUILE) / TAILLE_TUILE);
+            if (tuileYBas < map.getHauteur()) {
+                boolean solG = estSolide(map.getTile(tuileYBas, tuileXG));
+                boolean solD = estSolide(map.getTile(tuileYBas, tuileXD));
+                if (solG || solD) {
+                    nouvelleY = (tuileYBas - 1) * TAILLE_TUILE;
+                    nouvelleVitesseY = 0;
+                    auSolTemp = true;
+                }
+            }
+        } else if (nouvelleVitesseY < 0) {
+            // Collision vers le haut (saut sous un bloc)
+            int tuileYHaut = (int)(nouvelleY / TAILLE_TUILE);
+            if (tuileYHaut >= 0) {
+                boolean hautG = estSolide(map.getTile(tuileYHaut, tuileXG));
+                boolean hautD = estSolide(map.getTile(tuileYHaut, tuileXD));
+                if (hautG || hautD) {
+                    nouvelleY = (tuileYHaut + 1) * TAILLE_TUILE;
+                    nouvelleVitesseY = 0;
+                }
+            }
         }
 
+        // Limites verticales
         double hauteurMax = map.getHauteur() * TAILLE_TUILE - TAILLE_TUILE;
         if (nouvelleY > hauteurMax) {
             nouvelleY = hauteurMax;
@@ -142,6 +161,12 @@ public class Player {
         this.pvArmure = Math.max(0, this.pvArmure - valeur);
     }
 
+    public void reinitialiser(double x, double y) {
+        incrementerPv(5);
+        this.x.set(x);
+        this.y.set(y);
+    }
+
     public void setObjetPossede(Objet objetPossede) {
         this.objetPossede = objetPossede;
     }
@@ -149,4 +174,12 @@ public class Player {
     public Objet getObjetPossede() {
         return objetPossede;
     }
+
+    public boolean possedeObjet(){
+        if(objetPossede != null)
+            return true;
+        else
+            return false;
+    }
+
 }
