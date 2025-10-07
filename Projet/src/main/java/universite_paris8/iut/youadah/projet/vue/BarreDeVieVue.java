@@ -16,7 +16,7 @@ public class BarreDeVieVue {
     private final double largeurTotale = 40;
 
     public BarreDeVieVue(Personnage personnage) {
-        this.pvMax = personnage.getPv();
+        this.pvMax = personnage.getVie().getPv();
 
         fond = new Rectangle(largeurTotale, 6, Color.GRAY);
         barre = new Rectangle(largeurTotale, 6, Color.LIMEGREEN);
@@ -37,12 +37,12 @@ public class BarreDeVieVue {
 
             @Override
             protected double computeValue() {
-                double pv = personnage.getPv();
+                double pv = personnage.getVie().getPv();
                 return (pv / (double) pvMax) * largeurTotale;
             }
         };
 
-        mettreAJourPv(personnage.getPv());
+        mettreAJourPv(personnage.getVie().getPv());
 
     }
 

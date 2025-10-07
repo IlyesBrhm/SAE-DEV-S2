@@ -7,6 +7,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import universite_paris8.iut.youadah.projet.modele.CaseInventaire;
 import universite_paris8.iut.youadah.projet.modele.Inventaire;
 import universite_paris8.iut.youadah.projet.modele.Objet;
 
@@ -44,10 +45,10 @@ public class InventaireVue {
 
         int slot = 0; // index visuel pour éviter les trous
 
-        for (Objet objet : inventaire.getInventaire()) {
-            if (objet.getQuantite() <= 0) continue; // Ne pas afficher les objets épuisés
+        for (CaseInventaire caseInventaire : inventaire.getInventaire()) {
+            if (caseInventaire.getQuantite() <= 0) continue; // Ne pas afficher les objets épuisés
 
-            ObjetVue objetVue = new ObjetVue(objet);
+            ObjetVue objetVue = new ObjetVue(caseInventaire.getObjet());
             ImageView iv = objetVue.getImageView();
 
             iv.setFitWidth(32);
@@ -55,7 +56,7 @@ public class InventaireVue {
             iv.setLayoutX(0);
             iv.setLayoutY(0);
 
-            Label quantiteLabel = new Label("x" + objet.getQuantite());
+            Label quantiteLabel = new Label("x" + caseInventaire.getQuantite());
             quantiteLabel.setTextFill(Color.WHITE);
             quantiteLabel.setFont(Font.font("Arial", javafx.scene.text.FontWeight.BOLD, 13));
             quantiteLabel.setStyle("-fx-background-color: rgba(0, 0, 0, 0.6); -fx-padding: 1px;");

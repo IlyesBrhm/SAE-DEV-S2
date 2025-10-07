@@ -4,22 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Inventaire {
-    private List<Objet> inventaire;
+    private List<CaseInventaire> inventaire;
 
     public Inventaire() {
         inventaire = new ArrayList<>(6);
     }
 
-    public boolean ajouterObjet(Objet nouvelObjet) {
-        for (Objet objet : inventaire) {
-            if (objet.equals(nouvelObjet)) {
-                objet.incrementerQuantite(nouvelObjet.getQuantite());
+    public boolean ajouterObjet(CaseInventaire nouvelCase) {
+        for (CaseInventaire caseInventaire : inventaire) {
+            if (caseInventaire.equals(nouvelCase)) {
+                caseInventaire.incrementerQuantite(nouvelCase.getQuantite());
                 return true;
             }
         }
 
         if (inventaire.size() < 6) {
-            inventaire.add(nouvelObjet);
+            inventaire.add(nouvelCase);
             return true;
         } else {
             System.out.println("Inventaire plein");
@@ -27,12 +27,12 @@ public class Inventaire {
         }
     }
 
-    public void retirerObjet(Objet objetARetirer) {
+    public void retirerObjet(CaseInventaire caseARetirer) {
         for (int i = 0; i < inventaire.size(); i++) {
-            Objet objet = inventaire.get(i);
-            if (objet.equals(objetARetirer)) {
-                if (objet.getQuantite() > 1) {
-                    objet.decrementerQuantite(1);
+            CaseInventaire caseInventaire = inventaire.get(i);
+            if (caseInventaire.equals(caseARetirer)) {
+                if (caseInventaire.getQuantite() > 1) {
+                    caseInventaire.decrementerQuantite(1);
                 } else {
                     inventaire.remove(i);
                 }
@@ -41,7 +41,7 @@ public class Inventaire {
         }
     }
 
-    public List<Objet> getInventaire() {
+    public List<CaseInventaire> getInventaire() {
         return inventaire;
     }
 }

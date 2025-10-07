@@ -67,8 +67,8 @@ public class GameController implements Initializable {
 
         joueur = new Player(5 * TAILLE_TUILE, 19 * TAILLE_TUILE);
         joueurVue = new PlayerVue(joueur);
-        coeurVue = new CoeurVue(joueur.getPv());
-        bouclierVue = new BouclierVue(joueur.getPvArmure(), ath);
+        coeurVue = new CoeurVue(joueur.getVie().getPv());
+        bouclierVue = new BouclierVue(joueur.getVie().getPvArmure(), ath);
         bouclierVue.getBarreBouclier().setLayoutY(40);
 
         ennemie = new Ennemie(19 * TAILLE_TUILE, 19 * TAILLE_TUILE, 1, joueur);
@@ -78,18 +78,18 @@ public class GameController implements Initializable {
         barreVieEnnemi = new BarreDeVieVue(ennemie);
         playerLayer.getChildren().add(barreVieEnnemi.getNode());
 
-        coeurVue.mettreAJourPv(joueur.getPv());
-        bouclierVue.mettreAJourPv(joueur.getPvArmure());
+        coeurVue.mettreAJourPv(joueur.getVie().getPv());
+        bouclierVue.mettreAJourPv(joueur.getVie().getPvArmure());
 
         objetAuSol = new ObjetAuSol(5, 19, playerLayer, new Pioche("pioche", 1, carte, carteVue, joueur, null, playerLayer));
 
         inventaire = new Inventaire();
-        inventaire.ajouterObjet(new Pioche("pioche", 1, carte, carteVue, joueur, objetAuSol, playerLayer));
-        inventaire.ajouterObjet(new Potion("potionVie", 1, joueur, "vie"));
-        inventaire.ajouterObjet(new Bloc("Terre", 1, false, carte, carteVue, joueur, 2));
-        inventaire.ajouterObjet(new Bloc("Pierre", 1, false, carte, carteVue, joueur, 3));
-        inventaire.ajouterObjet(new Epee("Epee", 1, carte, carteVue, joueur, tileMap));
-        inventaire.ajouterObjet(new Arc("Arc", 1, carte, carteVue, joueur, tileMap));
+        inventaire.ajouterObjet(new CaseInventaire(new Pioche("pioche", 1, carte, carteVue, joueur, objetAuSol, playerLayer)));
+        inventaire.ajouterObjet(new CaseInventaire(new Potion("potionVie", 1, joueur, "vie")));
+        inventaire.ajouterObjet(new CaseInventaire(new Bloc("Terre", 1, false, carte, carteVue, joueur, 2)));
+        inventaire.ajouterObjet(new CaseInventaire(new Bloc("Pierre", 1, false, carte, carteVue, joueur, 3)));
+        inventaire.ajouterObjet(new CaseInventaire(new Epee("Epee", 1, carte, carteVue, joueur, tileMap)));
+        inventaire.ajouterObjet(new CaseInventaire(new Arc("Arc", 1, carte, carteVue, joueur, tileMap)));
 
         inventaireVue = new InventaireVue(ath, inventaire);
         inventaireVue.afficherInventaire();
@@ -133,25 +133,25 @@ public class GameController implements Initializable {
 
         tableCraft = new TableCraft();
         tableCraft.ajouterRecette(new Recette(List.of(
-                (Bloc) inventaire.getInventaire().get(2),
-                (Bloc) inventaire.getInventaire().get(3)),
-                new Potion("potionVie", 5, joueur, "vie")));
+                inventaire.getInventaire().get(2),
+                inventaire.getInventaire().get(3)),
+                new CaseInventaire(new Potion("potionVie", 5, joueur, "vie"))));
 
         tableCraft.ajouterRecette(new Recette(
                 List.of(
-                        new Bloc("Pierre", 1, false, carte, carteVue, joueur, 3),
-                        new Bloc("Pierre", 1, false, carte, carteVue, joueur, 3)
+                        new CaseInventaire(new Bloc("Pierre", 1, false, carte, carteVue, joueur, 3)),
+                        new CaseInventaire(new Bloc("Pierre", 1, false, carte, carteVue, joueur, 3))
                 ),
-                new Pioche("pioche", 1, carte, carteVue, joueur, objetAuSol, playerLayer)
+                new CaseInventaire(new Pioche("pioche", 1, carte, carteVue, joueur, objetAuSol, playerLayer))
         ));
 
         tableCraft.ajouterRecette(new Recette(
                 List.of(
-                        new Bloc("Bois", 1, false, carte, carteVue, joueur, 2),
-                        new Bloc("Bois", 1, false, carte, carteVue, joueur, 2),
-                        new Bloc("Pierre", 1, false, carte, carteVue, joueur, 3)
+                        new CaseInventaire(new Bloc("Bois", 1, false, carte, carteVue, joueur, 2)),
+                        new CaseInventaire(new Bloc("Bois", 1, false, carte, carteVue, joueur, 2)),
+                        new CaseInventaire(new Bloc("Pierre", 1, false, carte, carteVue, joueur, 3))
                 ),
-                new Arc("Arc", 1, carte, carteVue, joueur, playerLayer)
+                new CaseInventaire(new Arc("Arc", 1, carte, carteVue, joueur, playerLayer))
         ));
 
         tableCraftVue = new TableCraftVue(paneCraft, tableCraft, inventaire, inventaireVue, ath);
@@ -169,18 +169,19 @@ public class GameController implements Initializable {
                     }
                 }
                 case A -> {
-                    Objet obj = joueur.getObjetPossede();
-                    if (obj != null) {
-                        int q = obj.getQuantite();
-                        obj.setQuantite(1);
-                        objetAuSol.deposerJoueur(obj, joueur, playerLayer);
-                        obj.setQuantite(q - 1);
+                    CaseInventaire caseInventaire = new CaseInventaire(new Arc("ukjhguhkh", 1, carte, carteVue, joueur, tileMap));
+                    caseInventaire.setObjet(joueur.getObjetPossede());
+                    if (caseInventaire != null) {
+                        int q = caseInventaire.getQuantite();
+                        caseInventaire.setQuantite(1);
+                        objetAuSol.deposerJoueur(caseInventaire.getObjet(), joueur, playerLayer);
+                        caseInventaire.setQuantite(q - 1);
 
                         if (q <= 1) {
-                            inventaire.getInventaire().remove(obj);
+                            inventaire.getInventaire().remove(caseInventaire.getObjet());
                             joueur.setObjetPossede(null); // Si c'était le dernier, on désélectionne
                         } else {
-                            joueur.setObjetPossede(obj); // Sinon, on garde l’objet sélectionné
+                            joueur.setObjetPossede(caseInventaire.getObjet()); // Sinon, on garde l’objet sélectionné
                         }
 
                         joueurVue.mettreAJourJoueur(joueur);
@@ -207,7 +208,7 @@ public class GameController implements Initializable {
                 case F1, F2, F3, F4, F5, F6 -> {
                     int index = event.getCode().ordinal() - KeyCode.F1.ordinal();
                     if (index < inventaire.getInventaire().size()) {
-                        joueur.setObjetPossede(inventaire.getInventaire().get(index));
+                        joueur.setObjetPossede(inventaire.getInventaire().get(index).getObjet());
                         imageView.setX((index * 64) + 730);
                         ath.getChildren().remove(imageView);
                         ath.getChildren().add(imageView);
@@ -220,29 +221,29 @@ public class GameController implements Initializable {
         ath.setOnMouseClicked(event -> {
             double cibleX = event.getX();
             double cibleY = event.getY();
-            Objet objetUtilise = joueur.getObjetPossede();
+            CaseInventaire caseUtilise = new CaseInventaire(joueur.getObjetPossede());
 
             Taper taper = new Taper();
             taper.attaquerAvecEpee(joueur, List.of(ennemie), overlayRouge);
-            barreVieEnnemi.mettreAJourPv(ennemie.getPv());
+            barreVieEnnemi.mettreAJourPv(ennemie.getVie().getPv());
 
-            if (ennemie.estMort()) {
+            if (ennemie.getVie().estMort()) {
                 playerLayer.getChildren().removeAll(ennemieVue.getNode(), barreVieEnnemi.getNode());
             }
 
-            if (objetUtilise != null) {
-                if (objetUtilise instanceof Arc) {
+            if (caseUtilise.getObjet() != null) {
+                if (caseUtilise.getObjet() instanceof Arc) {
                     tirerFleche(cibleX, cibleY, playerLayer); // ✅ appel ici
                 } else {
-                    objetUtilise.utiliser((int)(cibleX / TAILLE_TUILE), (int)(cibleY / TAILLE_TUILE));
-                    if (objetUtilise instanceof Bloc || objetUtilise.getConsomable()) {
-                        objetUtilise.decrementerQuantite(1);
-                        if (objetUtilise.getQuantite() <= 0) {
-                            inventaire.getInventaire().remove(objetUtilise);
+                    caseUtilise.getObjet().utiliser((int)(cibleX / TAILLE_TUILE), (int)(cibleY / TAILLE_TUILE));
+                    if (caseUtilise.getObjet() instanceof Bloc || caseUtilise.getObjet().getConsomable()) {
+                        caseUtilise.decrementerQuantite(1);
+                        if (caseUtilise.getQuantite() <= 0) {
+                            inventaire.getInventaire().remove(caseUtilise.getObjet());
                             joueur.setObjetPossede(null);
                         }
                     }
-                    coeurVue.mettreAJourPv(joueur.getPv());
+                    coeurVue.mettreAJourPv(joueur.getVie().getPv());
                 }
 
                 ath.getChildren().clear();
@@ -265,19 +266,19 @@ public class GameController implements Initializable {
 
                     // Collision avec l’ennemi
                     double distance = Math.hypot(joueur.getX() - ennemie.getX(), joueur.getY() - ennemie.getY());
-                    if (!ennemie.estMort() && distance < 32 && now - dernierCoup > delaiEntreCoups) {
+                    if (!ennemie.getVie().estMort() && distance < 32 && now - dernierCoup > delaiEntreCoups) {
                         ennemie.attaque(carte);  // au lieu de juste ennemie.attaque()
 
-                        coeurVue.mettreAJourPv(joueur.getPv());
-                        bouclierVue.mettreAJourPv(joueur.getPvArmure());
+                        coeurVue.mettreAJourPv(joueur.getVie().getPv());
+                        bouclierVue.mettreAJourPv(joueur.getVie().getPvArmure());
                         dernierCoup = now;
                     }
 
 
                     // Mise à jour de la barre de vie de l’ennemi
-                    barreVieEnnemi.mettreAJourPv(ennemie.getPv());
+                    barreVieEnnemi.mettreAJourPv(ennemie.getVie().getPv());
 
-                    if (ennemie.estMort()) {
+                    if (ennemie.getVie().estMort()) {
                         playerLayer.getChildren().removeAll(ennemieVue.getNode(), barreVieEnnemi.getNode());
                     }
                 }
@@ -318,20 +319,20 @@ public class GameController implements Initializable {
         // Nouveau joueur
         joueur = new Player(5 * TAILLE_TUILE, 19 * TAILLE_TUILE);
         joueurVue = new PlayerVue(joueur);
-        coeurVue = new CoeurVue(joueur.getPv());
-        bouclierVue = new BouclierVue(joueur.getPvArmure(), ath);
+        coeurVue = new CoeurVue(joueur.getVie().getPvArmure());
+        bouclierVue = new BouclierVue(joueur.getVie().getPvArmure(), ath);
         bouclierVue.getBarreBouclier().setLayoutY(40);
 
 
 
         // Réinitialiser l'inventaire
         inventaire.getInventaire().clear();
-        inventaire.ajouterObjet(new Pioche("pioche", 1, carte, carteVue, joueur, objetAuSol, playerLayer));
-        inventaire.ajouterObjet(new Potion("potionVie", 1, joueur, "vie"));
-        inventaire.ajouterObjet(new Bloc("Terre", 1, false, carte, carteVue, joueur, 2));
-        inventaire.ajouterObjet(new Bloc("Pierre", 1, false, carte, carteVue, joueur, 3));
-        inventaire.ajouterObjet(new Epee("Epee", 1, carte, carteVue, joueur, tileMap));
-        inventaire.ajouterObjet(new Arc("Arc", 1, carte, carteVue, joueur, tileMap));
+        inventaire.ajouterObjet(new CaseInventaire(new Pioche("pioche", 1, carte, carteVue, joueur, objetAuSol, playerLayer)) );
+        inventaire.ajouterObjet(new CaseInventaire(new Potion("potionVie", 1, joueur, "vie")));
+        inventaire.ajouterObjet(new CaseInventaire(new Bloc("Terre", 1, false, carte, carteVue, joueur, 2)));
+        inventaire.ajouterObjet(new CaseInventaire(new Bloc("Pierre", 1, false, carte, carteVue, joueur, 3)));
+        inventaire.ajouterObjet(new CaseInventaire(new Epee("Epee", 1, carte, carteVue, joueur, tileMap)));
+        inventaire.ajouterObjet(new CaseInventaire(new Epee("Epee", 1, carte, carteVue, joueur, tileMap)));
 
         // Rafraîchit l'inventaire visuel
         ath.getChildren().clear();

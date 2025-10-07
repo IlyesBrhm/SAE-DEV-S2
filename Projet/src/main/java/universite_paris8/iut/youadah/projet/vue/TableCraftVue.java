@@ -35,9 +35,9 @@ public class TableCraftVue {
         for (Recette recette : recettes) {
             int x = 20;
             // Affichage des composants
-            for (Objet composant : recette.getComposants()) {
+            for (CaseInventaire composant : recette.getComposants()) {
                 try {
-                    Image image = new Image(getClass().getResource("/images/" + composant.getNom() + ".png").toExternalForm());
+                    Image image = new Image(getClass().getResource("/images/" + composant.getObjet().getNom() + ".png").toExternalForm());
                     ImageView imageView = new ImageView(image);
                     imageView.setFitWidth(32);
                     imageView.setFitHeight(32);
@@ -46,7 +46,7 @@ public class TableCraftVue {
                     paneCraft.getChildren().add(imageView);
                     x += 40;
                 } catch (Exception e) {
-                    System.out.println("Image composant non trouvée : " + composant.getNom());
+                    System.out.println("Image composant non trouvée : " + composant.getObjet().getNom());
                 }
             }
 
@@ -58,9 +58,9 @@ public class TableCraftVue {
             x += 30;
 
             // Image du résultat
-            Objet resultat = recette.getResultat();
+            CaseInventaire resultat = recette.getResultat();
             try {
-                Image image = new Image(getClass().getResource("/images/" + resultat.getNom() + ".png").toExternalForm());
+                Image image = new Image(getClass().getResource("/images/" + resultat.getObjet().getNom() + ".png").toExternalForm());
                 ImageView imageView = new ImageView(image);
                 imageView.setFitWidth(32);
                 imageView.setFitHeight(32);
@@ -68,7 +68,7 @@ public class TableCraftVue {
                 imageView.setLayoutY(y);
                 paneCraft.getChildren().add(imageView);
             } catch (Exception e) {
-                System.out.println("Image résultat non trouvée : " + resultat.getNom());
+                System.out.println("Image résultat non trouvée : " + resultat.getObjet().getNom());
             }
 
             // Bouton Craft

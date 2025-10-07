@@ -14,7 +14,7 @@ public class Potion extends Objet {
     }
 
     public void utiliser(int x, int y) {
-            joueur.incrementerPv(getRarete());
+            joueur.getVie().incrementerPv(getRarete());
         System.out.println("utilisé");
     }
 }

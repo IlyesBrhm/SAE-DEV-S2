@@ -52,10 +52,10 @@ public class ClavierController {
 
     public void gererTouches() {
         if (touchesAppuyees.contains(KeyCode.Q) || touchesAppuyees.contains(KeyCode.LEFT)) {
-            joueur.deplacerGauche(carte);
+            joueur.deplacerGauche();
         }
         if (touchesAppuyees.contains(KeyCode.D) || touchesAppuyees.contains(KeyCode.RIGHT)) {
-            joueur.deplacerDroite(carte);
+            joueur.deplacerDroite();
         }
         if (touchesAppuyees.contains(KeyCode.Z) || touchesAppuyees.contains(KeyCode.SPACE)) {
             joueur.sauter();
@@ -71,43 +71,43 @@ public class ClavierController {
         // Gestion collision entre joueur et ennemie
         if ((int) ennemie.getX() == (int) joueur.getX() && (int) ennemie.getY() == (int) joueur.getY()) {
             long maintenant = System.currentTimeMillis();
-            if (maintenant - joueur.getDernierCoupRecu() > 1000) {
+            if (maintenant - joueur.getVie().getDernierDegatFeu() > 1000) {
                 ennemie.attaque(carte);  // au lieu de juste ennemie.attaque()
 
-                joueur.setDernierCoupRecu(maintenant);
+                joueur.getVie().setDernierDegatFeu(maintenant);
             }
         }
 
         // Mise à jour des barres de vie
-        coeurVue.mettreAJourPv(joueur.getPv());
-        bouclierVue.mettreAJourPv(joueur.getPvArmure());
+        coeurVue.mettreAJourPv(joueur.getVie().getPv());
+        bouclierVue.mettreAJourPv(joueur.getVie().getPvArmure());
 
         // Dégâts de feu si le joueur est sur un bloc feu (5)
         int tuileX = (int) (joueur.getX() / 32);
         int tuileY = (int) (joueur.getY() / 32);
 
-        if (carte.getTile(tuileY, tuileX) == 5 && !joueur.estMort()) {
+        if (carte.getTile(tuileY, tuileX) == 5 && !joueur.getVie().estMort()) {
             maintenant = System.currentTimeMillis();
-            if (maintenant - joueur.getDernierDegatFeu() > 1000) {
-                joueur.setDernierDegatFeu(maintenant);
+            if (maintenant - joueur.getVie().getDernierDegatFeu() > 1000) {
+                joueur.getVie().setDernierDegatFeu(maintenant);
 
-                if (joueur.getPvArmure() > 0) {
-                    joueur.decrementerPvArmure(1);
-                    bouclierVue.mettreAJourPv(joueur.getPvArmure());
+                if (joueur.getVie().getPvArmure() > 0) {
+                    joueur.getVie().decrementerPvArmure(1);
+                    bouclierVue.mettreAJourPv(joueur.getVie().getPvArmure());
                 } else {
-                    joueur.decrementerPv(1);
-                    coeurVue.mettreAJourPv(joueur.getPv());
+                    joueur.getVie().decrementerPvArmure(1);
+                    coeurVue.mettreAJourPv(joueur.getVie().getPv());
                 }
 
                 afficherDegat.run();
 
-                if (joueur.getPv() <= 0) {
+                if (joueur.getVie().getPv() <= 0) {
                     callbackMort.run();
                 }
             }
         }
 
-        if (joueur.getPv() <= 0) {
+        if (joueur.getVie().getPv() <= 0) {
             callbackMort.run();
         }
     }

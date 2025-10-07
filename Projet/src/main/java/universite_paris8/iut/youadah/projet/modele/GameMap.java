@@ -80,6 +80,9 @@ public class GameMap {
             }
         }
     }
+    public boolean estSolide(int id) {
+        return id == 1 || id == 3 || id == 2 || id==6 ;
+    }
 
     public int getTile(int y, int x) {
         return terrain[y][x];

@@ -35,7 +35,7 @@ public class ObjetAuSol {
 
         for (ObjetAuSol o : new ArrayList<>(objetsAuSol)) {
             if (o.x == joueurX && o.y == joueurY) {
-                boolean ajoute = inventaire.ajouterObjet(o.objetVue.getObjet());
+                boolean ajoute = inventaire.ajouterObjet(new CaseInventaire(o.objetVue.getObjet()));
                 if (ajoute) {
                     pane.getChildren().remove(o.objetVue.getImageView());
                     aRamasser.add(o);

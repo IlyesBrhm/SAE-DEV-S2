@@ -5,13 +5,11 @@ public abstract class Objet {
     private String nom;
     private int rarete;
     private boolean consomable;
-    private int quantite;
 
     public Objet(String nom, int rarete, boolean consomable) {
         this.nom = nom;
         this.rarete = rarete;
         this.consomable = consomable;
-        this.quantite = 1; // par défaut 1
     }
 
     public String getNom() {
@@ -26,27 +24,12 @@ public abstract class Objet {
         return consomable;
     }
 
-    public int getQuantite() {
-        return quantite;
-    }
-
-    public void setQuantite(int quantite) {
-        this.quantite = quantite;
-    }
-
-    public void incrementerQuantite(int n) {
-        this.quantite += n;
-    }
-
-    public void decrementerQuantite(int n) {
-        this.quantite -= n;
-    }
 
     public abstract void utiliser(int x, int y);
 
     @Override
     public String toString() {
-        return nom + " (x" + quantite + ", Rareté : " + rarete + ")";
+        return nom + " (  Rareté : " + rarete + ")";
     }
 
     @Override

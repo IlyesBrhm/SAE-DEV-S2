@@ -25,14 +25,14 @@ public class Tirer {
     public void infligerDegatsSiCollision(double xFleche, double yFleche, List<Personnage> ennemis, Pane overlay, int degats) {
         for (Personnage cible : ennemis) {
             // ⛔ On ignore les morts
-            if (cible.estMort()) continue;
+            if (cible.getVie().estMort()) continue;
 
             double distance = Math.hypot(cible.getX() - xFleche, cible.getY() - yFleche);
             if (distance < 20) {
-                if (cible.getPvArmure() > 0) {
-                    cible.decrementerPvArmure(degats);
+                if (cible.getVie().getPvArmure() > 0) {
+                    cible.getVie().decrementerPvArmure(degats);
                 } else {
-                    cible.decrementerPv(degats);
+                    cible.getVie().decrementerPv(degats);
                 }
 
                 // ✅ Effet de dégât visuel uniquement si l’ennemi est encore vivant

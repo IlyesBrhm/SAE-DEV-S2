@@ -31,9 +31,9 @@ public class Ennemie extends Personnage {
             double futurX = x + 0.4;
             int futurTuileX = (int) ((futurX + TAILLE_TUILE - 1) / TAILLE_TUILE);
 
-            boolean obstacle = estSolide(carte.getTile(tuileY, futurTuileX));
+            boolean obstacle = carte.estSolide(carte.getTile(tuileY, futurTuileX));
             boolean bord = futurTuileX >= carte.getLargeur();
-            boolean trouDevant = !estSolide(carte.getTile(tuileY + 1, futurTuileX));
+            boolean trouDevant = !carte.estSolide(carte.getTile(tuileY + 1, futurTuileX));
 
             if (!bord && !obstacle && !trouDevant) {
                 setX(futurX);
@@ -45,9 +45,9 @@ public class Ennemie extends Personnage {
             double futurX = x - 0.4;
             int futurTuileX = (int) (futurX / TAILLE_TUILE);
 
-            boolean obstacle = estSolide(carte.getTile(tuileY, futurTuileX));
+            boolean obstacle = carte.estSolide(carte.getTile(tuileY, futurTuileX));
             boolean bord = futurTuileX < 0;
-            boolean trouDevant = !estSolide(carte.getTile(tuileY + 1, futurTuileX));
+            boolean trouDevant = !carte.estSolide(carte.getTile(tuileY + 1, futurTuileX));
 
             if (!bord && !obstacle && !trouDevant) {
                 setX(futurX);
@@ -56,19 +56,19 @@ public class Ennemie extends Personnage {
             }
         }
 
-        if (!estSolide(carte.getTile(tuileY + 1, tuileX))) {
+        if (!carte.estSolide(carte.getTile(tuileY + 1, tuileX))) {
             setY(getY() + 0.4);
         }
     }
 
     public void attaque(GameMap carte) {
         System.out.println("Attaque du joueur !");
-        if (joueur.getPvArmure() > 0) {
-            joueur.decrementerPvArmure(pointAttaque);
-            System.out.println("Armure touchée, PV armure restants : " + joueur.getPvArmure());
+        if (joueur.getVie().getPvArmure() > 0) {
+            joueur.getVie().decrementerPvArmure(pointAttaque);
+            System.out.println("Armure touchée, PV armure restants : " + joueur.getVie().getPvArmure());
         } else {
-            joueur.decrementerPv(pointAttaque);
-            System.out.println("PV du joueur touchés, PV restants : " + joueur.getPv());
+            joueur.getVie().decrementerPv(pointAttaque);
+            System.out.println("PV du joueur touchés, PV restants : " + joueur.getVie().getPv());
         }
 
         // Knockback intelligent

@@ -26,8 +26,7 @@ public class Pioche extends Objet {
         if (carteVue.getBloc(x,y) != "Vide") {
             Bloc bloc = new Bloc(carteVue.getBloc(x, y), 1, false, carte, carteVue, joueur, carte.getTile(y,x));
             Casser casseur = new Casser(carte, carteVue, joueur);
-            casseur.casserBloc(x, y);
-            if (casseur.isCasseValide())
+            if (casseur.casserBloc(x, y))
                 objetAuSol.deposer(bloc, x,y, playerLayer);
         }
         else

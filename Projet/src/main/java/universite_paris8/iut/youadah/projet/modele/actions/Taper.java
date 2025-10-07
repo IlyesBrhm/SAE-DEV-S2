@@ -47,10 +47,10 @@ public class Taper {
     }
 
     private void infligerDegats(Personnage cible) {
-        if (cible.getPvArmure() > 0) {
-            cible.decrementerPvArmure(DEGATS_EPEE);
+        if (cible.getVie().getPvArmure() > 0) {
+            cible.getVie().decrementerPvArmure(DEGATS_EPEE);
         } else {
-            cible.decrementerPv(DEGATS_EPEE);
+            cible.getVie().decrementerPv(DEGATS_EPEE);
         }
     }
 } // Fin Taper.java

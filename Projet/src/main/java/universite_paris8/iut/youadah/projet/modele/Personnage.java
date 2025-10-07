@@ -8,27 +8,26 @@ public class Personnage {
     private final DoubleProperty x = new SimpleDoubleProperty();
     private final DoubleProperty y = new SimpleDoubleProperty();
     private double vitesseY;
-    private boolean auSol;
     protected boolean versLaDroite;
-    private int pv;
-    private int pvArmure;
-    private long dernierDegatFeu = 1;
-    private Objet objetPossede;
-    private long dernierCoupRecu;
+    private GameMap carte;
 
+
+
+
+    private boolean auSol;
     public static final double SAUT = -3.5;
     public static final double VITESSE = 2;
     public static final int TAILLE_TUILE = 32;
+
+    private Vie vie;
 
     public Personnage(double startX, double startY) {
         this.x.set(startX);
         this.y.set(startY);
         this.vitesseY = 0;
         this.versLaDroite = true;
-        this.pv = 5;
-        this.pvArmure = 5;
-        objetPossede = null;
-        this.dernierCoupRecu = 0;
+        this.carte= carte;
+        this.vie= new Vie();
     }
 
     public double getX() { return x.get(); }
@@ -42,13 +41,7 @@ public class Personnage {
 
     public boolean estsVersLaDroite() { return versLaDroite; }
 
-    public long getDernierCoupRecu() {
-        return dernierCoupRecu;
-    }
 
-    public void setDernierCoupRecu(long temps) {
-        this.dernierCoupRecu = temps;
-    }
 
     public void sauter() {
         if (auSol) {
@@ -57,58 +50,34 @@ public class Personnage {
         }
     }
 
-    public void deplacerGauche(GameMap carte) {
+    public Vie getVie() {
+        return vie;
+    }
+
+    public void deplacerGauche() {
         double futurX = getX() - VITESSE;
         int tuileX = (int)(futurX / TAILLE_TUILE);
         int tuileY = (int)((getY() + TAILLE_TUILE - 1) / TAILLE_TUILE);
 
-        if (tuileX >= 0 && !estSolide(carte.getTile(tuileY, tuileX))) {
+        if (tuileX >= 0 && !carte.estSolide((carte.getTile(tuileY, tuileX)))){
             setX(futurX);
             versLaDroite = false;
         }
     }
 
-    public void deplacerDroite(GameMap carte) {
+    public void deplacerDroite() {
         double futurX = getX() + VITESSE;
         int tuileX = (int)((futurX + TAILLE_TUILE - 1) / TAILLE_TUILE);
         int tuileY = (int)((getY() + TAILLE_TUILE - 1) / TAILLE_TUILE);
 
-        if (tuileX < carte.getLargeur() && !estSolide(carte.getTile(tuileY, tuileX))) {
+        if (tuileX < carte.getLargeur() && !carte.estSolide((carte.getTile(tuileY, tuileX)))) {
             setX(futurX);
             versLaDroite = true;
         }
     }
 
-    public void incrementerPv(int pvEnPlus) {
-        pv = Math.min(pv + pvEnPlus, 5);
-    }
-
-    public void decrementerPv(int pvEnMoins) {
-        pv = Math.max(pv - pvEnMoins, 0);
-    }
 
 
-
-    public int getPv() {
-        return pv; }
-
-    public boolean estMort() {
-        if (pv > 0)
-            return false;
-        else
-            return true;
-    }
-
-    public long getDernierDegatFeu() {
-        return dernierDegatFeu;
-    }
-
-    public void setDernierDegatFeu(long t) {
-        this.dernierDegatFeu = t; }
-
-    public boolean estSolide(int id) {
-        return id == 1 || id == 3 || id == 2 || id==6 ;
-    }
 
     public void mettreAJour(GameMap map) {
         final double GRAVITE = 0.08;
@@ -125,8 +94,8 @@ public class Personnage {
             // Collision vers le bas (chute)
             int tuileYBas = (int)((nouvelleY + TAILLE_TUILE) / TAILLE_TUILE);
             if (tuileYBas < map.getHauteur()) {
-                boolean solG = estSolide(map.getTile(tuileYBas, tuileXG));
-                boolean solD = estSolide(map.getTile(tuileYBas, tuileXD));
+                boolean solG = carte.estSolide(map.getTile(tuileYBas, tuileXG));
+                boolean solD = carte.estSolide(map.getTile(tuileYBas, tuileXD));
                 if (solG || solD) {
                     nouvelleY = (tuileYBas - 1) * TAILLE_TUILE;
                     nouvelleVitesseY = 0;
@@ -137,8 +106,8 @@ public class Personnage {
             // Collision vers le haut (saut sous un bloc)
             int tuileYHaut = (int)(nouvelleY / TAILLE_TUILE);
             if (tuileYHaut >= 0) {
-                boolean hautG = estSolide(map.getTile(tuileYHaut, tuileXG));
-                boolean hautD = estSolide(map.getTile(tuileYHaut, tuileXD));
+                boolean hautG = carte.estSolide(map.getTile(tuileYHaut, tuileXG));
+                boolean hautD = carte.estSolide(map.getTile(tuileYHaut, tuileXD));
                 if (hautG || hautD) {
                     nouvelleY = (tuileYHaut + 1) * TAILLE_TUILE;
                     nouvelleVitesseY = 0;
@@ -165,19 +134,5 @@ public class Personnage {
     }
 
 
-    public int getPvArmure() {
-        return pvArmure;
-    }
 
-    public void decrementerPvArmure(int valeur) {
-        this.pvArmure = Math.max(0, this.pvArmure - valeur);
-    }
-
-    public void setObjetPossede(Objet objetPossede) {
-        this.objetPossede = objetPossede;
-    }
-
-    public Objet getObjetPossede() {
-        return objetPossede;
-    }
 }

@@ -8,17 +8,17 @@ public class Casser {
     private GameMap map;
     private MapVue mapVue;
     private Player joueur;
-    private boolean casseValide;
+
 
 
     public Casser(GameMap map, MapVue mapVue, Player joueur) {
         this.map = map;
         this.mapVue = mapVue;
         this.joueur = joueur;
-        this.casseValide = false;
+
     }
 
-    public void casserBloc(int x, int y) {
+    public boolean casserBloc(int x, int y) {
         double joueurX = joueur.getX() / 32;  // conversion pixels → tuiles
         double joueurY = joueur.getY() / 32;
 
@@ -28,14 +28,12 @@ public class Casser {
             if (distanceX <= 2 && distanceY <= 2) {
                 map.getTerrain()[y][x] = 0; // ID 0 = vide
                 mapVue.mettreAJourTuile(x, y, 0);
-                casseValide = true;
+                return true;
             }
-
+        return false;
     }
 
-    public boolean isCasseValide() {
-        return casseValide;
-    }
+
 }
 
 

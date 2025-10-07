@@ -24,21 +24,21 @@ public class TableCraft {
 
     public void crafter(Recette recette, Inventaire inventaire) {
         Map<String, Integer> requis = new HashMap<>();
-        for (Objet o : recette.getComposants()) {
-            requis.put(o.getNom(), requis.getOrDefault(o.getNom(), 0) + 1);
+        for (CaseInventaire c : recette.getComposants()) {
+            requis.put(c.getObjet().getNom(), requis.getOrDefault(c.getObjet().getNom(), 0) + 1);
         }
 
-        List<Objet> contenu = inventaire.getInventaire();
+        List<CaseInventaire> contenu = inventaire.getInventaire();
         for (String nom : requis.keySet()) {
             int restant = requis.get(nom);
             for (int i = 0; i < contenu.size() && restant > 0; i++) {
-                Objet obj = contenu.get(i);
-                if (obj.getNom().equals(nom)) {
-                    int dispo = obj.getQuantite();
+                CaseInventaire caseInventaire = contenu.get(i);
+                if (caseInventaire.getObjet().getNom().equals(nom)) {
+                    int dispo = caseInventaire.getQuantite();
                     int utilise = Math.min(dispo, restant);
-                    obj.decrementerQuantite(utilise);
+                    caseInventaire.decrementerQuantite(utilise);
                     restant -= utilise;
-                    if (obj.getQuantite() <= 0) {
+                    if (caseInventaire.getQuantite() <= 0) {
                         contenu.remove(i);
                         i--;
                     }
@@ -47,7 +47,7 @@ public class TableCraft {
         }
 
         inventaire.ajouterObjet(recette.getResultat());
-        System.out.println("✔ Craft réussi : " + recette.getResultat().getNom());
+        System.out.println("✔ Craft réussi : " + recette.getResultat().getObjet().getNom());
     }
 
     public List<Recette> getRecettes() {
