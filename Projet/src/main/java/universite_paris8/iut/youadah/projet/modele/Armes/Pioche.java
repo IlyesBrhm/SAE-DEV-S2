@@ -11,6 +11,7 @@ public class Pioche extends Objet {
     Player joueur;
     ObjetAuSol objetAuSol;
     Pane playerLayer;
+    private  Environnement env;
 
     public Pioche(String nom, int rarete, GameMap carte, MapVue carteVue, Player joueur, ObjetAuSol objetAuSol, Pane playerLayer) {
 
@@ -20,6 +21,7 @@ public class Pioche extends Objet {
         this.joueur = joueur;
         this.objetAuSol = objetAuSol;
         this.playerLayer = playerLayer;
+        this.env=new Environnement(new Pane());
     }
 
     public void utiliser(int x, int y){
@@ -27,7 +29,7 @@ public class Pioche extends Objet {
             Bloc bloc = new Bloc(carteVue.getBloc(x, y), 1, false, carte, carteVue, joueur, carte.getTile(y,x));
             Casser casseur = new Casser(carte, carteVue, joueur);
             if (casseur.casserBloc(x, y))
-                objetAuSol.deposer(bloc, x,y, playerLayer);
+                joueur.deposer(bloc, env);
         }
         else
             System.out.println("aaaaaaaa");

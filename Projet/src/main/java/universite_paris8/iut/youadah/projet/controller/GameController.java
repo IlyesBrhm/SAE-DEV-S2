@@ -50,7 +50,7 @@ public class GameController implements Initializable {
     private Ennemie ennemie;
     private EnnemieVue ennemieVue;
     private BarreDeVieVue barreVieEnnemi;
-
+    private Environnement environnement;
     private TableCraft tableCraft;
     private TableCraftVue tableCraftVue;
     private Pane paneCraft;
@@ -64,7 +64,7 @@ public class GameController implements Initializable {
         tileMap.setMaxWidth(TAILLE_TUILE * NB_COLONNES);
         tileMap.setMinWidth(TAILLE_TUILE * NB_COLONNES);
         carteVue.afficherCarte(tileMap);
-
+        environnement = new Environnement(playerLayer);
         joueur = new Player(5 * TAILLE_TUILE, 19 * TAILLE_TUILE);
         joueur.setCarte(carte);
         joueurVue = new PlayerVue(joueur);
@@ -166,7 +166,7 @@ public class GameController implements Initializable {
 
             switch (event.getCode()) {
                 case E -> {
-                    if (objetAuSol.ramasser(joueur, inventaire, playerLayer)) {
+                    if (joueur.ramasser(environnement,inventaire)) {
                         inventaireVue.maj();
                     }
                 }
@@ -176,7 +176,7 @@ public class GameController implements Initializable {
                     if (caseInventaire != null) {
                         int q = caseInventaire.getQuantite();
                         caseInventaire.setQuantite(1);
-                        objetAuSol.deposerJoueur(caseInventaire.getObjet(), joueur, playerLayer);
+                        joueur.deposerObjetEnMain(environnement);
                         caseInventaire.setQuantite(q - 1);
 
                         if (q <= 1) {
