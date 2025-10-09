@@ -66,12 +66,14 @@ public class GameController implements Initializable {
         carteVue.afficherCarte(tileMap);
 
         joueur = new Player(5 * TAILLE_TUILE, 19 * TAILLE_TUILE);
+        joueur.setCarte(carte);
         joueurVue = new PlayerVue(joueur);
         coeurVue = new CoeurVue(joueur.getVie().getPv());
         bouclierVue = new BouclierVue(joueur.getVie().getPvArmure(), ath);
         bouclierVue.getBarreBouclier().setLayoutY(40);
 
         ennemie = new Ennemie(19 * TAILLE_TUILE, 19 * TAILLE_TUILE, 1, joueur);
+        ennemie.setCarte(carte);
         ennemieVue = new EnnemieVue(ennemie);
         playerLayer.getChildren().addAll(ennemieVue.getNode());
 
@@ -318,6 +320,7 @@ public class GameController implements Initializable {
 
         // Nouveau joueur
         joueur = new Player(5 * TAILLE_TUILE, 19 * TAILLE_TUILE);
+        joueur.setCarte(carte);
         joueurVue = new PlayerVue(joueur);
         coeurVue = new CoeurVue(joueur.getVie().getPvArmure());
         bouclierVue = new BouclierVue(joueur.getVie().getPvArmure(), ath);
