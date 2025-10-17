@@ -8,11 +8,13 @@ public class ObjetAuSol {
 
     private final int xTuile;
     private final int yTuile;
+    private Objet objet;
     private final ObjetVue objetVue;
 
     public ObjetAuSol(int xTuile, int yTuile, Pane pane, Objet objet) {
         this.xTuile = xTuile;
         this.yTuile = yTuile;
+        this.objet=objet;
         this.objetVue = new ObjetVue(objet);
 
         objetVue.getImageView().setFitWidth(26);
@@ -28,5 +30,5 @@ public class ObjetAuSol {
     public ObjetVue getObjetVue() { return objetVue; }
 
     /** Pratique pour l’inventaire */
-    public Objet getObjet() { return objetVue.getObjet(); }
+    public Objet getObjet() { return objet; }
 }

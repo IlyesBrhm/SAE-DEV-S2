@@ -42,7 +42,6 @@ public class GameController implements Initializable {
     private CoeurVue coeurVue;
     private BouclierVue bouclierVue;
     private CoeurVue coeurVueArmure;
-    private ClavierController clavierController;
     private Inventaire inventaire;
     private InventaireVue inventaireVue;
     private ObjetAuSol objetAuSol;
@@ -55,6 +54,7 @@ public class GameController implements Initializable {
     private TableCraftVue tableCraftVue;
     private Pane paneCraft;
     private boolean craftVisible = false;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -77,6 +77,8 @@ public class GameController implements Initializable {
         ennemieVue = new EnnemieVue(ennemie);
         playerLayer.getChildren().addAll(ennemieVue.getNode());
 
+
+
         barreVieEnnemi = new BarreDeVieVue(ennemie);
         playerLayer.getChildren().add(barreVieEnnemi.getNode());
 
@@ -84,6 +86,8 @@ public class GameController implements Initializable {
         bouclierVue.mettreAJourPv(joueur.getVie().getPvArmure());
 
         objetAuSol = new ObjetAuSol(5, 19, playerLayer, new Pioche("pioche", 1, carte, carteVue, joueur, null, playerLayer));
+        ObjetAuSol objetAuSol1 = new ObjetAuSol(5,21,playerLayer,new Arc("Arc",1,carte,carteVue,joueur,tileMap));
+
 
         inventaire = new Inventaire();
         inventaire.ajouterObjet(new CaseInventaire(new Pioche("pioche", 1, carte, carteVue, joueur, objetAuSol, playerLayer)));
@@ -105,20 +109,7 @@ public class GameController implements Initializable {
 
         GestionEffetDegats.definirSuperposition(overlayRouge);
 
-        clavierController = new ClavierController(
-                touchesAppuyees,
-                joueur,
-                joueurVue,
-                ennemie,
-                ennemieVue,
-                coeurVue,
-                bouclierVue,
-                playerLayer,
-                this::mourir,
-                GestionEffetDegats::declencherClignotementRouge,
-                carte
-        );
-        clavierController.configurerControles();
+
 
         Image image = new Image(getClass().getResource("/images/inventory selected.png").toExternalForm());
         ImageView imageView = new ImageView(image);
@@ -163,24 +154,26 @@ public class GameController implements Initializable {
 
         playerLayer.setOnKeyPressed(event -> {
             touchesAppuyees.add(event.getCode());
+            this.gererTouches();
 
             switch (event.getCode()) {
                 case E -> {
                     if (joueur.ramasser(environnement,inventaire)) {
                         inventaireVue.maj();
+
                     }
                 }
                 case A -> {
                     CaseInventaire caseInventaire = new CaseInventaire(new Arc("ukjhguhkh", 1, carte, carteVue, joueur, tileMap));
                     caseInventaire.setObjet(joueur.getObjetPossede());
                     if (caseInventaire != null) {
+                        //caseInventaire.setQuantite(1);
                         int q = caseInventaire.getQuantite();
-                        caseInventaire.setQuantite(1);
                         joueur.deposerObjetEnMain(environnement);
                         caseInventaire.setQuantite(q - 1);
 
-                        if (q <= 1) {
-                            inventaire.getInventaire().remove(caseInventaire.getObjet());
+                        if (caseInventaire.getQuantite() <= 1) {
+                            inventaire.getInventaire().remove(caseInventaire);
                             joueur.setObjetPossede(null); // Si c'était le dernier, on désélectionne
                         } else {
                             joueur.setObjetPossede(caseInventaire.getObjet()); // Sinon, on garde l’objet sélectionné
@@ -264,7 +257,13 @@ public class GameController implements Initializable {
             @Override
             public void handle(long now) {
                 if (!estMort) {
-                    clavierController.gererTouches();
+
+                    environnement.unTour();
+
+
+                    joueur.deplacer();
+
+                    miseAjour2();
 
                     // Collision avec l’ennemi
                     double distance = Math.hypot(joueur.getX() - ennemie.getX(), joueur.getY() - ennemie.getY());
@@ -287,6 +286,83 @@ public class GameController implements Initializable {
             }
         }.start();
 
+    }
+
+
+    public void gererTouches() {
+        System.out.println("gérertouches");
+        if (touchesAppuyees.contains(KeyCode.Q) || touchesAppuyees.contains(KeyCode.LEFT)) {
+            joueur.allerGauche();
+            System.out.println("gauche");
+        }
+        if (touchesAppuyees.contains(KeyCode.D) || touchesAppuyees.contains(KeyCode.RIGHT)) {
+            joueur.allerDroite();
+            System.out.println("droite");
+        }
+        if (!touchesAppuyees.contains(KeyCode.D) && !touchesAppuyees.contains(KeyCode.RIGHT) && !touchesAppuyees.contains(KeyCode.Q) && !touchesAppuyees.contains(KeyCode.LEFT)) {
+            joueur.immobile();
+        }
+
+        if (touchesAppuyees.contains(KeyCode.Z) || touchesAppuyees.contains(KeyCode.SPACE)) {
+            joueur.sauter();
+        }
+
+    }
+
+    private long maintenant;
+    private final Runnable callbackMort = this::mourir;
+    private final Runnable afficherDegat = GestionEffetDegats::declencherClignotementRouge;
+
+    public void  miseAjour2() {
+        joueur.mettreAJour(carte);
+        joueurVue.mettreAJourJoueur(joueur);
+
+        ennemieVue.mettreAJour(ennemie);
+        ennemie.deplacementMob(carte);
+        ennemie.mettreAJour(carte);
+
+        // Gestion collision entre joueur et ennemie
+        if ((int) ennemie.getX() == (int) joueur.getX() && (int) ennemie.getY() == (int) joueur.getY()) {
+            long maintenant = System.currentTimeMillis();
+            if (maintenant - joueur.getVie().getDernierDegatFeu() > 1000) {
+                ennemie.attaque(carte);  // au lieu de juste ennemie.attaque()
+
+                joueur.getVie().setDernierDegatFeu(maintenant);
+            }
+        }
+
+        // Mise à jour des barres de vie
+        coeurVue.mettreAJourPv(joueur.getVie().getPv());
+        bouclierVue.mettreAJourPv(joueur.getVie().getPvArmure());
+
+        // Dégâts de feu si le joueur est sur un bloc feu (5)
+        int tuileX = (int) (joueur.getX() / 32);
+        int tuileY = (int) (joueur.getY() / 32);
+
+        if (carte.getTile(tuileY, tuileX) == 5 && !joueur.getVie().estMort()) {
+            maintenant = System.currentTimeMillis();
+            if (maintenant - joueur.getVie().getDernierDegatFeu() > 1000) {
+                joueur.getVie().setDernierDegatFeu(maintenant);
+
+                if (joueur.getVie().getPvArmure() > 0) {
+                    joueur.getVie().decrementerPvArmure(1);
+                    bouclierVue.mettreAJourPv(joueur.getVie().getPvArmure());
+                } else {
+                    joueur.getVie().decrementerPvArmure(1);
+                    coeurVue.mettreAJourPv(joueur.getVie().getPv());
+                }
+
+                afficherDegat.run();
+
+                if (joueur.getVie().getPv() <= 0) {
+                    callbackMort.run();
+                }
+            }
+        }
+
+        if (joueur.getVie().getPv() <= 0) {
+            callbackMort.run();
+        }
     }
 
     private void mourir() {
@@ -351,11 +427,6 @@ public class GameController implements Initializable {
                 barreVieEnnemi.getNode()
         );
 
-        // Mise à jour du clavier
-        clavierController.setJoueur(joueur);
-        clavierController.setJoueurVue(joueurVue);
-        clavierController.setCoeurVue(coeurVue);
-        clavierController.setBouclierVue(bouclierVue);
 
         // Réinitialiser la vue
         boutonQuitter.setVisible(false);

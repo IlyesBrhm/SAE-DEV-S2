@@ -12,12 +12,17 @@ public class Environnement {
 
     private final Pane pane;
     private final List<ObjetAuSol> objetsAuSol;
+    private Player joueur;
+     
 
     public Environnement(Pane pane) {
         this.pane = pane;
         this.objetsAuSol = new ArrayList<>();
     }
 
+    public void unTour() {
+        //joueur.deplacer();
+    }
 
     public ObjetAuSol deposer(Objet objet, int xTuile, int yTuile) {
         ObjetAuSol o = new ObjetAuSol(xTuile, yTuile, pane, objet);
@@ -35,6 +40,7 @@ public class Environnement {
 
 
     public boolean ramasserSurTuile(int xTuile, int yTuile, Inventaire inventaire) {
+        System.out.println("ramasser");
         boolean ramasse = false;
         Iterator<ObjetAuSol> it = objetsAuSol.iterator();
         while (it.hasNext()) {

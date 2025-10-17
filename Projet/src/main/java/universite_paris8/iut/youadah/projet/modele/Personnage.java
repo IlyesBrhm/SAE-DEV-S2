@@ -8,6 +8,9 @@ public class Personnage {
 
     private final DoubleProperty x = new SimpleDoubleProperty();
     private final DoubleProperty y = new SimpleDoubleProperty();
+
+    private char direction = 'i'; // 'd' pour droite 'g' pour gauche 'i' pour immobile
+
     private double vitesseY;
     protected boolean versLaDroite;
     private GameMap carte;
@@ -24,8 +27,7 @@ public class Personnage {
         this.y.set(startY);
         this.vitesseY = 0;
         this.versLaDroite = true;
-        // ⚠️ Ancienne ligne BUGGÉE: this.carte = carte;  (il n'existe pas de paramètre 'carte')
-        this.carte = null; // on l’injectera via setCarte(...) ou via mettreAJour(map)
+        this.carte = null;
         this.vie = new Vie();
     }
 
@@ -44,12 +46,36 @@ public class Personnage {
 
     public boolean estsVersLaDroite() { return versLaDroite; }
 
+
+    public void allerGauche() {
+        this.direction = 'g';
+    }
+
+    public void allerDroite() {
+        this.direction = 'd';
+    }
+
+    public void immobile() {
+        this.direction = 'i';
+    }
+
     public void sauter() {
         if (auSol) {
             vitesseY = SAUT;
             auSol = false;
         }
     }
+
+    public void deplacer() {
+        switch (this.direction) {
+            case 'd' : deplacerDroite();break;
+            case 'g' : deplacerGauche();break;
+
+
+        }
+    }
+
+
 
     public Vie getVie() { return vie; }
 
@@ -77,7 +103,7 @@ public class Personnage {
         }
     }
 
-    // ✅ Aligne la logique : on stocke la map dans le champ 'carte' et on l'utilise partout
+
     public void mettreAJour(GameMap map) {
         this.carte = map;              // <-- évite 'carte' null
         if (carte == null) return;     // garde-fou
@@ -134,4 +160,6 @@ public class Personnage {
         this.vitesseY = nouvelleVitesseY;
         this.auSol = auSolTemp;
     }
+
+
 }
