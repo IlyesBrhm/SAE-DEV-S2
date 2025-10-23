@@ -68,7 +68,7 @@ public class ClavierController {
         ennemie.deplacementMob(carte);
         ennemie.mettreAJour(carte);
 
-        // Gestion collision entre joueur et ennemie
+        //Gestion collision entre joueur et ennemie
         if ((int) ennemie.getX() == (int) joueur.getX() && (int) ennemie.getY() == (int) joueur.getY()) {
             long maintenant = System.currentTimeMillis();
             if (maintenant - joueur.getVie().getDernierDegatFeu() > 1000) {
@@ -78,7 +78,7 @@ public class ClavierController {
             }
         }
 
-        // Mise à jour des barres de vie
+        //Mise à jour des barres de vie
         coeurVue.mettreAJourPv(joueur.getVie().getPv());
         bouclierVue.mettreAJourPv(joueur.getVie().getPvArmure());
 
@@ -133,4 +133,4 @@ public class ClavierController {
         this.bouclierVue = bouclierVue;
     }
 
-} // Fin ClavierController propre
+} //Fin ClavierController propre

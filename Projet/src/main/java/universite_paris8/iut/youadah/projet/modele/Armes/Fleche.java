@@ -79,35 +79,82 @@ public class Fleche {
         animation.start();
     }
 
+
     private void avancer() {
+        deplacer();
+        if (collisionBlocSolide()) return;
+        verifierCollisionEnnemi();
+        verifierSortieEcran();
+    }
+
+
+
+    private void deplacer() {
         posX += dirX * vitesse;
         posY += dirY * vitesse;
         node.setLayoutX(posX);
         node.setLayoutY(posY);
+    }
 
-        // --- Détection de collision avec un bloc solide ---
+    private boolean collisionBlocSolide() {
+        if (carte == null) return false;
+
         int tuileX = (int) (posX / 32);
         int tuileY = (int) (posY / 32);
 
-        if (carte != null && tuileX >= 0 && tuileX < carte.getLargeur()
-                && tuileY >= 0 && tuileY < carte.getHauteur()) {
+        if (tuileX < 0 || tuileX >= carte.getLargeur() || tuileY < 0 || tuileY >= carte.getHauteur())
+            return false;
 
-            int bloc = carte.getTile(tuileY, tuileX);
-            if (bloc != 0) { // 0 = vide ; tout autre bloc = obstacle
-                detruire(); // détruit la flèche
-                return; // on arrête tout ici
-            }
+        int bloc = carte.getTile(tuileY, tuileX);
+        if (bloc != 0) {
+            detruire();
+            return true;
         }
+        return false;
+    }
 
-        // --- Collision avec un ennemi ---
-        Tirer tirer = new Tirer();
-        tirer.infligerDegatsSiCollision(posX, posY, cibles, overlay, degats);
+    private void verifierCollisionEnnemi() {
+        new Tirer().infligerDegatsSiCollision(posX, posY, cibles, overlay, degats);
+    }
 
-        // --- Si la flèche sort de l’écran ---
-        if (posX < 0 || posX > 32 * 58 || posY < 0 || posY > 32 * 32) {
+    private void verifierSortieEcran() {
+        double largeurCarte = 32 * 58;
+        double hauteurCarte = 32 * 32;
+
+        if (posX < 0 || posX > largeurCarte || posY < 0 || posY > hauteurCarte) {
             detruire();
         }
     }
+
+//    private void avancer() {
+//        posX += dirX * vitesse;
+//        posY += dirY * vitesse;
+//        node.setLayoutX(posX);
+//        node.setLayoutY(posY);
+//
+//        // --- Détection de collision avec un bloc solide ---
+//        int tuileX = (int) (posX / 32);
+//        int tuileY = (int) (posY / 32);
+//
+//        if (carte != null && tuileX >= 0 && tuileX < carte.getLargeur()
+//                && tuileY >= 0 && tuileY < carte.getHauteur()) {
+//
+//            int bloc = carte.getTile(tuileY, tuileX);
+//            if (bloc != 0) { // 0 = vide ; tout autre bloc = obstacle
+//                detruire(); // détruit la flèche
+//                return; // on arrête tout ici
+//            }
+//        }
+//
+//        // Collision avec un ennemi
+//        Tirer tirer = new Tirer();
+//        tirer.infligerDegatsSiCollision(posX, posY, cibles, overlay, degats);
+//
+//        // si la flèche sort de l’écran
+//        if (posX < 0 || posX > 32 * 58 || posY < 0 || posY > 32 * 32) {
+//            detruire();
+//        }
+//    }
 
 
     private void detruire() {
