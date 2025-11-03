@@ -20,28 +20,29 @@ public class Ennemie extends Personnage {
 
         double distanceJoueur = Math.abs(joueur.getX() - getX());
 
-        // Si trop proche du joueur, attaquer au lieu de se déplacer
+        System.out.println("Distance joueur: " + distanceJoueur); // DEBUG
+
         if (distanceJoueur < 28 && Math.abs(joueur.getY() - getY()) < 32) {
+            System.out.println("Trop proche, attaque !"); // DEBUG
             return;
         }
 
-        // Déterminer la direction vers le joueur
         boolean joueurEstAGauche = joueur.getX() < getX();
         versLaDroite = !joueurEstAGauche;
 
-        // Vérifier les obstacles avant de se déplacer
+        System.out.println("Direction: " + (versLaDroite ? "droite" : "gauche")); // DEBUG
+
         if (aObstacleDevant() || aTrouDevant()) {
+            System.out.println("Obstacle détecté !"); // DEBUG
             versLaDroite = !versLaDroite;
         }
 
-        // Déplacer dans la direction appropriée
         if (versLaDroite) {
             deplacerDroite(VITESSE_ENNEMIE);
         } else {
             deplacerGauche(VITESSE_ENNEMIE);
         }
 
-        // Appliquer la gravité
         appliquerGravite();
     }
 

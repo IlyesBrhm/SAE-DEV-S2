@@ -1,12 +1,11 @@
 package universite_paris8.iut.youadah.projet.modele;
 
-public class CaseInventaire  {
-
+public class CaseInventaire {
     private Objet objet;
     private int quantite;
 
     public CaseInventaire(Objet objet){
-        this.objet=objet;
+        this.objet = objet;
         quantite = 1;
     }
 
@@ -23,7 +22,7 @@ public class CaseInventaire  {
     }
 
     public void setQuantite(int quantite) {
-        this.quantite = quantite;
+        this.quantite = Math.max(0, quantite);
     }
 
     public void incrementerQuantite(int x){
@@ -31,6 +30,18 @@ public class CaseInventaire  {
     }
 
     public void decrementerQuantite(int x){
-        quantite -= x;
+        quantite = Math.max(0, quantite - x);
+    }
+
+    public boolean estVide() {
+        return quantite <= 0;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CaseInventaire)) return false;
+        CaseInventaire autre = (CaseInventaire) o;
+        return objet.equals(autre.objet);
     }
 }

@@ -40,6 +40,14 @@ public class Inventaire {
             }
         }
     }
+    public CaseInventaire trouverCase(Objet objet) {
+        for (CaseInventaire caseInventaire : inventaire) {
+            if (caseInventaire.getObjet() == objet) { // Comparaison par référence
+                return caseInventaire;
+            }
+        }
+        return null;
+    }
 
     public List<CaseInventaire> getInventaire() {
         return inventaire;

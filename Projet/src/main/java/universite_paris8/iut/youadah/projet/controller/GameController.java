@@ -198,7 +198,7 @@ public class GameController implements Initializable {
 
     private void gererAppuiTouche(javafx.scene.input.KeyEvent event) {
         touchesAppuyees.add(event.getCode());
-        gererTouches();
+
 
         switch (event.getCode()) {
             case E -> ramasserObjet();
@@ -215,18 +215,17 @@ public class GameController implements Initializable {
     }
 
     private void deposerObjet() {
-        CaseInventaire caseInventaire = new CaseInventaire(joueur.getObjetPossede());
-        if (caseInventaire.getObjet() == null) return;
+        if (joueur.getObjetPossede() == null) return;
 
-        int quantite = caseInventaire.getQuantite();
+        CaseInventaire caseReelle = inventaire.trouverCase(joueur.getObjetPossede());
+        if (caseReelle == null) return;
+
         joueur.deposerObjetEnMain(environnement);
-        caseInventaire.setQuantite(quantite - 1);
+        caseReelle.decrementerQuantite(1);
 
-        if (caseInventaire.getQuantite() <= 0) {
-            inventaire.getInventaire().remove(caseInventaire);
+        if (caseReelle.estVide()) {
+            inventaire.getInventaire().remove(caseReelle);
             joueur.setObjetPossede(null);
-        } else {
-            joueur.setObjetPossede(caseInventaire.getObjet());
         }
 
         joueurVue.mettreAJourJoueur(joueur);
@@ -256,7 +255,20 @@ public class GameController implements Initializable {
         double cibleY = event.getY();
 
         attaquerAvecEpee();
-        utiliserObjetEnMain(cibleX, cibleY);
+
+        // Trouve directement la vraie case au lieu d'en créer une nouvelle
+        if (joueur.getObjetPossede() != null) {
+            CaseInventaire caseReelle = inventaire.trouverCase(joueur.getObjetPossede());
+
+            if (caseReelle != null) {
+                if (caseReelle.getObjet() instanceof Arc) {
+                    tirerFleche(cibleX, cibleY, playerLayer);
+                } else {
+                    utiliserObjetNormal(caseReelle, cibleX, cibleY);
+                }
+                rafraichirInventaire();
+            }
+        }
     }
 
     private void attaquerAvecEpee() {
@@ -269,26 +281,19 @@ public class GameController implements Initializable {
         }
     }
 
-    private void utiliserObjetEnMain(double cibleX, double cibleY) {
-        CaseInventaire caseUtilise = new CaseInventaire(joueur.getObjetPossede());
-        if (caseUtilise.getObjet() == null) return;
 
-        if (caseUtilise.getObjet() instanceof Arc) {
-            tirerFleche(cibleX, cibleY, playerLayer);
-        } else {
-            utiliserObjetNormal(caseUtilise, cibleX, cibleY);
-        }
-
-        rafraichirInventaire();
-    }
 
     private void utiliserObjetNormal(CaseInventaire caseUtilise, double cibleX, double cibleY) {
         caseUtilise.getObjet().utiliser((int)(cibleX / TAILLE_TUILE), (int)(cibleY / TAILLE_TUILE));
 
-        if (caseUtilise.getObjet() instanceof Bloc || caseUtilise.getObjet().getConsomable()) {
-            caseUtilise.decrementerQuantite(1);
-            if (caseUtilise.getQuantite() <= 0) {
-                inventaire.getInventaire().remove(caseUtilise);
+        // Trouve la vraie case dans l'inventaire
+        CaseInventaire caseReelle = inventaire.trouverCase(caseUtilise.getObjet());
+
+        if (caseReelle != null && (caseUtilise.getObjet() instanceof Bloc || caseUtilise.getObjet().getConsomable())) {
+            caseReelle.decrementerQuantite(1);
+
+            if (caseReelle.estVide()) {
+                inventaire.getInventaire().remove(caseReelle);
                 joueur.setObjetPossede(null);
             }
         }
@@ -317,6 +322,9 @@ public class GameController implements Initializable {
             joueur.immobile();
         }
 
+        // AJOUTE CETTE LIGNE : Déplace le joueur selon sa direction
+        joueur.deplacer();
+
         if (touchesAppuyees.contains(KeyCode.Z) || touchesAppuyees.contains(KeyCode.SPACE)) {
             joueur.sauter();
         }
@@ -327,6 +335,7 @@ public class GameController implements Initializable {
             @Override
             public void handle(long now) {
                 if (!estMort) {
+                    gererTouches();
                     environnement.unTour();
                 }
             }
