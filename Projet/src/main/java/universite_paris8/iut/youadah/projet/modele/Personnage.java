@@ -31,7 +31,6 @@ public class Personnage {
         this.vie = new Vie();
     }
 
-    // ✅ Ajoute ce setter pour injecter la carte dès l'initialisation
     public void setCarte(GameMap carte) {
         this.carte = carte;
     }
@@ -45,7 +44,7 @@ public class Personnage {
     public DoubleProperty yProperty() { return y; }
 
     public boolean estsVersLaDroite() { return versLaDroite; }
-
+    public Vie getVie() { return vie; }
 
     public void allerGauche() {
         this.direction = 'g';
@@ -68,20 +67,18 @@ public class Personnage {
 
     public void deplacer() {
         switch (this.direction) {
-            case 'd' : deplacerDroite();break;
-            case 'g' : deplacerGauche();break;
-
-
+            case 'd': deplacerDroite(); break;
+            case 'g': deplacerGauche(); break;
         }
     }
 
+    /**
+     * Déplace le personnage vers la gauche avec une vitesse personnalisée
+     */
+    protected void deplacerGauche(double vitesse) {
+        if (carte == null) return;
 
-
-    public Vie getVie() { return vie; }
-
-    public void deplacerGauche() {
-        if (carte == null) return; // sécurité supplémentaire
-        double futurX = getX() - VITESSE;
+        double futurX = getX() - vitesse;
         int tuileX = (int)(futurX / TAILLE_TUILE);
         int tuileY = (int)((getY() + TAILLE_TUILE - 1) / TAILLE_TUILE);
 
@@ -91,9 +88,13 @@ public class Personnage {
         }
     }
 
-    public void deplacerDroite() {
-        if (carte == null) return; // sécurité supplémentaire
-        double futurX = getX() + VITESSE;
+    /**
+     * Déplace le personnage vers la droite avec une vitesse personnalisée
+     */
+    protected void deplacerDroite(double vitesse) {
+        if (carte == null) return;
+
+        double futurX = getX() + vitesse;
         int tuileX = (int)((futurX + TAILLE_TUILE - 1) / TAILLE_TUILE);
         int tuileY = (int)((getY() + TAILLE_TUILE - 1) / TAILLE_TUILE);
 
@@ -103,10 +104,73 @@ public class Personnage {
         }
     }
 
+    public void deplacerGauche() {
+        deplacerGauche(VITESSE);
+    }
+
+    public void deplacerDroite() {
+        deplacerDroite(VITESSE);
+    }
+
+    /**
+     * Vérifie s'il y a un trou devant le personnage
+     */
+    protected boolean aTrouDevant() {
+        if (carte == null) return false;
+
+        int tuileY = (int)((getY() + TAILLE_TUILE - 1) / TAILLE_TUILE);
+        int futurTuileX;
+
+        if (versLaDroite) {
+            futurTuileX = (int)((getX() + TAILLE_TUILE) / TAILLE_TUILE);
+        } else {
+            futurTuileX = (int)((getX() - 1) / TAILLE_TUILE);
+        }
+
+        if (futurTuileX < 0 || futurTuileX >= carte.getLargeur()) {
+            return true;
+        }
+
+        return !carte.estSolide(carte.getTile(tuileY + 1, futurTuileX));
+    }
+
+    /**
+     * Vérifie s'il y a un obstacle devant le personnage
+     */
+    protected boolean aObstacleDevant() {
+        if (carte == null) return true;
+
+        int tuileY = (int)((getY() + TAILLE_TUILE - 1) / TAILLE_TUILE);
+        int futurTuileX;
+
+        if (versLaDroite) {
+            futurTuileX = (int)((getX() + TAILLE_TUILE) / TAILLE_TUILE);
+            if (futurTuileX >= carte.getLargeur()) return true;
+        } else {
+            futurTuileX = (int)((getX() - 1) / TAILLE_TUILE);
+            if (futurTuileX < 0) return true;
+        }
+
+        return carte.estSolide(carte.getTile(tuileY, futurTuileX));
+    }
+
+    /**
+     * Applique la gravité si le personnage n'est pas au sol
+     */
+    protected void appliquerGravite() {
+        if (carte == null) return;
+
+        int tuileX = (int)(getX() / TAILLE_TUILE);
+        int tuileY = (int)((getY() + TAILLE_TUILE - 1) / TAILLE_TUILE);
+
+        if (!carte.estSolide(carte.getTile(tuileY + 1, tuileX))) {
+            setY(getY() + 0.4);
+        }
+    }
 
     public void mettreAJour(GameMap map) {
-        this.carte = map;              // <-- évite 'carte' null
-        if (carte == null) return;     // garde-fou
+        this.carte = map;
+        if (carte == null) return;
 
         final double GRAVITE = 0.08;
         double nouvelleY = getY();
@@ -160,6 +224,4 @@ public class Personnage {
         this.vitesseY = nouvelleVitesseY;
         this.auSol = auSolTemp;
     }
-
-
 }

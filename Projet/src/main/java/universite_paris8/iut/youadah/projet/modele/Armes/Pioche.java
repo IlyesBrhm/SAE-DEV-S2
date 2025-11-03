@@ -11,28 +11,32 @@ public class Pioche extends Objet {
     Player joueur;
     ObjetAuSol objetAuSol;
     Pane playerLayer;
-    private  Environnement env;
 
     public Pioche(String nom, int rarete, GameMap carte, MapVue carteVue, Player joueur, ObjetAuSol objetAuSol, Pane playerLayer) {
-
         super(nom, rarete, false);
         this.carte = carte;
         this.carteVue = carteVue;
         this.joueur = joueur;
         this.objetAuSol = objetAuSol;
         this.playerLayer = playerLayer;
-        this.env=new Environnement(new Pane());
     }
 
-    public void utiliser(int x, int y){
-        if (carteVue.getBloc(x,y) != "Vide") {
-            Bloc bloc = new Bloc(carteVue.getBloc(x, y), 1, false, carte, carteVue, joueur, carte.getTile(y,x));
+    public void utiliser(int x, int y) {
+        if (!carteVue.getBloc(x, y).equals("Vide")) {
+            Bloc bloc = new Bloc(carteVue.getBloc(x, y), 1, false, carte, carteVue, joueur, carte.getTile(y, x));
             Casser casseur = new Casser(carte, carteVue, joueur);
-            if (casseur.casserBloc(x, y))
-                joueur.deposer(bloc, env);
+            if (casseur.casserBloc(x, y)) {
+                // Utiliser une méthode de dépôt simplifiée au lieu d'Environnement
+                deposerBlocAuSol(bloc, x, y);
+            }
+        } else {
+            System.out.println("Bloc vide, rien à casser.");
         }
-        else
-            System.out.println("aaaaaaaa");
     }
 
+    private void deposerBlocAuSol(Bloc bloc, int x, int y) {
+        // Créer un ObjetAuSol directement et l'ajouter au Pane
+        ObjetAuSol objetAuSol = new ObjetAuSol(x, y, playerLayer, bloc);
+        // Pas besoin d'ajouter à une liste si ce n'est pas géré globalement
+    }
 }
