@@ -19,7 +19,7 @@ public class Casser {
     }
 
     public boolean casserBloc(int x, int y) {
-        double joueurX = joueur.getX() / 32;  // conversion pixels → tuiles
+        double joueurX = joueur.getX() / 32;
         double joueurY = joueur.getY() / 32;
 
         double distanceX = Math.abs(x - joueurX);

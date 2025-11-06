@@ -60,14 +60,13 @@ public class GameController implements Initializable {
         initialiserCarte();
         initialiserJoueur();
         initialiserEnnemi();
-        initialiserEnvironnement();
-        initialiserInventaire();
+        initialiserEnvironnement(); // ✅ AVANT initialiserInventaire
+        initialiserInventaire();     // ✅ APRÈS initialiserEnvironnement
         initialiserCraft();
         initialiserInterface();
         configurerGestionnairesEvenements();
         demarrerBoucleJeu();
     }
-
     private void initialiserCarte() {
         carte = new GameMap();
         int[][] structure = carte.creerTerrain(32, NB_COLONNES);
@@ -131,10 +130,9 @@ public class GameController implements Initializable {
     }
 
     private void creerObjetsAuSol() {
-        objetAuSol = new ObjetAuSol(5, 19, playerLayer, new Pioche("pioche", 1, carte, carteVue, joueur, null, playerLayer));
-        new ObjetAuSol(5, 21, playerLayer, new Arc("Arc", 1, carte, carteVue, joueur, tileMap));
+        // ✅ Utiliser environnement.deposer() au lieu de new ObjetAuSol()
+        environnement.deposer(new Pioche("pioche", 1, carte, carteVue, joueur, null, playerLayer), 5, 19);
     }
-
     private void creerSelectionInventaire() {
         Image image = new Image(getClass().getResource("/images/inventory selected.png").toExternalForm());
         selectionInventaire = new ImageView(image);
@@ -322,7 +320,7 @@ public class GameController implements Initializable {
             joueur.immobile();
         }
 
-        // AJOUTE CETTE LIGNE : Déplace le joueur selon sa direction
+
         joueur.deplacer();
 
         if (touchesAppuyees.contains(KeyCode.Z) || touchesAppuyees.contains(KeyCode.SPACE)) {

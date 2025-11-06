@@ -112,28 +112,72 @@ public class Environnement {
     }
 
     public boolean ramasserSurTuile(int xTuile, int yTuile, Inventaire inventaire) {
-        System.out.println("ramasser");
+        System.out.println("=== RAMASSER ===");
+        System.out.println("Tuile joueur: x=" + xTuile + ", y=" + yTuile);
+        System.out.println("Nombre d'objets au sol: " + objetsAuSol.size());
+
         boolean ramasse = false;
         Iterator<ObjetAuSol> it = objetsAuSol.iterator();
         while (it.hasNext()) {
             ObjetAuSol o = it.next();
+            System.out.println("Objet au sol: x=" + o.getXTuile() + ", y=" + o.getYTuile() + " (" + o.getObjet().getNom() + ")");
+
             if (o.getXTuile() == xTuile && o.getYTuile() == yTuile) {
+                System.out.println("✅ CORRESPONDANCE TROUVÉE !");
                 boolean ajoute = inventaire.ajouterObjet(new CaseInventaire(o.getObjet()));
                 if (ajoute) {
                     playerLayer.getChildren().remove(o.getObjetVue().getImageView());
                     it.remove();
                     ramasse = true;
+                    System.out.println("✅ OBJET RAMASSÉ !");
                 } else {
-                    System.out.println("Inventaire plein : impossible de ramasser " + o.getObjet().getNom());
+                    System.out.println("❌ Inventaire plein");
                 }
             }
         }
+        System.out.println("=================");
         return ramasse;
     }
 
     public boolean ramasserAutourDuJoueur(Player joueur, Inventaire inventaire) {
-        int x = (int) (joueur.getX() / TAILLE_TUILE);
-        int y = (int) (joueur.getY() / TAILLE_TUILE);
-        return ramasserSurTuile(x, y, inventaire);
+        System.out.println("=== TENTATIVE RAMASSAGE ===");
+        System.out.println("Position joueur: X=" + joueur.getX() + ", Y=" + joueur.getY());
+
+        boolean ramasse = false;
+        Iterator<ObjetAuSol> it = objetsAuSol.iterator();
+
+        while (it.hasNext()) {
+            ObjetAuSol o = it.next();
+
+            // ✅ Calculer la position en pixels de l'objet
+            double objetX = o.getXTuile() * TAILLE_TUILE;
+            double objetY = o.getYTuile() * TAILLE_TUILE;
+
+            // ✅ Calculer la distance
+            double distance = Math.hypot(joueur.getX() - objetX, joueur.getY() - objetY);
+
+            System.out.println("Objet " + o.getObjet().getNom() + " à: x=" + objetX + ", y=" + objetY + " (distance=" + distance + ")");
+
+            // ✅ Si l'objet est à moins de 40 pixels (environ 1.25 tuile)
+            if (distance < 40) {
+                System.out.println("✅ OBJET À PORTÉE !");
+                boolean ajoute = inventaire.ajouterObjet(new CaseInventaire(o.getObjet()));
+                if (ajoute) {
+                    playerLayer.getChildren().remove(o.getObjetVue().getImageView());
+                    it.remove();
+                    ramasse = true;
+                    System.out.println("✅ OBJET RAMASSÉ : " + o.getObjet().getNom());
+                    break; // Ramasser un seul objet à la fois
+                } else {
+                    System.out.println("❌ Inventaire plein");
+                }
+            }
+        }
+
+        if (!ramasse) {
+            System.out.println("❌ Aucun objet à portée");
+        }
+
+        return ramasse;
     }
 }

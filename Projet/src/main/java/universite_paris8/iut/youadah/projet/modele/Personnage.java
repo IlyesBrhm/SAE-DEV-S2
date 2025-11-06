@@ -69,6 +69,7 @@ public class Personnage {
         switch (this.direction) {
             case 'd': deplacerDroite(); break;
             case 'g': deplacerGauche(); break;
+
         }
     }
 

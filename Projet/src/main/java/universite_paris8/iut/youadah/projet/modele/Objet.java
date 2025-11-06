@@ -37,7 +37,7 @@ public abstract class Objet {
         if (this == o) return true;
         if (!(o instanceof Objet)) return false;
         Objet autre = (Objet) o;
-        return nom.equals(autre.nom); // même nom = même type d’objet
+        return nom.equals(autre.nom);
     }
 
     @Override

@@ -40,9 +40,11 @@ public class Inventaire {
             }
         }
     }
+
     public CaseInventaire trouverCase(Objet objet) {
         for (CaseInventaire caseInventaire : inventaire) {
-            if (caseInventaire.getObjet() == objet) { // Comparaison par référence
+            // Utiliser equals au lieu de == pour comparer les objets
+            if (caseInventaire.getObjet().equals(objet)) {
                 return caseInventaire;
             }
         }
