@@ -121,7 +121,8 @@ public class GameController implements Initializable {
     }
 
     private void ajouterObjetsInitiauxInventaire() {
-        inventaire.ajouterObjet(new CaseInventaire(new Pioche("pioche", 1, carte, carteVue, joueur, null, playerLayer)));
+        // ✅ Passer environnement au lieu de null
+        inventaire.ajouterObjet(new CaseInventaire(new Pioche("pioche", 1, carte, carteVue, joueur, environnement, playerLayer)));
         inventaire.ajouterObjet(new CaseInventaire(new Potion("potionVie", 1, joueur, "vie")));
         inventaire.ajouterObjet(new CaseInventaire(new Bloc("Terre", 1, false, carte, carteVue, joueur, 2)));
         inventaire.ajouterObjet(new CaseInventaire(new Bloc("Pierre", 1, false, carte, carteVue, joueur, 3)));
@@ -130,8 +131,8 @@ public class GameController implements Initializable {
     }
 
     private void creerObjetsAuSol() {
-        // ✅ Utiliser environnement.deposer() au lieu de new ObjetAuSol()
-        environnement.deposer(new Pioche("pioche", 1, carte, carteVue, joueur, null, playerLayer), 5, 19);
+        // ✅ Passer environnement au lieu de null
+        environnement.deposer(new Pioche("pioche", 1, carte, carteVue, joueur, environnement, playerLayer), 5, 19);
     }
     private void creerSelectionInventaire() {
         Image image = new Image(getClass().getResource("/images/inventory selected.png").toExternalForm());
@@ -139,6 +140,8 @@ public class GameController implements Initializable {
         selectionInventaire.setFitHeight(64);
         selectionInventaire.setFitWidth(64);
     }
+
+// Dans votre GameController.java, remplacez ces méthodes :
 
     private void initialiserCraft() {
         paneCraft = new Pane();
@@ -150,37 +153,54 @@ public class GameController implements Initializable {
         ath.getChildren().add(paneCraft);
 
         tableCraft = new TableCraft();
-        ajouterRecettesCraft();
+        ajouterRecettesCraft(); // ✅ Appel APRÈS que l'inventaire soit créé
 
         tableCraftVue = new TableCraftVue(paneCraft, tableCraft, inventaire, inventaireVue, ath);
     }
 
     private void ajouterRecettesCraft() {
-        // Recette Potion
-        tableCraft.ajouterRecette(new Recette(
-                List.of(inventaire.getInventaire().get(2), inventaire.getInventaire().get(3)),
-                new CaseInventaire(new Potion("potionVie", 5, joueur, "vie"))
-        ));
+        System.out.println("=== AJOUT DES RECETTES ===");
+        System.out.println("Taille inventaire : " + inventaire.getInventaire().size());
 
-        // Recette Pioche
+        // ✅ VÉRIFIER que l'inventaire a au moins 4 éléments
+        if (inventaire.getInventaire().size() < 4) {
+            System.err.println("❌ ERREUR : L'inventaire n'a pas assez d'objets pour créer les recettes !");
+            return;
+        }
+
+        // Recette Potion - Utilise les objets de l'inventaire existant
         tableCraft.ajouterRecette(new Recette(
                 List.of(
-                        new CaseInventaire(new Bloc("Pierre", 1, false, carte, carteVue, joueur, 3)),
-                        new CaseInventaire(new Bloc("Pierre", 1, false, carte, carteVue, joueur, 3))
+                        inventaire.getInventaire().get(2), // Terre
+                        inventaire.getInventaire().get(3)  // Pierre
                 ),
-                new CaseInventaire(new Pioche("pioche", 1, carte, carteVue, joueur, objetAuSol, playerLayer))
+                new CaseInventaire(new Potion("potionVie", 5, joueur, "vie"))
         ));
+        System.out.println("✅ Recette Potion ajoutée");
+
+        // Recette Pioche - Crée de NOUVEAUX objets pour la recette
+        tableCraft.ajouterRecette(new Recette(
+                List.of(
+                        new CaseInventaire(new Bloc("Pierre", 2, false, carte, carteVue, joueur, 3))
+                ),
+                new CaseInventaire(new Pioche("pioche", 1, carte, carteVue, joueur, environnement, playerLayer))
+        ));
+        System.out.println("✅ Recette Pioche ajoutée");
 
         // Recette Arc
         tableCraft.ajouterRecette(new Recette(
                 List.of(
-                        new CaseInventaire(new Bloc("Bois", 1, false, carte, carteVue, joueur, 2)),
-                        new CaseInventaire(new Bloc("Bois", 1, false, carte, carteVue, joueur, 2)),
+                        new CaseInventaire(new Bloc("Bois", 2, false, carte, carteVue, joueur, 2)),
                         new CaseInventaire(new Bloc("Pierre", 1, false, carte, carteVue, joueur, 3))
                 ),
                 new CaseInventaire(new Arc("Arc", 1, carte, carteVue, joueur, playerLayer))
         ));
+        System.out.println("✅ Recette Arc ajoutée");
+
+        System.out.println("Total recettes : " + tableCraft.getRecettes().size());
+        System.out.println("==========================\n");
     }
+
 
     private void initialiserInterface() {
         GestionEffetDegats.definirSuperposition(overlayRouge);
@@ -300,9 +320,21 @@ public class GameController implements Initializable {
     }
 
     private void rafraichirInventaire() {
-        ath.getChildren().clear();
+
+        ath.getChildren().removeIf(node ->
+                node != paneCraft &&
+                        node != bouclierVue.getBarreBouclier() &&
+                        node != selectionInventaire
+        );
+
+
         inventaireVue.afficherInventaire();
         inventaireVue.maj();
+
+
+        if (!ath.getChildren().contains(paneCraft)) {
+            ath.getChildren().add(paneCraft);
+        }
     }
 
     private void gererTouches() {

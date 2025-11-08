@@ -9,13 +9,10 @@ public class Casser {
     private MapVue mapVue;
     private Player joueur;
 
-
-
     public Casser(GameMap map, MapVue mapVue, Player joueur) {
         this.map = map;
         this.mapVue = mapVue;
         this.joueur = joueur;
-
     }
 
     public boolean casserBloc(int x, int y) {
@@ -25,16 +22,11 @@ public class Casser {
         double distanceX = Math.abs(x - joueurX);
         double distanceY = Math.abs(y - joueurY);
 
-            if (distanceX <= 2 && distanceY <= 2) {
-                map.getTerrain()[y][x] = 0; // ID 0 = vide
-                mapVue.mettreAJourTuile(x, y, 0);
-                return true;
-            }
+        if (distanceX <= 2 && distanceY <= 2) {
+            map.getTerrain()[y][x] = 0; // ID 0 = vide
+            mapVue.mettreAJourTuile(x, y, 0);
+            return true;
+        }
         return false;
     }
-
-
 }
-
-
-

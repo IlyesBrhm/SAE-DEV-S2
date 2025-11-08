@@ -4,15 +4,29 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.geometry.Rectangle2D;
+import javafx.stage.Screen;
 
 public class HelloApplication extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/universite_paris8/iut/youadah/projet/hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 1920, 1080);
+
+        // Obtenir les dimensions de l'écran
+        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+
+        // Créer la scène avec 80% de la taille de l'écran
+        Scene scene = new Scene(fxmlLoader.load(),
+                screenBounds.getWidth() * 0.8,
+                screenBounds.getHeight() * 0.8);
+
         primaryStage.setScene(scene);
         primaryStage.setTitle("Bilad al Sam");
+
+        // Centrer la fenêtre
+        primaryStage.centerOnScreen();
+
         primaryStage.show();
     }
 

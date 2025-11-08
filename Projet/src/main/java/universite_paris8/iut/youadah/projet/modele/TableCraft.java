@@ -23,11 +23,13 @@ public class TableCraft {
     }
 
     public void crafter(Recette recette, Inventaire inventaire) {
+        // Créer une map des composants requis avec leurs quantités
         Map<String, Integer> requis = new HashMap<>();
         for (CaseInventaire c : recette.getComposants()) {
             requis.put(c.getObjet().getNom(), requis.getOrDefault(c.getObjet().getNom(), 0) + 1);
         }
 
+        // Retirer les composants de l'inventaire
         List<CaseInventaire> contenu = inventaire.getInventaire();
         for (String nom : requis.keySet()) {
             int restant = requis.get(nom);
@@ -46,8 +48,23 @@ public class TableCraft {
             }
         }
 
-        inventaire.ajouterObjet(recette.getResultat());
-        System.out.println("✔ Craft réussi : " + recette.getResultat().getObjet().getNom());
+        // ✅ Créer une NOUVELLE case avec l'objet résultat
+        // Ne pas réutiliser directement recette.getResultat() qui pourrait être partagé
+        CaseInventaire nouvelleCase = new CaseInventaire(recette.getResultat().getObjet());
+        nouvelleCase.setQuantite(recette.getResultat().getQuantite());
+
+        // ✅ Vérifier si l'objet existe déjà dans l'inventaire
+        CaseInventaire caseExistante = inventaire.trouverCase(nouvelleCase.getObjet());
+
+        if (caseExistante != null) {
+            // Si l'objet existe déjà, augmenter sa quantité
+            caseExistante.incrementerQuantite(nouvelleCase.getQuantite());
+        } else {
+            // Sinon, ajouter une nouvelle case
+            inventaire.ajouterObjet(nouvelleCase);
+        }
+
+        System.out.println("✅ Craft réussi : " + recette.getResultat().getObjet().getNom());
     }
 
     public List<Recette> getRecettes() {
