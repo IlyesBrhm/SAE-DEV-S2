@@ -6,7 +6,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
-import universite_paris8.iut.youadah.projet.modele.*;
+import universite_paris8.iut.youadah.projet.modele.systeme.CaseInventaire;
+import universite_paris8.iut.youadah.projet.modele.systeme.Inventaire;
+import universite_paris8.iut.youadah.projet.modele.systeme.Recette;
+import universite_paris8.iut.youadah.projet.modele.systeme.TableCraft;
 
 import java.util.List;
 

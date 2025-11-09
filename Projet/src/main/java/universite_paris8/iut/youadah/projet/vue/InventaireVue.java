@@ -7,9 +7,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import universite_paris8.iut.youadah.projet.modele.CaseInventaire;
-import universite_paris8.iut.youadah.projet.modele.Inventaire;
-import universite_paris8.iut.youadah.projet.modele.Objet;
+import universite_paris8.iut.youadah.projet.modele.systeme.CaseInventaire;
+import universite_paris8.iut.youadah.projet.modele.systeme.Inventaire;
 
 import java.util.ArrayList;
 import java.util.List;

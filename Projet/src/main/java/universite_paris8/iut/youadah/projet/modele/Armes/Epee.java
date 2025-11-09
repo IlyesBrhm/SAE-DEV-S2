@@ -1,9 +1,9 @@
 package universite_paris8.iut.youadah.projet.modele.Armes;
 
 import javafx.scene.layout.TilePane;
-import universite_paris8.iut.youadah.projet.modele.GameMap;
-import universite_paris8.iut.youadah.projet.modele.Objet;
-import universite_paris8.iut.youadah.projet.modele.Player;
+import universite_paris8.iut.youadah.projet.modele.monde.GameMap;
+import universite_paris8.iut.youadah.projet.modele.objet.Objet;
+import universite_paris8.iut.youadah.projet.modele.entite.Player;
 import universite_paris8.iut.youadah.projet.modele.actions.Taper;
 import universite_paris8.iut.youadah.projet.vue.MapVue;
 
@@ -27,22 +27,11 @@ public class Epee extends Objet {
     }
 
 
-    //Calcule les dégâts selon la rareté de l'épée par exemple : commune = 1, rare = 2, légendaire = 3
+
     private int calculerDegatsSelonRarete(int rarete) {
-        return Math.max(1, rarete);  // minimum 1 dégât
+        return Math.max(1, rarete);
     }
 
-    public int getDegats() {
-        return degats;
-    }
-
-    public GameMap getCarte() {
-        return carte;
-    }
-
-    public MapVue getCarteVue() {
-        return carteVue;
-    }
 
     public Player getJoueur() {
         return joueur;
@@ -53,8 +42,7 @@ public class Epee extends Objet {
     }
 
     public void utiliser(int x, int y){
-        Taper taper = new Taper();
-        //taper.infligerDegats();
+
     }
 
 }

@@ -1,9 +1,8 @@
 package universite_paris8.iut.youadah.projet.vue;
 
-import universite_paris8.iut.youadah.projet.modele.Objet;
+import universite_paris8.iut.youadah.projet.modele.objet.Objet;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import java.awt.*;
 
 public class ObjetVue {
     private Objet objet;

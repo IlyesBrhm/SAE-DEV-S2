@@ -4,8 +4,8 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import universite_paris8.iut.youadah.projet.modele.GameMap;
-import universite_paris8.iut.youadah.projet.modele.Personnage;
+import universite_paris8.iut.youadah.projet.modele.monde.GameMap;
+import universite_paris8.iut.youadah.projet.modele.entite.Personnage;
 import universite_paris8.iut.youadah.projet.modele.actions.Tirer;
 
 import java.util.List;
@@ -99,11 +99,11 @@ public class Fleche {
             }
         }
 
-        // --- Collision avec un ennemi ---
+
         Tirer tirer = new Tirer();
         tirer.infligerDegatsSiCollision(posX, posY, cibles, overlay, degats);
 
-        // --- Si la flèche sort de l’écran ---
+
         if (posX < 0 || posX > 32 * 58 || posY < 0 || posY > 32 * 32) {
             detruire();
         }

@@ -4,7 +4,7 @@ import javafx.beans.binding.DoubleBinding;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import universite_paris8.iut.youadah.projet.modele.Personnage;
+import universite_paris8.iut.youadah.projet.modele.entite.Personnage;
 
 public class BarreDeVieVue {
 

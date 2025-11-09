@@ -1,8 +1,7 @@
 package universite_paris8.iut.youadah.projet.vue;
 
 import javafx.scene.image.Image;
-import universite_paris8.iut.youadah.projet.modele.Ennemie;
-import universite_paris8.iut.youadah.projet.modele.Personnage;
+import universite_paris8.iut.youadah.projet.modele.entite.Ennemie;
 
 public class EnnemieVue extends PersonnageVue {
 

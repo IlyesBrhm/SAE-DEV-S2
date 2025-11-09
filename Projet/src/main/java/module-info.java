@@ -17,4 +17,6 @@ module universite_paris8.iut.youadah.projet {
     exports universite_paris8.iut.youadah.projet;
     exports universite_paris8.iut.youadah.projet.controller;
     opens universite_paris8.iut.youadah.projet.controller to javafx.fxml;
+    exports universite_paris8.iut.youadah.projet.controller.gestionnaire;
+    opens universite_paris8.iut.youadah.projet.controller.gestionnaire to javafx.fxml;
 }

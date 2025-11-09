@@ -1,7 +1,7 @@
 package universite_paris8.iut.youadah.projet.modele.Armes;
 
-import universite_paris8.iut.youadah.projet.modele.Objet;
-import universite_paris8.iut.youadah.projet.modele.Player;
+import universite_paris8.iut.youadah.projet.modele.objet.Objet;
+import universite_paris8.iut.youadah.projet.modele.entite.Player;
 
 public class Potion extends Objet {
     Player joueur;

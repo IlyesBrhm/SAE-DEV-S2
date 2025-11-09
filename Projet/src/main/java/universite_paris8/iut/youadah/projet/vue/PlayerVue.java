@@ -4,7 +4,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import universite_paris8.iut.youadah.projet.modele.Armes.Arc;
 import universite_paris8.iut.youadah.projet.modele.Armes.Epee;
-import universite_paris8.iut.youadah.projet.modele.Player;
+import universite_paris8.iut.youadah.projet.modele.entite.Player;
 
 
 public class PlayerVue {

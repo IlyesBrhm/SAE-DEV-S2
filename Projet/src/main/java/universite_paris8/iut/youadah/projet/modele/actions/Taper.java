@@ -1,56 +1,67 @@
-// Taper.java
 package universite_paris8.iut.youadah.projet.modele.actions;
 
-import universite_paris8.iut.youadah.projet.controller.GestionEffetDegats;
+import universite_paris8.iut.youadah.projet.controller.gestionnaire.GestionEffetDegats;
 import javafx.scene.layout.Pane;
 import universite_paris8.iut.youadah.projet.modele.Armes.Epee;
-import universite_paris8.iut.youadah.projet.modele.Personnage;
-import universite_paris8.iut.youadah.projet.modele.Player;
+import universite_paris8.iut.youadah.projet.modele.entite.Personnage;
+import universite_paris8.iut.youadah.projet.modele.entite.Player;
 
 import java.util.List;
 
-public class Taper {
+public class Taper implements ActionStrategies {
 
     private static final double PORTEE_EPEE = 40.0;
     private static final int DEGATS_EPEE = 1;
 
-    public Taper() {}
+    private final Player joueur;
+    private final List<Personnage> cibles;
+    private final Pane overlay;
+    private final GestionEffetDegats degats ;
 
-    public void attaquerAvecEpee(Player joueur, List<Personnage> cibles, Pane overlay) {
+    public Taper(Player joueur, List<Personnage> cibles, Pane overlay) {
+        this.joueur = joueur;
+        this.cibles = cibles;
+        this.overlay = overlay;
+        this.degats = GestionEffetDegats.getInstance();
+    }
+
+
+
+    @Override
+    public boolean executer() {
         Object objet = joueur.getObjetPossede();
-        if (objet == null || !(objet instanceof Epee)) return;
+        if (!(objet instanceof Epee)) return false;
 
-        double positionXJoueur = joueur.getX();
-        double positionYJoueur = joueur.getY();
-        boolean regardeVersLaDroite = joueur.estsVersLaDroite();
+        double xJoueur = joueur.getX();
+        double yJoueur = joueur.getY();
+        boolean regardeDroite = joueur.estsVersLaDroite();
 
         for (Personnage cible : cibles) {
-            if (cible == joueur) continue;
+            if (cible == joueur || cible.getVie().estMort()) continue;
 
-            double positionXCible = cible.getX();
-            double positionYCible = cible.getY();
+            double xCible = cible.getX();
+            double yCible = cible.getY();
 
-            boolean cibleDevant = regardeVersLaDroite
-                    ? positionXCible > positionXJoueur && positionXCible < positionXJoueur + PORTEE_EPEE
-                    : positionXCible < positionXJoueur && positionXCible > positionXJoueur - PORTEE_EPEE;
+            boolean cibleDevant = regardeDroite
+                    ? xCible > xJoueur && xCible < xJoueur + PORTEE_EPEE
+                    : xCible < xJoueur && xCible > xJoueur - PORTEE_EPEE;
 
-            boolean memeHauteur = Math.abs(positionYCible - positionYJoueur) < 32;
+            boolean memeHauteur = Math.abs(yCible - yJoueur) < 32;
 
             if (cibleDevant && memeHauteur) {
-                System.out.println("TOUCHÉ !");
                 infligerDegats(cible);
-                GestionEffetDegats.definirSuperposition(overlay);
-                GestionEffetDegats.declencherClignotementRouge();
+                degats.definirSuperposition(overlay);
+                degats.declencherClignotementRouge();
+                System.out.println("💥 Touché à l’épée !");
             }
-
         }
+        return true;
     }
 
     private void infligerDegats(Personnage cible) {
-        if (cible.getVie().getPvArmure() > 0) {
+        if (cible.getVie().getPvArmure() > 0)
             cible.getVie().decrementerPvArmure(DEGATS_EPEE);
-        } else {
+        else
             cible.getVie().decrementerPv(DEGATS_EPEE);
-        }
     }
-} // Fin Taper.java
+}

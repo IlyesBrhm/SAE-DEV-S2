@@ -2,12 +2,7 @@ package universite_paris8.iut.youadah.projet.vue;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
-import universite_paris8.iut.youadah.projet.modele.Personnage;
-import universite_paris8.iut.youadah.projet.modele.Player;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.util.Duration;
+import universite_paris8.iut.youadah.projet.modele.entite.Personnage;
 
 
 public class PersonnageVue {

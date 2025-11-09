@@ -1,8 +1,12 @@
 package universite_paris8.iut.youadah.projet.modele.Armes;
 
 import javafx.scene.layout.Pane;
-import universite_paris8.iut.youadah.projet.modele.*;
+import universite_paris8.iut.youadah.projet.environnement.Environnement;
 import universite_paris8.iut.youadah.projet.modele.actions.Casser;
+import universite_paris8.iut.youadah.projet.modele.entite.Player;
+import universite_paris8.iut.youadah.projet.modele.monde.GameMap;
+import universite_paris8.iut.youadah.projet.modele.objet.Bloc;
+import universite_paris8.iut.youadah.projet.modele.objet.Objet;
 import universite_paris8.iut.youadah.projet.vue.MapVue;
 
 public class Pioche extends Objet {
@@ -30,8 +34,7 @@ public class Pioche extends Objet {
 
             // Casser le bloc de la carte
             Casser casseur = new Casser(carte, carteVue, joueur);
-            if (casseur.casserBloc(x, y)) {
-                // ✅ Utiliser environnement.deposer() au lieu de créer ObjetAuSol directement
+            if (casseur.executer()) {
                 environnement.deposer(bloc, x, y);
             }
         } else {

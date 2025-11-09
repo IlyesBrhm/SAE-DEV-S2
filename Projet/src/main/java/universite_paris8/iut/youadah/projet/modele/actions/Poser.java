@@ -1,20 +1,25 @@
 package universite_paris8.iut.youadah.projet.modele.actions;
-import universite_paris8.iut.youadah.projet.modele.GameMap;
-import universite_paris8.iut.youadah.projet.modele.Player;
+import universite_paris8.iut.youadah.projet.modele.monde.GameMap;
+import universite_paris8.iut.youadah.projet.modele.entite.Player;
 import universite_paris8.iut.youadah.projet.vue.MapVue;
 
-public class Poser {
+
+public class Poser implements ActionStrategies {
     private GameMap map;
     private MapVue mapVue;
     private Player joueur;
+    private int x,  y,  idBloc;
 
-    public Poser(GameMap map, MapVue mapVue, Player joueur) {
+    public Poser(GameMap map, MapVue mapVue, Player joueur, int x, int y, int idBloc) {// jai modifier sa
         this.map = map;
         this.mapVue = mapVue;
         this.joueur = joueur;
+        this.x = x;
+        this.y = y;
+        this.idBloc = idBloc;
     }
 
-    public void poserBloc(int x, int y, int idBloc) {
+    public boolean executer() {
         double joueurX = joueur.getX() / 32.0;  // position en tuiles
         double joueurY = joueur.getY() / 32.0;
 
@@ -28,5 +33,9 @@ public class Poser {
                 mapVue.mettreAJourTuile(x, y, idBloc);
             }
         }
+        return false;
     }
 }
+
+
+
