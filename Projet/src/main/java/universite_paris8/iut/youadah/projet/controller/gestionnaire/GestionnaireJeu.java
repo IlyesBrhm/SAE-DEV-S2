@@ -49,6 +49,10 @@ public class GestionnaireJeu {
                 calqueCouche
         );
 
+        // Initialiser les effets de dégâts AVANT de créer l'Environnement
+        // car l'Environnement a besoin d'une référence au gestionnaire d'effets
+        initialiseurEffetDegats.initialiser(superpositionRouge);
+
         environnement = new Environnement(
                 calqueCouche,
                 initialiseurCarte.getCarte(),
@@ -84,8 +88,6 @@ public class GestionnaireJeu {
                 environnement,
                 calqueCouche
         );
-
-        initialiseurEffetDegats.initialiser(superpositionRouge);
 
     }
 
