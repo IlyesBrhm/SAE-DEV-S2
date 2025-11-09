@@ -11,19 +11,14 @@ public class InitialiseurEffetDegats {
 
     private GestionEffetDegats gestionEffetDegats;
 
-    /**
-     * Initialise et configure le gestionnaire des effets de dégâts.
-     * @param overlayRouge le Pane transparent utilisé pour les effets visuels (clignotement rouge)
-     */
+
     public void initialiser(Pane overlayRouge) {
         // ✅ On récupère l’instance unique au lieu d’en créer une nouvelle
         gestionEffetDegats = GestionEffetDegats.getInstance();
         gestionEffetDegats.definirSuperposition(overlayRouge);
     }
 
-    /**
-     * Retourne l'instance unique du gestionnaire d'effets de dégâts.
-     */
+
     public GestionEffetDegats getGestionEffetDegats() {
         return gestionEffetDegats;
     }

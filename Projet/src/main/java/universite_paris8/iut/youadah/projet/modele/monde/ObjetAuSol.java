@@ -10,20 +10,19 @@ public class ObjetAuSol {
     private final int xTuile;
     private final int yTuile;
     private Objet objet;
-    private int quantite; // ✅ Ajout de la quantité
+    private int quantite;
     private final ObjetVue objetVue;
 
-    // Constructeur avec quantité par défaut = 1
+
     public ObjetAuSol(int xTuile, int yTuile, Pane pane, Objet objet) {
         this(xTuile, yTuile, pane, objet, 1);
     }
 
-    // Constructeur avec quantité personnalisée
     public ObjetAuSol(int xTuile, int yTuile, Pane pane, Objet objet, int quantite) {
         this.xTuile = xTuile;
         this.yTuile = yTuile;
         this.objet = objet;
-        this.quantite = quantite; // ✅ Initialisation
+        this.quantite = quantite;
         this.objetVue = new ObjetVue(objet);
 
         objetVue.getImageView().setFitWidth(26);
@@ -38,9 +37,5 @@ public class ObjetAuSol {
     public int getYTuile() { return yTuile; }
     public ObjetVue getObjetVue() { return objetVue; }
     public Objet getObjet() { return objet; }
-    public int getQuantite() { return quantite; } // ✅ Getter pour la quantité
 
-    public void setQuantite(int quantite) { // ✅ Setter optionnel
-        this.quantite = Math.max(0, quantite);
-    }
 }

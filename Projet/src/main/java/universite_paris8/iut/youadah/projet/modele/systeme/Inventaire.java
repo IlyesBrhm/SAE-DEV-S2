@@ -29,19 +29,7 @@ public class Inventaire {
         }
     }
 
-    public void retirerObjet(CaseInventaire caseARetirer) {
-        for (int i = 0; i < inventaire.size(); i++) {
-            CaseInventaire caseInventaire = inventaire.get(i);
-            if (caseInventaire.equals(caseARetirer)) {
-                if (caseInventaire.getQuantite() > 1) {
-                    caseInventaire.decrementerQuantite(1);
-                } else {
-                    inventaire.remove(i);
-                }
-                return;
-            }
-        }
-    }
+
 
     public CaseInventaire trouverCase(Objet objet) {
         for (CaseInventaire caseInventaire : inventaire) {

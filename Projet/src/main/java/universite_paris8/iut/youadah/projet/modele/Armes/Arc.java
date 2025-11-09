@@ -24,8 +24,8 @@ public class Arc extends Objet {
 
     public Arc(String nom, int rarete, GameMap carte, MapVue carteVue, Player joueur, Pane tileMap) {
         super(nom, 1, false);
-        this.degats = Math.max(1, rarete);             // Dégâts selon rareté
-        this.portee = 150 + rarete * 20;               // Portée selon rareté
+        this.degats = Math.max(1, rarete);
+        this.portee = 150 + rarete * 20;
         this.carte = carte;
         this.carteVue = carteVue;
         this.joueur = joueur;
@@ -70,7 +70,6 @@ public class Arc extends Objet {
 
     @Override
     public void utiliser(int x, int y) {
-        // Ici, on pourrait éventuellement déclencher un tir automatique selon direction
-        // Mais le tir réel est géré dans GameController via un clic souris.
+
     }
 }

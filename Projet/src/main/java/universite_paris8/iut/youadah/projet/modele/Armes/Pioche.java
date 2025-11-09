@@ -13,7 +13,7 @@ public class Pioche extends Objet {
     private GameMap carte;
     private MapVue carteVue;
     private Player joueur;
-    private Environnement environnement; // ✅ Changé de ObjetAuSol à Environnement
+    private Environnement environnement;
     private Pane playerLayer;
 
     public Pioche(String nom, int rarete, GameMap carte, MapVue carteVue, Player joueur,
@@ -29,10 +29,10 @@ public class Pioche extends Objet {
     @Override
     public void utiliser(int x, int y) {
         if (!carteVue.getBloc(x, y).equals("Vide")) {
-            // Créer le bloc correspondant au type cassé
+
             Bloc bloc = new Bloc(carteVue.getBloc(x, y), 1, false, carte, carteVue, joueur, carte.getTile(y, x));
 
-            // Casser le bloc de la carte
+
             Casser casseur = new Casser(carte, carteVue, joueur);
             casseur.definirCoordonnees(x, y); // ✅ Définir les coordonnées avant d'exécuter
             if (casseur.executer()) {

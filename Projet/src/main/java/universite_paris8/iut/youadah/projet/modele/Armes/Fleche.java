@@ -85,7 +85,7 @@ public class Fleche {
         node.setLayoutX(posX);
         node.setLayoutY(posY);
 
-        // --- Détection de collision avec un bloc solide ---
+
         int tuileX = (int) (posX / 32);
         int tuileY = (int) (posY / 32);
 
@@ -93,9 +93,9 @@ public class Fleche {
                 && tuileY >= 0 && tuileY < carte.getHauteur()) {
 
             int bloc = carte.getTile(tuileY, tuileX);
-            if (bloc != 0) { // 0 = vide ; tout autre bloc = obstacle
-                detruire(); // détruit la flèche
-                return; // on arrête tout ici
+            if (bloc != 0) {
+                detruire();
+                return;
             }
         }
 

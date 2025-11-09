@@ -10,7 +10,7 @@ public class Personnage {
     private final DoubleProperty x = new SimpleDoubleProperty();
     private final DoubleProperty y = new SimpleDoubleProperty();
 
-    private char direction = 'i'; // 'd' pour droite 'g' pour gauche 'i' pour immobile
+    private char direction = 'i';
 
     private double vitesseY;
     protected boolean versLaDroite;
@@ -175,55 +175,43 @@ public class Personnage {
         if (carte == null) return;
 
         final double GRAVITE = 0.08;
-        double nouvelleY = getY();
-        double nouvelleVitesseY = this.vitesseY + GRAVITE;
-        nouvelleY += nouvelleVitesseY;
+        vitesseY += GRAVITE;
+        double nouvelleY = getY() + vitesseY;
 
         int tuileXG = (int)(getX() / TAILLE_TUILE);
         int tuileXD = (int)((getX() + TAILLE_TUILE - 1) / TAILLE_TUILE);
 
-        boolean auSolTemp = false;
+        auSol = false;
 
-        if (nouvelleVitesseY > 0) {
-            // Collision vers le bas (chute)
+        if (vitesseY > 0) {
             int tuileYBas = (int)((nouvelleY + TAILLE_TUILE) / TAILLE_TUILE);
-            if (tuileYBas < carte.getHauteur()) {
-                boolean solG = carte.estSolide(carte.getTile(tuileYBas, tuileXG));
-                boolean solD = carte.estSolide(carte.getTile(tuileYBas, tuileXD));
-                if (solG || solD) {
-                    nouvelleY = (tuileYBas - 1) * TAILLE_TUILE;
-                    nouvelleVitesseY = 0;
-                    auSolTemp = true;
-                }
+            if (tuileYBas < carte.getHauteur() &&
+                    (carte.estSolide(carte.getTile(tuileYBas, tuileXG)) ||
+                            carte.estSolide(carte.getTile(tuileYBas, tuileXD)))) {
+                nouvelleY = (tuileYBas - 1) * TAILLE_TUILE;
+                vitesseY = 0;
+                auSol = true;
             }
-        } else if (nouvelleVitesseY < 0) {
-            // Collision vers le haut (saut sous un bloc)
+        } else if (vitesseY < 0) {
             int tuileYHaut = (int)(nouvelleY / TAILLE_TUILE);
-            if (tuileYHaut >= 0) {
-                boolean hautG = carte.estSolide(carte.getTile(tuileYHaut, tuileXG));
-                boolean hautD = carte.estSolide(carte.getTile(tuileYHaut, tuileXD));
-                if (hautG || hautD) {
-                    nouvelleY = (tuileYHaut + 1) * TAILLE_TUILE;
-                    nouvelleVitesseY = 0;
-                }
+            if (tuileYHaut >= 0 &&
+                    (carte.estSolide(carte.getTile(tuileYHaut, tuileXG)) ||
+                            carte.estSolide(carte.getTile(tuileYHaut, tuileXD)))) {
+                nouvelleY = (tuileYHaut + 1) * TAILLE_TUILE;
+                vitesseY = 0;
             }
         }
 
-        // Limites verticales
         double hauteurMax = carte.getHauteur() * TAILLE_TUILE - TAILLE_TUILE;
         if (nouvelleY > hauteurMax) {
             nouvelleY = hauteurMax;
-            nouvelleVitesseY = 0;
-            auSolTemp = true;
-        }
-
-        if (nouvelleY < 0) {
+            vitesseY = 0;
+            auSol = true;
+        } else if (nouvelleY < 0) {
             nouvelleY = 0;
-            nouvelleVitesseY = 0;
+            vitesseY = 0;
         }
 
         setY(nouvelleY);
-        this.vitesseY = nouvelleVitesseY;
-        this.auSol = auSolTemp;
     }
 }

@@ -52,7 +52,6 @@ public class Taper implements ActionStrategies {
                 infligerDegats(cible);
                 degats.definirSuperposition(overlay);
                 degats.declencherClignotementRouge();
-                System.out.println("💥 Touché à l’épée !");
             }
         }
         return true;

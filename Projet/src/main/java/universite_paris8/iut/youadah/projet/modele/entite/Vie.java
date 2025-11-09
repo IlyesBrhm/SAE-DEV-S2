@@ -33,19 +33,6 @@ public class Vie {
         this.pvArmure = Math.max(0, this.pvArmure - valeur);
     }
 
-    public void setObjetPossede(Objet objetPossede) {
-        this.objetPossede = objetPossede;
-    }
-
-    public Objet getObjetPossede() {
-        return objetPossede;
-    }
-    public long getDernierDegatFeu() {
-        return dernierDegatFeu;
-    }
-
-    public void setDernierDegatFeu(long t) {
-        this.dernierDegatFeu = t; }
 
     public boolean estMort() {
         if (pv > 0)

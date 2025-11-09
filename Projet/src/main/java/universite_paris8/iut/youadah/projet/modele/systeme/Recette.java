@@ -22,29 +22,29 @@ public class Recette {
     public boolean estCraftable(Inventaire inventaire) {
         System.out.println("=== Vérification de la recette ===");
 
-        // Compter les quantités nécessaires pour chaque type d'objet
+
         Map<String, Integer> quantitesNecessaires = new HashMap<>();
         for (CaseInventaire c : composants) {
             quantitesNecessaires.put(c.getObjet().getNom(), quantitesNecessaires.getOrDefault(c.getObjet().getNom(), 0) + 1);
         }
 
-        // Compter les quantités disponibles dans l'inventaire
+
         Map<String, Integer> quantitesDisponibles = new HashMap<>();
         for (CaseInventaire c : inventaire.getInventaire()) {
             quantitesDisponibles.put(c.getObjet().getNom(), quantitesDisponibles.getOrDefault(c.getObjet().getNom(), 0) + c.getQuantite());
         }
 
-        // Comparer les deux
+
         for (String nom : quantitesNecessaires.keySet()) {
             int requis = quantitesNecessaires.get(nom);
             int dispo = quantitesDisponibles.getOrDefault(nom, 0);
             if (dispo < requis) {
-                System.out.println("❌ Pas assez de : " + nom);
+                System.out.println("Pas assez de : " + nom);
                 return false;
             }
         }
 
-        System.out.println("✔ Tous les ingrédients sont présents !");
+
         return true;
     }
 }
