@@ -35,7 +35,6 @@ public class GestionnaireSouris {
     public void definirActionUtilisationObjet(ActionUtilisationObjet action) {
         this.actionUtilisationObjet = action;
     }
-
     public void traiterClic(MouseEvent evenement) {
         if (evenement.getButton() != MouseButton.PRIMARY) {
             return;
@@ -44,29 +43,34 @@ public class GestionnaireSouris {
         double positionX = evenement.getX();
         double positionY = evenement.getY();
 
-        if (actionAttaqueEpee != null) {
-            actionAttaqueEpee.executer();
-        }
-
+        // Vérifier d'abord si le joueur possède un objet
         if (joueur.getObjetPossede() != null) {
             CaseInventaire caseReelle = inventaire.trouverCase(joueur.getObjetPossede());
 
             if (caseReelle != null) {
                 if (caseReelle.getObjet() instanceof Arc) {
+                    // Tir à l'arc
                     if (actionTirArc != null) {
                         actionTirArc.executer(positionX, positionY);
                     }
                 } else {
+                    // Utilisation d'objet (pioche, blocs, etc.)
                     if (actionUtilisationObjet != null) {
                         int tuileX = (int) (positionX / TAILLE_TUILE);
                         int tuileY = (int) (positionY / TAILLE_TUILE);
                         actionUtilisationObjet.executer(caseReelle, tuileX, tuileY);
                     }
                 }
+                return; // Important : sortir après avoir traité l'objet
             }
         }
-    }
 
+        // Si aucun objet n'est possédé OU si l'objet n'est pas dans l'inventaire,
+        // alors attaquer avec l'épée
+        if (actionAttaqueEpee != null) {
+            actionAttaqueEpee.executer();
+        }
+    }
     public boolean doitConsommerObjet(CaseInventaire caseUtilisee) {
         return caseUtilisee.getObjet() instanceof Bloc ||
                 caseUtilisee.getObjet().getConsomable();

@@ -34,6 +34,7 @@ public class Pioche extends Objet {
 
             // Casser le bloc de la carte
             Casser casseur = new Casser(carte, carteVue, joueur);
+            casseur.definirCoordonnees(x, y); // ✅ Définir les coordonnées avant d'exécuter
             if (casseur.executer()) {
                 environnement.deposer(bloc, x, y);
             }

@@ -17,8 +17,13 @@ public class Casser implements ActionStrategies {
         this.joueur = joueur;
     }
 
+    // ✅ Ajoutez cette méthode
+    public void definirCoordonnees(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
 
-    public boolean executer() {// jai rajouter sa
+    public boolean executer() {
         double joueurX = joueur.getX() / 32;
         double joueurY = joueur.getY() / 32;
 
