@@ -1,4 +1,3 @@
-// Personnage.java
 package universite_paris8.iut.youadah.projet.modele.entite;
 
 import javafx.beans.property.DoubleProperty;

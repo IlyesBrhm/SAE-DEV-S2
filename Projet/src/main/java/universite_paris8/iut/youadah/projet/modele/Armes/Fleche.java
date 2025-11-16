@@ -22,7 +22,7 @@ public class Fleche {
 
     private AnimationTimer animation;
 
-    // Nouveaux paramètres nécessaires pour collision/dégâts
+
     private final List<Personnage> cibles;
     private final Pane overlay;
     private final int degats;

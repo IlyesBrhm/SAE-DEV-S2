@@ -13,10 +13,7 @@ public class HelloApplication extends Application {
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/universite_paris8/iut/youadah/projet/hello-view.fxml"));
 
-        // Obtenir les dimensions de l'écran
         Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-
-        // Créer la scène avec 80% de la taille de l'écran
         Scene scene = new Scene(fxmlLoader.load(),
                 screenBounds.getWidth() * 0.8,
                 screenBounds.getHeight() * 0.8);
@@ -24,7 +21,6 @@ public class HelloApplication extends Application {
         primaryStage.setScene(scene);
         primaryStage.setTitle("Bilad al Sam");
 
-        // Centrer la fenêtre
         primaryStage.centerOnScreen();
 
         primaryStage.show();

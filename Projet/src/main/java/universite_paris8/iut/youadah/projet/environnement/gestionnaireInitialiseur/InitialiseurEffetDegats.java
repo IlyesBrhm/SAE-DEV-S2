@@ -13,7 +13,7 @@ public class InitialiseurEffetDegats {
 
 
     public void initialiser(Pane overlayRouge) {
-        // ✅ On récupère l’instance unique au lieu d’en créer une nouvelle
+
         gestionEffetDegats = GestionEffetDegats.getInstance();
         gestionEffetDegats.definirSuperposition(overlayRouge);
     }
